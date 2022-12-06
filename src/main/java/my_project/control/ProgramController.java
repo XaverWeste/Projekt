@@ -1,6 +1,10 @@
 package my_project.control;
 
 import KAGO_framework.control.ViewController;
+import my_project.model.User;
+import my_project.model.screen.Screen;
+
+import java.util.HashMap;
 
 /**
  * Ein Objekt der Klasse ProgramController dient dazu das Programm zu steuern. Die updateProgram - Methode wird
@@ -9,6 +13,8 @@ import KAGO_framework.control.ViewController;
 public class ProgramController {
 
     private ViewController viewController;
+    private User user;
+    private HashMap<String, Screen> screens=new HashMap<>();
 
     /**
      * Konstruktor
@@ -19,6 +25,10 @@ public class ProgramController {
      */
     public ProgramController(ViewController viewController){
         this.viewController = viewController;
+    }
+
+    public void setUser(User u){
+        user=u;
     }
 
     /**

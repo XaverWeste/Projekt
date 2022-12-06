@@ -1,8 +1,9 @@
-package my_project.model;
+package my_project.model.screen;
 
 import KAGO_framework.model.GraphicalObject;
 import KAGO_framework.view.DrawTool;
 import my_project.Config;
+import my_project.control.ProgramController;
 import my_project.model.interactable.Inputfield;
 import my_project.model.interactable.Interactable;
 import my_project.model.interactable.Button;
@@ -12,11 +13,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-public abstract class Scene extends GraphicalObject {
+public abstract class Screen extends GraphicalObject {
 
     private final ArrayList<Interactable> interactables=new ArrayList<>();
+    private final ProgramController pc;
 
-    public Scene(){
+    public Screen(ProgramController pc){
+        this.pc = pc;
         setUp();
     }
 
