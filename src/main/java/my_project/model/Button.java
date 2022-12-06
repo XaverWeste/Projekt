@@ -1,11 +1,10 @@
 package my_project.model;
 
-import KAGO_framework.model.GraphicalObject;
 import KAGO_framework.view.DrawTool;
 
 import java.awt.*;
 
-public class Button extends GraphicalObject {
+public class Button extends Interactable{
 
     public interface onClick{
         void execute();
