@@ -1,10 +1,10 @@
-package my_project.model;
+package my_project.model.interactable;
 
 import KAGO_framework.view.DrawTool;
 
 import java.awt.*;
 
-public class Button extends Interactable{
+public class Button extends Interactable {
 
     public interface onClick{
         void execute();
@@ -32,11 +32,7 @@ public class Button extends Interactable{
         d.drawText(x+5,y-5,s);
     }
 
-    public boolean clickOn(double x,double y){
-        if(x>this.x&&y>this.y&&x<this.x+width&&y<this.y+height){
-            oc.execute();
-            return true;
-        }
-        return false;
+    public void clickOn(double x,double y){
+        if(x>this.x&&y>this.y&&x<this.x+width&&y<this.y+height) oc.execute();
     }
 }
