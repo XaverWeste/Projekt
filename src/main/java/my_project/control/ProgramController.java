@@ -8,11 +8,7 @@ import KAGO_framework.control.ViewController;
  */
 public class ProgramController {
 
-    //Attribute
-
-
-    // Referenzen
-    private ViewController viewController;  // diese Referenz soll auf ein Objekt der Klasse viewController zeigen. Über dieses Objekt wird das Fenster gesteuert.
+    private ViewController viewController;
 
     /**
      * Konstruktor
@@ -30,9 +26,6 @@ public class ProgramController {
      * Sie erstellt die leeren Datenstrukturen, zu Beginn nur eine Queue
      */
     public void startProgram() {
-        // Erstelle ein Objekt der Klasse Ball und lasse es zeichnen
-        Ball ball1 = new Ball(150,150);
-        viewController.draw(ball1);
 
     }
 
