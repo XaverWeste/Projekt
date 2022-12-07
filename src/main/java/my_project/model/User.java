@@ -3,7 +3,12 @@ package my_project.model;
 public class User {
 
     private String username;
-    private String id;
+    private int id;
+
+    public User(int id, String username){
+        this.username = username;
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -13,11 +18,11 @@ public class User {
         this.username = username;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 }

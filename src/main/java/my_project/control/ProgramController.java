@@ -3,6 +3,7 @@ package my_project.control;
 import KAGO_framework.control.DatabaseController;
 import KAGO_framework.control.ViewController;
 import my_project.model.Projekt;
+import my_project.model.Task;
 import my_project.model.User;
 import my_project.model.screen.Screen;
 
@@ -15,9 +16,11 @@ import java.util.HashMap;
 public class ProgramController {
 
     private ViewController viewController;
-    private Projekt[] projekt;
+    private String database;
+    private Projekt[] projekts;
+    private Task[] tasks;
     private DatabaseController databaseController;
-    private User user;
+    private User[] user;
     private HashMap<String, Screen> screens=new HashMap<>();
 
     /**
@@ -40,21 +43,77 @@ public class ProgramController {
     public void startProgram() {
     }
 
+    /**
+     * Bei den Projekten steht in der ersten Spalte die id (Primärschlüssel-Integer) und im zweiten der Name (String).
+     */
+
     public Projekt[] getProjekt(){
-        databaseController.executeStatement("SELECT Projekt FROM [Insert Database Name];");
+        databaseController.executeStatement("SELECT Projekt FROM " + database + ";");
+        if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "Projekt"); //Kontrolle
         int length = databaseController.getCurrentQueryResult().getRowCount();
-        projekt = new Projekt[length];
-        String name;
-        int id;
+        projekts = new Projekt[length];
         String[][] arr = databaseController.getCurrentQueryResult().getData();
 
         for(int i = 0;arr.length-1 > i;i++){
-            id = Integer.parseInt(arr[i][0].toString());
-            name = arr[i][1].toString();
-            Projekt p = new Projekt(id, name);
-            projekt[i] = p;
+            Projekt p = new Projekt(Integer.parseInt(arr[i][0].toString()), arr[i][1].toString());
+            projekts[i] = p;
         }
-        return projekt;
+        return projekts;
+    }
+
+    /**
+     * Bei den Tasks steht in der ersten Spalte die id (Primärschlüssel-Integer), der zweiten eine Beschreibung (String),
+     * in der dritten ob es done (boolean) ist und in der vieten die ID (Fremdschlüssel-Integer) des Projektes, zu dem es gehört.
+     */
+
+    public Task[] getTasks(int projektID){
+        databaseController.executeStatement("SELECT * FROM Aufgabe WHERE ProjektID = " + projektID + ";");
+        if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "Task"); //Kontrolle
+        int length = databaseController.getCurrentQueryResult().getRowCount();
+        tasks = new Task[length];
+        String[][] arr = databaseController.getCurrentQueryResult().getData();
+
+        for(int i = 0;arr.length-1 > i;i++){
+            Task t = new Task(Integer.parseInt(arr[i][0].toString()), arr[i][1].toString(), Boolean.parseBoolean(arr[i][2].toString()), Integer.parseInt(arr[i][3].toString()));
+            tasks[i] = t;
+        }
+        return tasks;
+    }
+
+    /**
+     * Bei den Usern steht in der ersten Spalte die id (Primärschlüssel-Integer) und in der zweiten der Benutzername (String)
+     * Man kann User die zu einem Projekt gehören oder User, die eine Bestimmte Aufgabe eines Projektes machen.
+     */
+
+    private User[] getUser(){
+        int length = databaseController.getCurrentQueryResult().getRowCount();
+        user = new User[length];
+        String[][] arr = databaseController.getCurrentQueryResult().getData();
+
+        for(int i = 0;arr.length-1 > i;i++){
+            User u = new User(Integer.parseInt(arr[i][0].toString()), arr[i][1].toString());
+            user[i] = u;
+        }
+        return user;
+    }
+
+    private User[] requestUser(int projektID){
+        databaseController.executeStatement("SELECT Benutzer.BID, Benutzer.Name, Benutzer.Vorname, Benutzer.Passwort" +
+                "FROM (Benutzer" +
+                "INNER JOIN gehoertZu ON Benutzer.BID = gehoertZu.BID)" +
+                "WHERE ProjektID = " + projektID + ";");
+        if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "User 1"); //Kontrolle
+        return getUser();
+    }
+
+    private User[] requestUser(int projektID,int aufgabeID){
+        databaseController.executeStatement("SELECT Benutzer.BID, Benutzer.Name, Benutzer.Vorname, Benutzer.Passwort" +
+                "FROM ((Benutzer" +
+                "INNER JOIN bearbeitet ON Benutzer.BID = bearbeitet.BID)" +
+                "INNER JOIN gehoertZu ON Benutzer.BID = gehoertZu.BID)" +
+                "WHERE AID = " + aufgabeID + " AND WHERE ProjektID = " + projektID + ";");
+        if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "User 2"); //Kontrolle
+        return getUser();
     }
 
     /**
