@@ -9,15 +9,14 @@ import my_project.model.interactable.Interactable;
 import my_project.model.interactable.Button;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public abstract class Screen extends GraphicalObject {
 
-    private final ArrayList<Interactable> interactables=new ArrayList<>();
-    private final ProgramController pc;
-    private Inputfield activeIf=null;
+    protected final ArrayList<Interactable> interactables=new ArrayList<>();
+    protected final ProgramController pc;
+    protected Inputfield activeIf=null;
 
     public Screen(ProgramController pc){
         this.pc = pc;
@@ -29,6 +28,7 @@ public abstract class Screen extends GraphicalObject {
     public void draw(DrawTool d){
         d.setCurrentColor(Color.DARK_GRAY);
         d.drawFilledRectangle(0,0, Config.WINDOW_WIDTH,Config.WINDOW_HEIGHT);
+        for(Interactable i:interactables) i.draw(d);
     }
 
     public void mouseReleased(MouseEvent e){

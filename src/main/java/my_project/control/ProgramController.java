@@ -5,6 +5,7 @@ import KAGO_framework.control.ViewController;
 import my_project.model.Projekt;
 import my_project.model.Task;
 import my_project.model.User;
+import my_project.model.screen.LogInScreen;
 import my_project.model.screen.Screen;
 import my_project.view.InputManager;
 
@@ -12,19 +13,23 @@ import java.util.HashMap;
 
 public class ProgramController {
 
-    private ViewController viewController;
+    private ViewController v;
     private String database;
     private Projekt[] projekts;
     private Task[] tasks;
     private DatabaseController databaseController;
     private User[] user;
-    private HashMap<String,Screen> screens=new HashMap<>();
 
     public ProgramController(ViewController viewController){
-        this.viewController = viewController;
-        InputManager i=new InputManager(this);
-        viewController.register(i);
+        v = viewController;
         databaseController = new DatabaseController();
+        setUpScreen(new LogInScreen(this),0);
+    }
+
+    private void setUpScreen(Screen s,int scene){
+        v.createScene();
+        v.draw(s,scene);
+        v.register(new InputManager(s),scene);
     }
 
     public void startProgram() {
@@ -38,7 +43,7 @@ public class ProgramController {
         String[][] arr = databaseController.getCurrentQueryResult().getData();
 
         for(int i = 0;arr.length-1 > i;i++){
-            Projekt p = new Projekt(Integer.parseInt(arr[i][0].toString()), arr[i][1].toString());
+            Projekt p = new Projekt(Integer.parseInt(arr[i][0]), arr[i][1]);
             projekts[i] = p;
         }
         return projekts;
@@ -52,7 +57,7 @@ public class ProgramController {
         String[][] arr = databaseController.getCurrentQueryResult().getData();
 
         for(int i = 0;arr.length-1 > i;i++){
-            Task t = new Task(Integer.parseInt(arr[i][0].toString()), arr[i][1].toString(), Boolean.parseBoolean(arr[i][2].toString()), Integer.parseInt(arr[i][3].toString()));
+            Task t = new Task(Integer.parseInt(arr[i][0]), arr[i][1], Boolean.parseBoolean(arr[i][2]), Integer.parseInt(arr[i][3]));
             tasks[i] = t;
         }
         return tasks;
@@ -64,7 +69,7 @@ public class ProgramController {
         String[][] arr = databaseController.getCurrentQueryResult().getData();
 
         for(int i = 0;arr.length-1 > i;i++){
-            User u = new User(Integer.parseInt(arr[i][0].toString()), arr[i][1].toString());
+            User u = new User(Integer.parseInt(arr[i][0]), arr[i][1]);
             user[i] = u;
         }
         return user;

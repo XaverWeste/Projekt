@@ -4,6 +4,13 @@ public class Inputfield extends Interactable{
 
     private String s;
 
+    public Inputfield(double x,double y,double w,double h){
+        this.x=x;
+        this.y=y;
+        width=w;
+        height=h;
+    }
+
     public void clear(){
         s="";
     }
