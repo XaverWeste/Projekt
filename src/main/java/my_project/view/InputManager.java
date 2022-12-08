@@ -2,7 +2,7 @@ package my_project.view;
 
 
 import KAGO_framework.model.InteractiveGraphicalObject;
-import my_project.model.screen.Screen;
+import my_project.model.ui.screen.Screen;
 
 import java.awt.event.MouseEvent;
 

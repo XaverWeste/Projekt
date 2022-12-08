@@ -1,10 +1,10 @@
-package my_project.model.interactable;
+package my_project.model.ui.interactable;
 
 import KAGO_framework.view.DrawTool;
 
 import java.awt.*;
 
-public class Inputfield extends Interactable{
+public class Inputfield extends Interactable {
 
     private String s="",t;
 

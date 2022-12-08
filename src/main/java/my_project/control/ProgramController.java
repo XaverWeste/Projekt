@@ -5,11 +5,9 @@ import KAGO_framework.control.ViewController;
 import my_project.model.Projekt;
 import my_project.model.Task;
 import my_project.model.User;
-import my_project.model.screen.LogInScreen;
-import my_project.model.screen.Screen;
+import my_project.model.ui.screen.LogInScreen;
+import my_project.model.ui.screen.Screen;
 import my_project.view.InputManager;
-
-import java.util.HashMap;
 
 public class ProgramController {
 

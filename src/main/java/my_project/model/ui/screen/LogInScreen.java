@@ -1,9 +1,9 @@
-package my_project.model.screen;
+package my_project.model.ui.screen;
 
 import my_project.Config;
 import my_project.control.ProgramController;
-import my_project.model.interactable.Button;
-import my_project.model.interactable.Inputfield;
+import my_project.model.ui.interactable.Button;
+import my_project.model.ui.interactable.Inputfield;
 
 public class LogInScreen extends Screen{
 

@@ -1,12 +1,12 @@
-package my_project.model.screen;
+package my_project.model.ui.screen;
 
 import KAGO_framework.model.GraphicalObject;
 import KAGO_framework.view.DrawTool;
 import my_project.Config;
 import my_project.control.ProgramController;
-import my_project.model.interactable.Inputfield;
-import my_project.model.interactable.Interactable;
-import my_project.model.interactable.Button;
+import my_project.model.ui.interactable.Inputfield;
+import my_project.model.ui.interactable.Interactable;
+import my_project.model.ui.interactable.Button;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -33,7 +33,7 @@ public abstract class Screen extends GraphicalObject {
 
     public void mouseReleased(MouseEvent e){
         for(Interactable i:interactables) if(i instanceof Button) ((Button) i).clickOn(e.getX(),e.getY());
-        for(Interactable i:interactables) if(i instanceof Inputfield) ((Inputfield) i).clickOn(e.getX(),e.getY());
+        for(Interactable i:interactables) if(i instanceof Inputfield) if(((Inputfield) i).clickOn(e.getX(),e.getY())) activeIf=(Inputfield)i;
     }
 
     public void keyReleased(int key) {
