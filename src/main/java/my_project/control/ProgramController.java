@@ -10,10 +10,6 @@ import my_project.view.InputManager;
 
 import java.util.HashMap;
 
-/**
- * Ein Objekt der Klasse ProgramController dient dazu das Programm zu steuern. Die updateProgram - Methode wird
- * mit jeder Frame im laufenden Programm aufgerufen.
- */
 public class ProgramController {
 
     private ViewController viewController;
@@ -22,15 +18,8 @@ public class ProgramController {
     private Task[] tasks;
     private DatabaseController databaseController;
     private User[] user;
-    private HashMap<String, Screen> screens=new HashMap<>();
+    private HashMap<String,Screen> screens=new HashMap<>();
 
-    /**
-     * Konstruktor
-     * Dieser legt das Objekt der Klasse ProgramController an, das den Programmfluss steuert.
-     * Damit der ProgramController auf das Fenster zugreifen kann, benötigt er eine Referenz auf das Objekt
-     * der Klasse viewController. Diese wird als Parameter übergeben.
-     * @param viewController das viewController-Objekt des Programms
-     */
     public ProgramController(ViewController viewController){
         this.viewController = viewController;
         InputManager i=new InputManager(this);
@@ -38,16 +27,8 @@ public class ProgramController {
         databaseController = new DatabaseController();
     }
 
-    /**
-     * Diese Methode wird genau ein mal nach Programmstart aufgerufen.
-     * Sie erstellt die leeren Datenstrukturen, zu Beginn nur eine Queue
-     */
     public void startProgram() {
     }
-
-    /**
-     * Bei den Projekten steht in der ersten Spalte die id (Primärschlüssel-Integer) und im zweiten der Name (String).
-     */
 
     public Projekt[] getProjekt(){
         databaseController.executeStatement("SELECT Projekt FROM " + database + ";");
@@ -63,11 +44,6 @@ public class ProgramController {
         return projekts;
     }
 
-    /**
-     * Bei den Tasks steht in der ersten Spalte die id (Primärschlüssel-Integer), der zweiten eine Beschreibung (String),
-     * in der dritten ob es done (boolean) ist und in der vieten die ID (Fremdschlüssel-Integer) des Projektes, zu dem es gehört.
-     */
-
     public Task[] getTasks(int projektID){
         databaseController.executeStatement("SELECT * FROM Aufgabe WHERE ProjektID = " + projektID + ";");
         if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "Task"); //Kontrolle
@@ -82,11 +58,6 @@ public class ProgramController {
         return tasks;
     }
 
-    /**
-     * Bei den Usern steht in der ersten Spalte die id (Primärschlüssel-Integer) und in der zweiten der Benutzername (String)
-     * Man kann User die zu einem Projekt gehören oder User, die eine Bestimmte Aufgabe eines Projektes machen.
-     */
-
     private User[] getUser(){
         int length = databaseController.getCurrentQueryResult().getRowCount();
         user = new User[length];
@@ -99,7 +70,7 @@ public class ProgramController {
         return user;
     }
 
-    private User[] requestUser(int projektID){
+    public User[] requestUser(int projektID){
         databaseController.executeStatement("SELECT Benutzer.BID, Benutzer.Name, Benutzer.Vorname, Benutzer.Passwort" +
                 "FROM (Benutzer" +
                 "INNER JOIN gehoertZu ON Benutzer.BID = gehoertZu.BID)" +
@@ -108,7 +79,7 @@ public class ProgramController {
         return getUser();
     }
 
-    private User[] requestUser(int projektID,int aufgabeID){
+    public User[] requestUser(int projektID,int aufgabeID){
         databaseController.executeStatement("SELECT Benutzer.BID, Benutzer.Name, Benutzer.Vorname, Benutzer.Passwort" +
                 "FROM ((Benutzer" +
                 "INNER JOIN bearbeitet ON Benutzer.BID = bearbeitet.BID)" +
@@ -119,9 +90,13 @@ public class ProgramController {
     }
 
     /**
-     * Aufruf mit jeder Frame
-     * @param dt Zeit seit letzter Frame
+     * überprüft ob ein user mit dem namen in der Datenbank existiert und ob das passwort richtig ist. Gibt die user id zurück, wenn alles richtig, sonst -1
      */
+    public int checkLogIn(String username,String passwort){
+        //TODO
+        return -1;
+    }
+
     public void updateProgram(double dt){
 
     }
