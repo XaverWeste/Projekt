@@ -167,6 +167,16 @@ public class ProgramController {
     }
 
     /**
+     * überprüft ob die login Daten passen.
+     */
+
+    public boolean login(String benutzername, String passwort){
+        databaseController.executeStatement("SELECT * FROM Benutzer" +
+                "WHERE Benutzername = '" + benutzername +"' AND WHERE Passwort = '" + passwort + "';");
+        return databaseController.getErrorMessage() == null;
+    }
+
+    /**
      * überprüft ob ein user mit dem namen in der Datenbank existiert und ob das passwort richtig ist. Gibt die user id zurück, wenn alles richtig, sonst -1
      */
 
