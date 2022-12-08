@@ -5,11 +5,10 @@ import KAGO_framework.control.ViewController;
 import my_project.model.Projekt;
 import my_project.model.Task;
 import my_project.model.User;
-import my_project.model.screen.LogInScreen;
-import my_project.model.screen.Screen;
+import my_project.model.ui.screen.LogInScreen;
+import my_project.model.ui.screen.ProjectOverviewScreen;
+import my_project.model.ui.screen.Screen;
 import my_project.view.InputManager;
-
-import java.util.HashMap;
 
 public class ProgramController {
 
@@ -18,12 +17,14 @@ public class ProgramController {
     private Projekt[] projekts;
     private Task[] tasks;
     private DatabaseController databaseController;
-    private User[] user;
+    private User[] users;
+    private User user;
 
     public ProgramController(ViewController viewController){
         v = viewController;
         databaseController = new DatabaseController();
         setUpScreen(new LogInScreen(this),0);
+        setUpScreen(new ProjectOverviewScreen(this),1);
     }
 
     private void setUpScreen(Screen s,int scene){
@@ -61,7 +62,7 @@ public class ProgramController {
         String[][] arr = databaseController.getCurrentQueryResult().getData();
 
         for(int i = 0;arr.length-1 > i;i++){
-            Task t = new Task(Integer.parseInt(arr[i][0]), arr[i][1], Boolean.parseBoolean(arr[i][2]), Integer.parseInt(arr[i][3]));
+            Task t = new Task(Integer.parseInt(arr[i][0]), arr[i][1], Task.TaskStatus.unknown, Integer.parseInt(arr[i][3])); //TODO Taskstatus
             tasks[i] = t;
         }
         return tasks;
@@ -69,14 +70,14 @@ public class ProgramController {
 
     private User[] requestUserArray(){
         int length = databaseController.getCurrentQueryResult().getRowCount();
-        user = new User[length];
+        users = new User[length];
         String[][] arr = databaseController.getCurrentQueryResult().getData();
 
         for(int i = 0;arr.length-1 > i;i++){
             User u = new User(Integer.parseInt(arr[i][0]), arr[i][1]);
-            user[i] = u;
+            users[i] = u;
         }
-        return user;
+        return users;
     }
 
     public User[] getUserArray(int projektID){
@@ -180,6 +181,14 @@ public class ProgramController {
     public int checkLogIn(String username,String passwort){
         //TODO
         return -1;
+    }
+
+    public void setUser(User u){
+        user=u;
+    }
+
+    public void showScene(int i){
+        v.showScene(i);
     }
 
     public void updateProgram(double dt){

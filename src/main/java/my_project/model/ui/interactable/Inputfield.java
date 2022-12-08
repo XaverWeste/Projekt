@@ -1,10 +1,10 @@
-package my_project.model.interactable;
+package my_project.model.ui.interactable;
 
 import KAGO_framework.view.DrawTool;
 
 import java.awt.*;
 
-public class Inputfield extends Interactable{
+public class Inputfield extends Interactable {
 
     private String s="",t;
 
@@ -45,5 +45,9 @@ public class Inputfield extends Interactable{
 
     public boolean clickOn(double x,double y){
         return x > this.x && y > this.y && x < this.x + width && y < this.y + height;
+    }
+
+    public String getContent(){
+        return s;
     }
 }

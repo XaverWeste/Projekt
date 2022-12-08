@@ -2,15 +2,17 @@ package my_project.model;
 
 public class Task {
 
+    public enum TaskStatus{notStartedYet,workingOn,finished,canceled,unknown}
+
     private int id;
     private int projektID;
     private String describtion;
-    private boolean done;
+    private TaskStatus status;
 
-    public Task(int id, String describtion, boolean done, int projektID){
+    public Task(int id, String describtion, TaskStatus status, int projektID){
         this.id = id;
         this. describtion = describtion;
-        this.done = done;
+        this.status=status;
         this.projektID = projektID;
     }
 
@@ -22,20 +24,20 @@ public class Task {
         this.id = id;
     }
 
-    public boolean isDone() {
-        return done;
-    }
-
-    public void setDone(boolean done) {
-        this.done = done;
-    }
-
     public String getDescribtion() {
         return describtion;
     }
 
     public void setDescribtion(String describtion) {
         this.describtion = describtion;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
     }
 
     public int getProjektID() {

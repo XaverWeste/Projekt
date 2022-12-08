@@ -1,4 +1,4 @@
-package my_project.model.interactable;
+package my_project.model.ui.interactable;
 
 import KAGO_framework.view.DrawTool;
 
