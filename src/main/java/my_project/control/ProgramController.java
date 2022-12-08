@@ -36,7 +36,7 @@ public class ProgramController {
     public void startProgram() {
     }
 
-    public Projekt[] getProjekt(){
+    public Projekt[] getProjekts(){
         databaseController.executeStatement("SELECT * FROM Projekt;");
         if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "Projekt"); //Kontrolle
         int length = databaseController.getCurrentQueryResult().getRowCount();
