@@ -39,15 +39,19 @@ public class ProgramController {
     public Projekt[] getProjekts(){
         databaseController.executeStatement("SELECT * FROM Projekt;");
         if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "Projekt"); //Kontrolle
-        int length = databaseController.getCurrentQueryResult().getRowCount();
-        projekts = new Projekt[length];
-        String[][] arr = databaseController.getCurrentQueryResult().getData();
+        try {
+            int length = databaseController.getCurrentQueryResult().getRowCount();
+            projekts = new Projekt[length];
+            String[][] arr = databaseController.getCurrentQueryResult().getData();
 
-        for(int i = 0;arr.length-1 > i;i++){
-            Projekt p = new Projekt(Integer.parseInt(arr[i][0]), arr[i][1]);
-            projekts[i] = p;
+            for (int i = 0; arr.length - 1 > i; i++) {
+                Projekt p = new Projekt(Integer.parseInt(arr[i][0]), arr[i][1]);
+                projekts[i] = p;
+            }
+            return projekts;
+        }catch(NullPointerException ignored){
+            return new Projekt[]{};
         }
-        return projekts;
     }
 
     public Task[] getTasks(int projektID){

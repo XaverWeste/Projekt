@@ -7,6 +7,8 @@ import my_project.model.ui.interactable.Button;
 import my_project.model.ui.interactable.Inputfield;
 import my_project.model.ui.interactable.Interactable;
 
+import javax.swing.*;
+
 public class LogInScreen extends Screen{
 
     public LogInScreen(ProgramController pc) {
@@ -31,6 +33,8 @@ public class LogInScreen extends Screen{
         if(i>=0){
             pc.setUser(new User(i,username));
             pc.showScene(1);
+        }else{
+            JOptionPane.showMessageDialog(null,"Password und/oder Benutzername ungültig");
         }
     }
 }
