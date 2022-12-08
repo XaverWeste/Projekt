@@ -36,7 +36,7 @@ public class ProgramController {
     }
 
     public Projekt[] getProjekt(){
-        databaseController.executeStatement("SELECT Projekt FROM " + database + ";");
+        databaseController.executeStatement("SELECT * FROM Projekt;");
         if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "Projekt"); //Kontrolle
         int length = databaseController.getCurrentQueryResult().getRowCount();
         projekts = new Projekt[length];
@@ -63,7 +63,7 @@ public class ProgramController {
         return tasks;
     }
 
-    private User[] getUser(){
+    private User[] requestUserArray(){
         int length = databaseController.getCurrentQueryResult().getRowCount();
         user = new User[length];
         String[][] arr = databaseController.getCurrentQueryResult().getData();
@@ -75,23 +75,30 @@ public class ProgramController {
         return user;
     }
 
-    public User[] requestUser(int projektID){
+    public User[] getUserArray(int projektID){
         databaseController.executeStatement("SELECT Benutzer.BID, Benutzer.Name, Benutzer.Vorname, Benutzer.Passwort" +
                 "FROM (Benutzer" +
                 "INNER JOIN gehoertZu ON Benutzer.BID = gehoertZu.BID)" +
                 "WHERE ProjektID = " + projektID + ";");
         if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "User 1"); //Kontrolle
-        return getUser();
+        return requestUserArray();
     }
 
-    public User[] requestUser(int projektID,int aufgabeID){
+    public User[] getUserArray(int projektID,int aufgabeID){
         databaseController.executeStatement("SELECT Benutzer.BID, Benutzer.Name, Benutzer.Vorname, Benutzer.Passwort" +
                 "FROM ((Benutzer" +
                 "INNER JOIN bearbeitet ON Benutzer.BID = bearbeitet.BID)" +
                 "INNER JOIN gehoertZu ON Benutzer.BID = gehoertZu.BID)" +
                 "WHERE AID = " + aufgabeID + " AND WHERE ProjektID = " + projektID + ";");
         if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "User 2"); //Kontrolle
-        return getUser();
+        return requestUserArray();
+    }
+
+    public User gerUser(int userID){
+        databaseController.executeStatement("SELECT * FROM BENUTZER WHERE BID = " + userID + ";");
+        int id = Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0].toString());
+        String name = databaseController.getCurrentQueryResult().getData()[0][1].toString();
+        return new User(id, name);
     }
 
     /**
