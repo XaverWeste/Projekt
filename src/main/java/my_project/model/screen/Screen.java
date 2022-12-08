@@ -36,13 +36,6 @@ public abstract class Screen extends GraphicalObject {
     }
 
     public void keyReleased(int key) {
-        for(Interactable i:interactables) if(i instanceof Inputfield){
-            i=(Inputfield)i;
-            if(((Inputfield) i).isActive()){
-                if(KeyEvent.VK_ENTER==key){
 
-                }else ((Inputfield) i).add((char)key);
-            }
-        }
     }
 }
