@@ -103,8 +103,73 @@ public class ProgramController {
     }
 
     /**
+     * Update Methoden. Wenn man Attributswerte nicht verändern will null bei Strings, -1 bei Integern
+     * und die unveränderte Variante des boolean weitergeben.
+     */
+
+    public boolean updateUser(int userID, String newName, String newPasswort){
+        if(newName != null){
+            databaseController.executeStatement("Update User Set Benutzername = '" + newName + "'" +
+                    "WHERE BID = " + userID + ";");
+            if(databaseController.getErrorMessage() != null) return false;
+        }
+        if(newPasswort != null){
+            databaseController.executeStatement("Update User Set Passwort = '" + newPasswort + "'" +
+                    "WHERE BID = " + userID + ";");
+            if(databaseController.getErrorMessage() != null) return false;
+        }
+        return true;
+    }
+
+    public boolean updateProjekt(int projektID, String newName, int numberTasks){
+        if(newName != null){
+            databaseController.executeStatement("Update Projekt Set Projektname = '" + newName + "'" +
+                    "WHERE PID = " + projektID + ";");
+            if(databaseController.getErrorMessage() != null) return false;
+        }
+        if(numberTasks >= 0){
+            databaseController.executeStatement("Update Projekt Set AnzahlAufgaben = '" + numberTasks + "'" +
+                    "WHERE PID = " + projektID + ";");
+            if(databaseController.getErrorMessage() != null) return false;
+        }
+        return true;
+    }
+
+    public boolean updateTask(int taskID, boolean done, String describtion){
+            databaseController.executeStatement("Update Aufgabe Set Stand = '" + done + "'" +
+                    "WHERE AID = " + taskID + ";");
+            if(databaseController.getErrorMessage() != null) return false;
+        if(describtion != null){
+            databaseController.executeStatement("Update Aufgabe Set Beschreibung = '" + describtion + "'" +
+                    "WHERE AID = " + taskID + ";");
+            if(databaseController.getErrorMessage() != null) return false;
+        }
+        return true;
+    }
+
+    /**
+     * Löscht das Projekt, wenn es keine Mitglieder mehr gibt.
+     */
+
+    public boolean leaveProjekt(int projektID, int userID){
+        databaseController.executeStatement("DELETE FROM bearbeitet" +
+                "WHERE BID = " + userID + "AND WHERE PID = " + projektID + ";");
+        if(databaseController.getErrorMessage() != null) return false;
+
+
+        databaseController.executeStatement("SELECT COUNT(PID) FROM bearbeitet" +
+                "WHERE PDI = " + projektID + ";");
+        if(databaseController.getCurrentQueryResult().getRowCount() == 0){
+            databaseController.executeStatement("DELETE FROM bearbeitet" +
+                    "WHERE PID = " + projektID + ";");
+        }
+        return true;
+    }
+
+    /**
      * überprüft ob ein user mit dem namen in der Datenbank existiert und ob das passwort richtig ist. Gibt die user id zurück, wenn alles richtig, sonst -1
      */
+
     public int checkLogIn(String username,String passwort){
         //TODO
         return -1;
