@@ -40,6 +40,10 @@ public class ProgramController {
      * Hier starten die Getter von Datensätzen. Man bekommt immer einen Array von Modellen, die angefragt wurden
      */
 
+    /**
+     * befehl wird an die Satenbank geschickt,
+     * @return
+     */
     public String[][] insertData(){
         databaseController.executeStatement("INSERT INTO table_name " + database + ";");
         String[][] arr = databaseController.getCurrentQueryResult().getData();
