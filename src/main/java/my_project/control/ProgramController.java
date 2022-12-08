@@ -6,6 +6,7 @@ import my_project.model.Projekt;
 import my_project.model.Task;
 import my_project.model.User;
 import my_project.model.ui.screen.LogInScreen;
+import my_project.model.ui.screen.ProjectOverviewScreen;
 import my_project.model.ui.screen.Screen;
 import my_project.view.InputManager;
 
@@ -23,6 +24,7 @@ public class ProgramController {
         v = viewController;
         databaseController = new DatabaseController();
         setUpScreen(new LogInScreen(this),0);
+        setUpScreen(new ProjectOverviewScreen(this),1);
     }
 
     private void setUpScreen(Screen s,int scene){
