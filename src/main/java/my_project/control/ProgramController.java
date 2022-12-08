@@ -55,7 +55,7 @@ public class ProgramController {
     }
 
     public Task[] getTasks(int projektID){
-        databaseController.executeStatement("SELECT * FROM Aufgabe WHERE ProjektID = " + projektID + ";");
+        databaseController.executeStatement("SELECT * FROM Aufgabe WHERE ProjektID = '" + projektID + "';");
         if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "Task"); //Kontrolle
         int length = databaseController.getCurrentQueryResult().getRowCount();
         tasks = new Task[length];
@@ -84,7 +84,7 @@ public class ProgramController {
         databaseController.executeStatement("SELECT Benutzer.BID, Benutzer.Name, Benutzer.Vorname, Benutzer.Passwort" +
                 "FROM (Benutzer" +
                 "INNER JOIN gehoertZu ON Benutzer.BID = gehoertZu.BID)" +
-                "WHERE ProjektID = " + projektID + ";");
+                "WHERE ProjektID = '" + projektID + "';");
         if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "User 1"); //Kontrolle
         return requestUserArray();
     }
@@ -94,13 +94,13 @@ public class ProgramController {
                 "FROM ((Benutzer" +
                 "INNER JOIN bearbeitet ON Benutzer.BID = bearbeitet.BID)" +
                 "INNER JOIN gehoertZu ON Benutzer.BID = gehoertZu.BID)" +
-                "WHERE AID = " + aufgabeID + " AND WHERE ProjektID = " + projektID + ";");
+                "WHERE AID = '" + aufgabeID + "' AND WHERE ProjektID = '" + projektID + "';");
         if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "User 2"); //Kontrolle
         return requestUserArray();
     }
 
     public User gerUser(int userID){
-        databaseController.executeStatement("SELECT * FROM BENUTZER WHERE BID = " + userID + ";");
+        databaseController.executeStatement("SELECT * FROM BENUTZER WHERE BID = '" + userID + "';");
         int id = Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0].toString());
         String name = databaseController.getCurrentQueryResult().getData()[0][1].toString();
         return new User(id, name);
@@ -114,12 +114,12 @@ public class ProgramController {
     public boolean updateUser(int userID, String newName, String newPasswort){
         if(newName != null){
             databaseController.executeStatement("Update User Set Benutzername = '" + newName + "'" +
-                    "WHERE BID = " + userID + ";");
+                    "WHERE BID = '" + userID + "';");
             if(databaseController.getErrorMessage() != null) return false;
         }
         if(newPasswort != null){
             databaseController.executeStatement("Update User Set Passwort = '" + newPasswort + "'" +
-                    "WHERE BID = " + userID + ";");
+                    "WHERE BID = '" + userID + "';");
             if(databaseController.getErrorMessage() != null) return false;
         }
         return true;
@@ -128,12 +128,12 @@ public class ProgramController {
     public boolean updateProjekt(int projektID, String newName, int numberTasks){
         if(newName != null){
             databaseController.executeStatement("Update Projekt Set Projektname = '" + newName + "'" +
-                    "WHERE PID = " + projektID + ";");
+                    "WHERE PID = '" + projektID + "';");
             if(databaseController.getErrorMessage() != null) return false;
         }
         if(numberTasks >= 0){
             databaseController.executeStatement("Update Projekt Set AnzahlAufgaben = '" + numberTasks + "'" +
-                    "WHERE PID = " + projektID + ";");
+                    "WHERE PID = '" + projektID + "';");
             if(databaseController.getErrorMessage() != null) return false;
         }
         return true;
@@ -141,11 +141,11 @@ public class ProgramController {
 
     public boolean updateTask(int taskID, boolean done, String describtion){
             databaseController.executeStatement("Update Aufgabe Set Stand = '" + done + "'" +
-                    "WHERE AID = " + taskID + ";");
+                    "WHERE AID = '" + taskID + "';");
             if(databaseController.getErrorMessage() != null) return false;
         if(describtion != null){
             databaseController.executeStatement("Update Aufgabe Set Beschreibung = '" + describtion + "'" +
-                    "WHERE AID = " + taskID + ";");
+                    "WHERE AID = '" + taskID + "';");
             if(databaseController.getErrorMessage() != null) return false;
         }
         return true;
@@ -157,15 +157,15 @@ public class ProgramController {
 
     public boolean leaveProjekt(int projektID, int userID){
         databaseController.executeStatement("DELETE FROM bearbeitet" +
-                "WHERE BID = " + userID + "AND WHERE PID = " + projektID + ";");
+                "WHERE BID = '" + userID + "' AND WHERE PID = '" + projektID + "';");
         if(databaseController.getErrorMessage() != null) return false;
 
 
         databaseController.executeStatement("SELECT COUNT(PID) FROM bearbeitet" +
-                "WHERE PDI = " + projektID + ";");
+                "WHERE PDI = '" + projektID + "';");
         if(databaseController.getCurrentQueryResult().getRowCount() == 0){
             databaseController.executeStatement("DELETE FROM bearbeitet" +
-                    "WHERE PID = " + projektID + ";");
+                    "WHERE PID = '" + projektID + "';");
         }
         return true;
     }
