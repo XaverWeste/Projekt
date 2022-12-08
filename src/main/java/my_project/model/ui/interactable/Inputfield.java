@@ -46,4 +46,8 @@ public class Inputfield extends Interactable {
     public boolean clickOn(double x,double y){
         return x > this.x && y > this.y && x < this.x + width && y < this.y + height;
     }
+
+    public String getContent(){
+        return s;
+    }
 }

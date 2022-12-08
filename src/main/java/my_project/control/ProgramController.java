@@ -108,6 +108,14 @@ public class ProgramController {
         return -1;
     }
 
+    public void setUser(User u){
+        user=u;
+    }
+
+    public void showScene(int i){
+        v.showScene(i);
+    }
+
     public void updateProgram(double dt){
 
     }
