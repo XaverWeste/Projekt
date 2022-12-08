@@ -56,7 +56,7 @@ public class ProgramController {
         String[][] arr = databaseController.getCurrentQueryResult().getData();
 
         for(int i = 0;arr.length-1 > i;i++){
-            Task t = new Task(Integer.parseInt(arr[i][0]), arr[i][1], Boolean.parseBoolean(arr[i][2]), Integer.parseInt(arr[i][3]));
+            Task t = new Task(Integer.parseInt(arr[i][0]), arr[i][1], Task.TaskStatus.unknown, Integer.parseInt(arr[i][3])); //TODO Taskstatus
             tasks[i] = t;
         }
         return tasks;
