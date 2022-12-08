@@ -24,7 +24,7 @@ public class InputManager extends InteractiveGraphicalObject {
 
     @Override
     public void keyReleased(int key) {
-
+        System.out.println(key);
     }
 
     @Override

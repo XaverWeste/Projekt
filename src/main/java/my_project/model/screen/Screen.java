@@ -17,6 +17,7 @@ public abstract class Screen extends GraphicalObject {
 
     private final ArrayList<Interactable> interactables=new ArrayList<>();
     private final ProgramController pc;
+    private Inputfield activeIf=null;
 
     public Screen(ProgramController pc){
         this.pc = pc;
@@ -36,6 +37,12 @@ public abstract class Screen extends GraphicalObject {
     }
 
     public void keyReleased(int key) {
-
+        if(activeIf!=null){
+            switch(key){
+                case 8 -> activeIf.clearLast();
+                case 10 -> activeIf=null;
+                default -> activeIf.add((char)key);
+            }
+        }
     }
 }
