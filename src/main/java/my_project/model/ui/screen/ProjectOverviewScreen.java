@@ -21,6 +21,6 @@ public class ProjectOverviewScreen extends Screen{
     }
 
     public void selectProjekt(int projectId){
-
+        //TODO
     }
 }
