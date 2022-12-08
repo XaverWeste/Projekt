@@ -16,7 +16,8 @@ public class ProgramController {
     private Projekt[] projekts;
     private Task[] tasks;
     private DatabaseController databaseController;
-    private User[] user;
+    private User[] users;
+    private User user;
 
     public ProgramController(ViewController viewController){
         v = viewController;
@@ -63,14 +64,14 @@ public class ProgramController {
 
     private User[] requestUserArray(){
         int length = databaseController.getCurrentQueryResult().getRowCount();
-        user = new User[length];
+        users = new User[length];
         String[][] arr = databaseController.getCurrentQueryResult().getData();
 
         for(int i = 0;arr.length-1 > i;i++){
             User u = new User(Integer.parseInt(arr[i][0]), arr[i][1]);
-            user[i] = u;
+            users[i] = u;
         }
-        return user;
+        return users;
     }
 
     public User[] getUserArray(int projektID){
