@@ -36,7 +36,22 @@ public class ProgramController {
     public void startProgram() {
     }
 
-    public Projekt[] getProjekts(){
+    /**
+     * Hier starten die Getter von Datensätzen. Man bekommt immer einen Array von Modellen, die angefragt wurden
+     */
+
+    public String[][] insertData(){
+        databaseController.executeStatement("INSERT INTO table_name " + database + ";");
+        String[][] arr = databaseController.getCurrentQueryResult().getData();
+        int lenght = databaseController.getCurrentQueryResult().getRowCount();
+        for(int i = 0; arr.length-1 > i; i++){
+
+        }
+        return databaseController.getCurrentQueryResult().getData();
+    }
+
+
+    public Projekt[] getProjekt(){
         databaseController.executeStatement("SELECT * FROM Projekt;");
         if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "Projekt"); //Kontrolle
         int length = databaseController.getCurrentQueryResult().getRowCount();
@@ -95,7 +110,11 @@ public class ProgramController {
         return requestUserArray();
     }
 
-    public User gerUser(int userID){
+    /**
+     * Hier kann man einen bestimmten User getten.
+     */
+
+    public User getUser(int userID){
         databaseController.executeStatement("SELECT * FROM BENUTZER WHERE BID = " + userID + ";");
         int id = Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0].toString());
         String name = databaseController.getCurrentQueryResult().getData()[0][1].toString();
