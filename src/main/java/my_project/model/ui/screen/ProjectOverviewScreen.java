@@ -39,8 +39,7 @@ public class ProjectOverviewScreen extends Screen{
     }
 
     private void selectProjekt(Projekt p){
-        pc.getUser().setProjekt(p);
-        pc.showScene(4);
+        pc.setUpProject(p);
     }
 
     private double[] getC(int i){

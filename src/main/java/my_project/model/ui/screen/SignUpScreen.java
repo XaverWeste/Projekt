@@ -2,7 +2,6 @@ package my_project.model.ui.screen;
 
 import my_project.Config;
 import my_project.control.ProgramController;
-import my_project.model.User;
 import my_project.model.ui.interactable.Button;
 import my_project.model.ui.interactable.Inputfield;
 import my_project.model.ui.interactable.Interactable;
@@ -30,7 +29,7 @@ public class SignUpScreen extends Screen{
         interactable=interactables.get(1);
         if(interactable instanceof Inputfield) password=((Inputfield) interactable).getContent();
         if(pc.signUp(username,password)){
-            pc.setUpRestScreens();
+            pc.setUpOverviewScreen();
             pc.showScene(3);
         }else{
             JOptionPane.showMessageDialog(null,"Benutzername bereits vergeben");

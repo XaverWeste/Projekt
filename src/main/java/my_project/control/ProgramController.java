@@ -31,9 +31,14 @@ public class ProgramController {
         setUpScreen(new SignUpScreen(this),2);
     }
 
-    public void setUpRestScreens(){
+    public void setUpOverviewScreen(){
         setUpScreen(new ProjectOverviewScreen(this),3);
+    }
+
+    public void setUpProject(Projekt p){
+        user.setProjekt(p);
         setUpScreen(new ProjektScreen(this),4);
+        v.showScene(4);
     }
 
     private void setUpScreen(Screen s,int scene){
