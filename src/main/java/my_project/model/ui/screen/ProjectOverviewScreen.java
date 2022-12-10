@@ -4,6 +4,7 @@ import my_project.control.ProgramController;
 import my_project.model.Projekt;
 import my_project.model.ui.interactable.Button;
 import my_project.model.ui.interactable.Inputfield;
+import my_project.model.ui.interactable.Interactable;
 
 public class ProjectOverviewScreen extends Screen{
 
@@ -13,10 +14,10 @@ public class ProjectOverviewScreen extends Screen{
 
     @Override
     void setUp() {
-        interactables.add(new Inputfield(50,50,200,20,"Projektid"));
+        interactables.add(new Inputfield(50,50,200,20,"ProjektID"));
         interactables.add(new Button(300, 50, 200, 20, "trete dem Projekt bei", () -> {}));
         interactables.add(new Inputfield(50,100,200,20,"Projektname"));
-        interactables.add(new Button(300, 100, 200, 20, "erstelle ein neues Projekt", () -> {}));
+        interactables.add(new Button(300, 100, 200, 20, "erstelle ein neues Projekt", this::createProjekt));
         int i=0;
         for(Projekt p:pc.getProjekts()){
             i++;
@@ -25,16 +26,28 @@ public class ProjectOverviewScreen extends Screen{
         }
     }
 
-    public void selectProjekt(Projekt p){
+    private void createProjekt(){
+        Interactable i=interactables.get(2);
+        if(i instanceof Inputfield){
+            String s=((Inputfield) i).getContent();
+            if(!s.equals("")){
+                pc.createProject(s);
+                ((Inputfield) i).clear();
+                pc.showScene(4);
+            }
+        }
+    }
+
+    private void selectProjekt(Projekt p){
         pc.getUser().setProjekt(p);
         pc.showScene(4);
     }
 
-    public double[] getC(int i){
+    private double[] getC(int i){
         double[] arr=new double[2];
-        if(i%2==0) arr[0]=100;
+        if(i%2==0) arr[0]=550;
         else{
-            arr[0]=600;
+            arr[0]=100;
             i++;
         }
         arr[1]=30*(i/2)+150;

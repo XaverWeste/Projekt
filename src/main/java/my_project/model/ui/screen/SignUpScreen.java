@@ -19,7 +19,7 @@ public class SignUpScreen extends Screen{
     void setUp() {
         interactables.add(new Inputfield(Config.WINDOW_WIDTH/2-200,Config.WINDOW_HEIGHT/2-30,400,20,"username"));
         interactables.add(new Inputfield(Config.WINDOW_WIDTH/2-200,Config.WINDOW_HEIGHT/2,400,20,"password"));
-        interactables.add(new Button(Config.WINDOW_WIDTH / 2, Config.WINDOW_HEIGHT / 2 + 30, 200, 20, "Login", this::checkSignUp));
+        interactables.add(new Button(Config.WINDOW_WIDTH / 2, Config.WINDOW_HEIGHT / 2 + 30, 200, 20, "Sign up", this::checkSignUp));
     }
 
     public void checkSignUp(){
@@ -30,6 +30,7 @@ public class SignUpScreen extends Screen{
         interactable=interactables.get(1);
         if(interactable instanceof Inputfield) password=((Inputfield) interactable).getContent();
         if(pc.signUp(username,password)){
+            pc.setUpRestScreens();
             pc.showScene(3);
         }else{
             JOptionPane.showMessageDialog(null,"Benutzername bereits vergeben");

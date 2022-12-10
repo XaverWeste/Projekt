@@ -21,7 +21,7 @@ public class ProgramController {
         v = viewController;
         databaseController = new DatabaseController();
         databaseController.connect();
-
+        //testsql("DELETE FROM X2022_Project_Project WHERE ProjectID=2");
         setUpScreens();
     }
 
@@ -29,7 +29,11 @@ public class ProgramController {
         setUpScreen(new StartScreen(this),0);
         setUpScreen(new SignInScreen(this),1);
         setUpScreen(new SignUpScreen(this),2);
+    }
+
+    public void setUpRestScreens(){
         setUpScreen(new ProjectOverviewScreen(this),3);
+        setUpScreen(new ProjektScreen(this),4);
     }
 
     private void setUpScreen(Screen s,int scene){
@@ -51,144 +55,32 @@ public class ProgramController {
         databaseController.executeStatement("SELECT ProjectID FROM X2022_Project_WorkingOn WHERE UserID="+user.getId());
         int[] ids=new int[databaseController.getCurrentQueryResult().getRowCount()];
         String[][] data=databaseController.getCurrentQueryResult().getData();
-        for (int i = 0; ids.length - 1 > i; i++) ids[i]= Integer.parseInt(data[i][0]);
+        for (int i = 0; i<ids.length; i++) ids[i]= Integer.parseInt(data[i][0]);
         Projekt[] projekts = new Projekt[ids.length];
-        for(int i = 0; ids.length - 1 > i; i++){
+        for(int i = 0; i<ids.length; i++){
             databaseController.executeStatement("SELECT * FROM X2022_Project_Project WHERE ProjectID="+ids[i]);
-            projekts[i]=new Projekt(Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0]),databaseController.getCurrentQueryResult().getData()[0][2]);
+            projekts[i]=new Projekt(Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0]),databaseController.getCurrentQueryResult().getData()[0][1]);
         }
         return projekts;
     }
 
-    public Task[] getTasks(int projektID){
-        databaseController.executeStatement("SELECT * FROM Aufgabe WHERE ProjektID = '" + projektID + "';");
-        if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "Task"); //Kontrolle
-        int length = databaseController.getCurrentQueryResult().getRowCount();
-        Task[] tasks = new Task[length];
-        String[][] arr = databaseController.getCurrentQueryResult().getData();
-
-        for(int i = 0;arr.length-1 > i;i++){
-            Task t = new Task(Integer.parseInt(arr[i][0]), arr[i][1], Task.TaskStatus.unknown, Integer.parseInt(arr[i][3])); //TODO Taskstatus
-            tasks[i] = t;
+    public Task[] getTasks(){
+        databaseController.executeStatement("SELECT * FROM X2022_Project_Task WHERE ProjectID="+user.getProjekt().getProjektID());
+        String[][] data=databaseController.getCurrentQueryResult().getData();
+        Task[] tasks=new Task[databaseController.getCurrentQueryResult().getRowCount()];
+        for(int i = 0; tasks.length - 1 > i; i++){
+            tasks[i]=new Task(Integer.parseInt(data[i][0]),data[i][4],getStatus(Integer.parseInt(data[i][1])),Integer.parseInt(data[i][5]));
         }
         return tasks;
     }
 
-    private User[] requestUserArray(){
-        int length = databaseController.getCurrentQueryResult().getRowCount();
-        User[] users = new User[length];
-        String[][] arr = databaseController.getCurrentQueryResult().getData();
-
-        for(int i = 0;arr.length-1 > i;i++){
-            User u = new User(Integer.parseInt(arr[i][0]), arr[i][1]);
-            users[i] = u;
-        }
-        return users;
+    public void createProject(String name){
+        databaseController.executeStatement("SELECT MAX(ProjectID) FROM X2022_Project_Project");
+        int id=Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0])+1;
+        databaseController.executeStatement("INSERT INTO X2022_Project_Project VALUES ("+id+", '"+name+"', '-')");
+        databaseController.executeStatement("INSERT INTO X2022_Project_WorkingOn VALUES ("+user.getId()+", '"+id+"')");
+        user.setProjekt(new Projekt(id,name));
     }
-
-    public User[] getUserArray(int projektID){
-        databaseController.executeStatement("SELECT Benutzer.BID, Benutzer.Name, Benutzer.Vorname, Benutzer.Passwort" +
-                "FROM (Benutzer" +
-                "INNER JOIN gehoertZu ON Benutzer.BID = gehoertZu.BID)" +
-                "WHERE ProjektID = '" + projektID + "';");
-        if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "User 1"); //Kontrolle
-        return requestUserArray();
-    }
-
-    public User[] getUserArray(int projektID,int aufgabeID){
-        databaseController.executeStatement("SELECT Benutzer.BID, Benutzer.Name, Benutzer.Vorname, Benutzer.Passwort" +
-                "FROM ((Benutzer" +
-                "INNER JOIN bearbeitet ON Benutzer.BID = bearbeitet.BID)" +
-                "INNER JOIN gehoertZu ON Benutzer.BID = gehoertZu.BID)" +
-                "WHERE AID = '" + aufgabeID + "' AND WHERE ProjektID = '" + projektID + "';");
-        if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "User 2"); //Kontrolle
-        return requestUserArray();
-    }
-
-    public User gerUser(int userID){
-        databaseController.executeStatement("SELECT * FROM BENUTZER WHERE BID = '" + userID + "';");
-        int id = Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0].toString());
-        String name = databaseController.getCurrentQueryResult().getData()[0][1].toString();
-        return new User(id, name);
-    }
-
-    /**
-     * Update Methoden. Wenn man Attributswerte nicht verändern will null bei Strings, -1 bei Integern
-     * und die unveränderte Variante des boolean weitergeben.
-     */
-
-    public boolean updateUser(int userID, String newName, String newPasswort){
-        if(newName != null){
-            databaseController.executeStatement("Update User Set Benutzername = '" + newName + "'" +
-                    "WHERE BID = '" + userID + "';");
-            if(databaseController.getErrorMessage() != null) return false;
-        }
-        if(newPasswort != null){
-            databaseController.executeStatement("Update User Set Passwort = '" + newPasswort + "'" +
-                    "WHERE BID = '" + userID + "';");
-            if(databaseController.getErrorMessage() != null) return false;
-        }
-        return true;
-    }
-
-    public boolean updateProjekt(int projektID, String newName, int numberTasks){
-        if(newName != null){
-            databaseController.executeStatement("Update Projekt Set Projektname = '" + newName + "'" +
-                    "WHERE PID = '" + projektID + "';");
-            if(databaseController.getErrorMessage() != null) return false;
-        }
-        if(numberTasks >= 0){
-            databaseController.executeStatement("Update Projekt Set AnzahlAufgaben = '" + numberTasks + "'" +
-                    "WHERE PID = '" + projektID + "';");
-            if(databaseController.getErrorMessage() != null) return false;
-        }
-        return true;
-    }
-
-    public boolean updateTask(int taskID, boolean done, String describtion){
-            databaseController.executeStatement("Update Aufgabe Set Stand = '" + done + "'" +
-                    "WHERE AID = '" + taskID + "';");
-            if(databaseController.getErrorMessage() != null) return false;
-        if(describtion != null){
-            databaseController.executeStatement("Update Aufgabe Set Beschreibung = '" + describtion + "'" +
-                    "WHERE AID = '" + taskID + "';");
-            if(databaseController.getErrorMessage() != null) return false;
-        }
-        return true;
-    }
-
-    /**
-     * Löscht das Projekt, wenn es keine Mitglieder mehr gibt.
-     */
-
-    public boolean leaveProjekt(int projektID, int userID){
-        databaseController.executeStatement("DELETE FROM bearbeitet" +
-                "WHERE BID = '" + userID + "' AND WHERE PID = '" + projektID + "';");
-        if(databaseController.getErrorMessage() != null) return false;
-
-
-        databaseController.executeStatement("SELECT COUNT(PID) FROM bearbeitet" +
-                "WHERE PDI = '" + projektID + "';");
-        if(databaseController.getCurrentQueryResult().getRowCount() == 0){
-            databaseController.executeStatement("DELETE FROM bearbeitet" +
-                    "WHERE PID = '" + projektID + "';");
-        }
-        return true;
-    }
-
-    /**
-     * überprüft ob die login Daten passen.
-     */
-
-    public boolean login(String benutzername, String passwort){
-        databaseController.executeStatement("SELECT * FROM Benutzer" +
-                "WHERE Benutzername = '" + benutzername +"' AND WHERE Passwort = '" + passwort + "';");
-        return databaseController.getErrorMessage() == null;
-    }
-
-    /**
-     * überprüft ob ein user mit dem namen in der Datenbank existiert und ob das passwort richtig ist. Gibt die user id zurück, wenn alles richtig, sonst -1
-     */
 
     public int checkLogIn(String username,String password){
         databaseController.executeStatement("SELECT Password FROM X2022_Project_User WHERE Username = '"+username+"';");
@@ -203,7 +95,7 @@ public class ProgramController {
         databaseController.executeStatement("SELECT * FROM X2022_Project_User WHERE Username = '"+username+"';");
         if(Arrays.deepToString(databaseController.getCurrentQueryResult().getData()).equals("[]")){
             databaseController.executeStatement("SELECT MAX(UserID) FROM X2022_Project_User");
-            int id=Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0]);
+            int id=Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0])+1;
             databaseController.executeStatement("INSERT INTO X2022_Project_User VALUES ("+id+", '"+username+"', '"+password+"')");
             user=new User(id,username);
             return true;

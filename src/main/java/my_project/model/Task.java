@@ -4,16 +4,15 @@ public class Task {
 
     public enum TaskStatus{notStartedYet,workingOn,finished,canceled,unknown}
 
-    private int id;
-    private int projektID;
-    private String describtion;
+    private int id,processedFrom;
+    private String deadline;
     private TaskStatus status;
 
-    public Task(int id, String describtion, TaskStatus status, int projektID){
+    public Task(int id, String deadline, TaskStatus status,int processedFrom){
         this.id = id;
-        this. describtion = describtion;
+        this.deadline = deadline;
         this.status=status;
-        this.projektID = projektID;
+        this.processedFrom=processedFrom;
     }
 
     public int getId() {
@@ -24,12 +23,12 @@ public class Task {
         this.id = id;
     }
 
-    public String getDescribtion() {
-        return describtion;
+    public String getDeadline() {
+        return deadline;
     }
 
-    public void setDescribtion(String describtion) {
-        this.describtion = describtion;
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
     }
 
     public TaskStatus getStatus() {
@@ -40,11 +39,11 @@ public class Task {
         this.status = status;
     }
 
-    public int getProjektID() {
-        return projektID;
+    public int getPF() {
+        return processedFrom;
     }
 
-    public void setProjektID(int projektID) {
-        this.projektID = projektID;
+    public void setPF(int id) {
+        processedFrom = id;
     }
 }

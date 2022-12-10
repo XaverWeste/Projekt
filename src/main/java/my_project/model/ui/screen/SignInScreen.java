@@ -32,6 +32,7 @@ public class SignInScreen extends Screen{
         int i=pc.checkLogIn(username,password);
         if(i>=0){
             pc.setUser(new User(i,username));
+            pc.setUpRestScreens();
             pc.showScene(3);
         }else{
             JOptionPane.showMessageDialog(null,"Password und/oder Benutzername ungültig");
