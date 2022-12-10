@@ -1,9 +1,9 @@
 package my_project.model.ui.screen;
 
-import my_project.Config;
 import my_project.control.ProgramController;
 import my_project.model.Projekt;
 import my_project.model.ui.interactable.Button;
+import my_project.model.ui.interactable.Inputfield;
 
 public class ProjectOverviewScreen extends Screen{
 
@@ -13,18 +13,31 @@ public class ProjectOverviewScreen extends Screen{
 
     @Override
     void setUp() {
-        int i=1;
-        /*
+        interactables.add(new Inputfield(50,50,200,20,"Projektid"));
+        interactables.add(new Button(300, 50, 200, 20, "trete dem Projekt bei", () -> {}));
+        interactables.add(new Inputfield(50,100,200,20,"Projektname"));
+        interactables.add(new Button(300, 100, 200, 20, "erstelle ein neues Projekt", () -> {}));
+        int i=0;
         for(Projekt p:pc.getProjekts()){
-
-            new Button((Config.WINDOW_WIDTH / 5 - 40) * (i % 5), (Config.WINDOW_HEIGHT / 8 - 40) * (i / 5), 200, 50, p.getName(), () -> selectProjekt(p.getProjektID()));
             i++;
+            double[] c=getC(i);
+            interactables.add(new Button(c[0], c[1], 350, 20, p.getName(),()->selectProjekt(p)));
         }
-
-         */
     }
 
-    public void selectProjekt(int projectId){
-        //TODO
+    public void selectProjekt(Projekt p){
+        pc.getUser().setProjekt(p);
+        pc.showScene(4);
+    }
+
+    public double[] getC(int i){
+        double[] arr=new double[2];
+        if(i%2==0) arr[0]=100;
+        else{
+            arr[0]=600;
+            i++;
+        }
+        arr[1]=30*(i/2)+150;
+        return arr;
     }
 }

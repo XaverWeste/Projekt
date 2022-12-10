@@ -4,6 +4,7 @@ public class User {
 
     private String username;
     private int id;
+    private Projekt workingOn=null;
 
     public User(int id, String username){
         this.username = username;
@@ -24,5 +25,13 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Projekt getProjekt() {
+        return workingOn;
+    }
+
+    public void setProjekt(Projekt p) {
+        workingOn=p;
     }
 }

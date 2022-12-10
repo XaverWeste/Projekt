@@ -48,21 +48,16 @@ public class ProgramController {
     }
 
     public Projekt[] getProjekts(){
-        databaseController.executeStatement("SELECT * FROM Projekt;");
-        if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "Projekt"); //Kontrolle
-        try {
-            int length = databaseController.getCurrentQueryResult().getRowCount();
-            Projekt[] projekts = new Projekt[length];
-            String[][] arr = databaseController.getCurrentQueryResult().getData();
-
-            for (int i = 0; arr.length - 1 > i; i++) {
-                Projekt p = new Projekt(Integer.parseInt(arr[i][0]), arr[i][1]);
-                projekts[i] = p;
-            }
-            return projekts;
-        }catch(NullPointerException ignored){
-            return new Projekt[]{};
+        databaseController.executeStatement("SELECT ProjectID FROM X2022_Project_WorkingOn WHERE UserID="+user.getId());
+        int[] ids=new int[databaseController.getCurrentQueryResult().getRowCount()];
+        String[][] data=databaseController.getCurrentQueryResult().getData();
+        for (int i = 0; ids.length - 1 > i; i++) ids[i]= Integer.parseInt(data[i][0]);
+        Projekt[] projekts = new Projekt[ids.length];
+        for(int i = 0; ids.length - 1 > i; i++){
+            databaseController.executeStatement("SELECT * FROM X2022_Project_Project WHERE ProjectID="+ids[i]);
+            projekts[i]=new Projekt(Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0]),databaseController.getCurrentQueryResult().getData()[0][2]);
         }
+        return projekts;
     }
 
     public Task[] getTasks(int projektID){
@@ -245,6 +240,10 @@ public class ProgramController {
 
     public void setUser(User u){
         user=u;
+    }
+
+    public User getUser(){
+        return user;
     }
 
     public void showScene(int i){
