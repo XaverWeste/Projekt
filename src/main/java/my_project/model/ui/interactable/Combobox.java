@@ -6,17 +6,23 @@ import java.awt.*;
 
 public class Combobox extends Interactable{
 
+    public interface OnClick{
+        void execute();
+    }
+
     private final String[] options;
     private String current="";
     private final String text;
     private boolean ismarked=false;
+    private final OnClick oc;
 
-    public Combobox(double x,double y,double w,double h,String t,String...o){
+    public Combobox(double x,double y,double w,double h,String t,OnClick oc,String...o){
         this.x=x;
         this.y=y;
         width=w;
         height=h;
         text=t;
+        this.oc=oc;
         options=o;
     }
 
@@ -38,7 +44,10 @@ public class Combobox extends Interactable{
         if(x>this.x&&y>this.y&&x<this.x+width&&y<this.y+height+20*options.length){
             if(!ismarked&&y<this.y+height) ismarked=true;
             else if(y<this.y+height) ismarked=false;
-            else if(this.y+height<y) current=options[(int) ((y-this.y-height)/20)];
+            else if(this.y+height<y){
+                current=options[(int) ((y-this.y-height)/20)];
+                oc.execute();
+            }
         }else{
             ismarked=false;
         }

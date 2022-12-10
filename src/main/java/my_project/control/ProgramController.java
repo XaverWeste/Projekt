@@ -22,8 +22,7 @@ public class ProgramController {
         databaseController = new DatabaseController();
         databaseController.connect();
         //testsql("DELETE FROM X2022_Project_Project WHERE ProjectID=2");
-        //setUpScreens();
-        setUpScreen(new ScreenTest(this),0);
+        setUpScreens();
     }
 
     private void setUpScreens(){
