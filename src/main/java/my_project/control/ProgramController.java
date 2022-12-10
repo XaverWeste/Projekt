@@ -5,18 +5,15 @@ import KAGO_framework.control.ViewController;
 import my_project.model.Projekt;
 import my_project.model.Task;
 import my_project.model.User;
-import my_project.model.ui.screen.LogInScreen;
-import my_project.model.ui.screen.ProjectOverviewScreen;
-import my_project.model.ui.screen.Screen;
+import my_project.model.ui.screen.*;
 import my_project.view.InputManager;
 
 import java.util.Arrays;
-import java.util.Scanner;
 
 public class ProgramController {
 
     private final ViewController v;
-    private String database;
+    private final String dbPrefix="X2022_Project_";
     private final DatabaseController databaseController;
     private User user;
 
@@ -24,18 +21,27 @@ public class ProgramController {
         v = viewController;
         databaseController = new DatabaseController();
         databaseController.connect();
-        System.out.println(checkLogIn("Niemand","abc"));
-        //databaseController.executeStatement("SELECT * FROM X2022_Project_User WHERE Username = 'Niemand';");
-        //System.out.println(Arrays.deepToString(databaseController.getCurrentQueryResult().getData()));
-        //System.out.println(databaseController.getErrorMessage());
-        //setUpScreen(new LogInScreen(this),0);
-        //setUpScreen(new ProjectOverviewScreen(this),1);
+
+        setUpScreens();
+    }
+
+    private void setUpScreens(){
+        setUpScreen(new StartScreen(this),0);
+        setUpScreen(new SignInScreen(this),1);
+        setUpScreen(new SignUpScreen(this),2);
+        setUpScreen(new ProjectOverviewScreen(this),3);
     }
 
     private void setUpScreen(Screen s,int scene){
         v.createScene();
         v.draw(s,scene);
         v.register(new InputManager(s),scene);
+    }
+
+    private void testsql(String sql){
+        databaseController.executeStatement(sql);
+        System.out.println(Arrays.deepToString(databaseController.getCurrentQueryResult().getData()));
+        System.out.println(databaseController.getErrorMessage());
     }
 
     public void startProgram() {
@@ -200,13 +206,13 @@ public class ProgramController {
 
     public boolean signUp(String username,String password){
         databaseController.executeStatement("SELECT * FROM X2022_Project_User WHERE Username = '"+username+"';");
-        if(databaseController.getCurrentQueryResult()==null){
+        if(Arrays.deepToString(databaseController.getCurrentQueryResult().getData()).equals("[]")){
             databaseController.executeStatement("SELECT MAX(UserID) FROM X2022_Project_User");
             int id=Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0]);
             databaseController.executeStatement("INSERT INTO X2022_Project_User VALUES ("+id+", '"+username+"', '"+password+"')");
+            user=new User(id,username);
             return true;
-        }
-        return false;
+        }else return false;
     }
 
     private Task.TaskStatus getStatus(int i){
