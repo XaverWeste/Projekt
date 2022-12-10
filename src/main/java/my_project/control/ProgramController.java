@@ -10,6 +10,8 @@ import my_project.model.ui.screen.ProjectOverviewScreen;
 import my_project.model.ui.screen.Screen;
 import my_project.view.InputManager;
 
+import java.util.Scanner;
+
 public class ProgramController {
 
     private ViewController v;
@@ -23,6 +25,8 @@ public class ProgramController {
     public ProgramController(ViewController viewController){
         v = viewController;
         databaseController = new DatabaseController();
+        databaseController.connect();
+        //executeSQLFromCommandLine();
         setUpScreen(new LogInScreen(this),0);
         setUpScreen(new ProjectOverviewScreen(this),1);
     }
@@ -34,6 +38,17 @@ public class ProgramController {
     }
 
     public void startProgram() {
+    }
+
+
+    public void executeSQLFromCommandLine(){
+        //CREAT TABLE X2022_projekt_user(userid INTEGER NOT NULL,username VARCHAR(30) NOT NULL,password VARCHAR(30) NOT NULL,PRIMARY KEY(userid));
+        Scanner sc=new Scanner(System.in);
+        while(true){
+            databaseController.executeStatement(sc.next());
+            if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage());
+            else System.out.println(databaseController.getCurrentQueryResult());
+        }
     }
 
     public Projekt[] getProjekts(){
