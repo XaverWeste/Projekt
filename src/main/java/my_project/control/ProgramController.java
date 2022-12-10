@@ -10,25 +10,26 @@ import my_project.model.ui.screen.ProjectOverviewScreen;
 import my_project.model.ui.screen.Screen;
 import my_project.view.InputManager;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class ProgramController {
 
-    private ViewController v;
+    private final ViewController v;
     private String database;
-    private Projekt[] projekts;
-    private Task[] tasks;
-    private DatabaseController databaseController;
-    private User[] users;
+    private final DatabaseController databaseController;
     private User user;
 
     public ProgramController(ViewController viewController){
         v = viewController;
         databaseController = new DatabaseController();
         databaseController.connect();
-        //executeSQLFromCommandLine();
-        setUpScreen(new LogInScreen(this),0);
-        setUpScreen(new ProjectOverviewScreen(this),1);
+        System.out.println(checkLogIn("Niemand","abc"));
+        //databaseController.executeStatement("SELECT * FROM X2022_Project_User WHERE Username = 'Niemand';");
+        //System.out.println(Arrays.deepToString(databaseController.getCurrentQueryResult().getData()));
+        //System.out.println(databaseController.getErrorMessage());
+        //setUpScreen(new LogInScreen(this),0);
+        //setUpScreen(new ProjectOverviewScreen(this),1);
     }
 
     private void setUpScreen(Screen s,int scene){
@@ -40,23 +41,12 @@ public class ProgramController {
     public void startProgram() {
     }
 
-
-    public void executeSQLFromCommandLine(){
-        //CREAT TABLE X2022_projekt_user(userid INTEGER NOT NULL,username VARCHAR(30) NOT NULL,password VARCHAR(30) NOT NULL,PRIMARY KEY(userid));
-        Scanner sc=new Scanner(System.in);
-        while(true){
-            databaseController.executeStatement(sc.next());
-            if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage());
-            else System.out.println(databaseController.getCurrentQueryResult());
-        }
-    }
-
     public Projekt[] getProjekts(){
         databaseController.executeStatement("SELECT * FROM Projekt;");
         if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "Projekt"); //Kontrolle
         try {
             int length = databaseController.getCurrentQueryResult().getRowCount();
-            projekts = new Projekt[length];
+            Projekt[] projekts = new Projekt[length];
             String[][] arr = databaseController.getCurrentQueryResult().getData();
 
             for (int i = 0; arr.length - 1 > i; i++) {
@@ -73,7 +63,7 @@ public class ProgramController {
         databaseController.executeStatement("SELECT * FROM Aufgabe WHERE ProjektID = '" + projektID + "';");
         if(databaseController.getErrorMessage() != null) System.out.println(databaseController.getErrorMessage() + "Task"); //Kontrolle
         int length = databaseController.getCurrentQueryResult().getRowCount();
-        tasks = new Task[length];
+        Task[] tasks = new Task[length];
         String[][] arr = databaseController.getCurrentQueryResult().getData();
 
         for(int i = 0;arr.length-1 > i;i++){
@@ -85,7 +75,7 @@ public class ProgramController {
 
     private User[] requestUserArray(){
         int length = databaseController.getCurrentQueryResult().getRowCount();
-        users = new User[length];
+        User[] users = new User[length];
         String[][] arr = databaseController.getCurrentQueryResult().getData();
 
         for(int i = 0;arr.length-1 > i;i++){
@@ -199,9 +189,52 @@ public class ProgramController {
      * überprüft ob ein user mit dem namen in der Datenbank existiert und ob das passwort richtig ist. Gibt die user id zurück, wenn alles richtig, sonst -1
      */
 
-    public int checkLogIn(String username,String passwort){
-        //TODO
+    public int checkLogIn(String username,String password){
+        databaseController.executeStatement("SELECT Password FROM X2022_Project_User WHERE Username = '"+username+"';");
+        if(password.equals(databaseController.getCurrentQueryResult().getData()[0][0])){
+            databaseController.executeStatement("SELECT UserID FROM X2022_Project_User WHERE Username = '"+username+"';");
+            return Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0]);
+        }
         return -1;
+    }
+
+    public boolean signUp(String username,String password){
+        databaseController.executeStatement("SELECT * FROM X2022_Project_User WHERE Username = '"+username+"';");
+        if(databaseController.getCurrentQueryResult()==null){
+            databaseController.executeStatement("SELECT MAX(UserID) FROM X2022_Project_User");
+            int id=Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0]);
+            databaseController.executeStatement("INSERT INTO X2022_Project_User VALUES ("+id+", '"+username+"', '"+password+"')");
+            return true;
+        }
+        return false;
+    }
+
+    private Task.TaskStatus getStatus(int i){
+        switch(i){
+            case 1 -> {
+                return Task.TaskStatus.notStartedYet;
+            }
+            case 2 -> {
+                return Task.TaskStatus.workingOn;
+            }
+            case 3 -> {
+                return Task.TaskStatus.finished;
+            }
+            case 4 -> {
+                return Task.TaskStatus.canceled;
+            }
+            default -> {
+                return Task.TaskStatus.unknown;
+            }
+        }
+    }
+
+    private int getStatus(Task.TaskStatus t){
+        if(t.equals(Task.TaskStatus.notStartedYet)) return 1;
+        if(t.equals(Task.TaskStatus.workingOn)) return 2;
+        if(t.equals(Task.TaskStatus.finished)) return 3;
+        if(t.equals(Task.TaskStatus.canceled)) return 4;
+        else return 5;
     }
 
     public void setUser(User u){
