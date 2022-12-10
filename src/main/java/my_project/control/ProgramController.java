@@ -22,7 +22,8 @@ public class ProgramController {
         databaseController = new DatabaseController();
         databaseController.connect();
         //testsql("DELETE FROM X2022_Project_Project WHERE ProjectID=2");
-        setUpScreens();
+        //setUpScreens();
+        setUpScreen(new ScreenTest(this),0);
     }
 
     private void setUpScreens(){
@@ -85,6 +86,11 @@ public class ProgramController {
         databaseController.executeStatement("INSERT INTO X2022_Project_Project VALUES ("+id+", '"+name+"', '-')");
         databaseController.executeStatement("INSERT INTO X2022_Project_WorkingOn VALUES ("+user.getId()+", '"+id+"')");
         user.setProjekt(new Projekt(id,name));
+    }
+
+    public void joinProject(int id){
+        databaseController.executeStatement("SELECT * FROM X2022_Project_WorkingOn WHERE UserID="+user.getId()+" AND ProjectID="+id);
+        if(databaseController.getCurrentQueryResult().getRowCount()==0) databaseController.executeStatement("INSERT INTO X2022_Project_WorkingOn VALUES ("+user.getId()+", '"+id+"')");
     }
 
     public int checkLogIn(String username,String password){
