@@ -4,11 +4,11 @@ import KAGO_framework.view.DrawTool;
 
 import java.awt.*;
 
-public class Text extends Interactable{
+public class TextField extends Interactable{
 
-    private final String t;
+    private String t;
 
-    public Text(double x,double y,String t){
+    public TextField(double x, double y, String t){
         this.t=t;
         this.x=x;
         this.y=y;
@@ -17,5 +17,9 @@ public class Text extends Interactable{
     public void draw(DrawTool d){
         d.setCurrentColor(Color.BLACK);
         d.drawText(x,y,t);
+    }
+
+    public void setText(String text){
+        t=text;
     }
 }

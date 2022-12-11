@@ -10,7 +10,7 @@ public class Combobox extends Interactable{
         void execute();
     }
 
-    private final String[] options;
+    private String[] options;
     private String current="";
     private final String text;
     private boolean ismarked=false;
@@ -51,5 +51,13 @@ public class Combobox extends Interactable{
         }else{
             ismarked=false;
         }
+    }
+
+    public String getSelected(){
+        return current;
+    }
+
+    public void updateOptions(String...options){
+        this.options=options;
     }
 }

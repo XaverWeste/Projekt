@@ -5,10 +5,10 @@ public class Task {
     public enum TaskStatus{notStartedYet,workingOn,finished,canceled,unknown}
 
     private int id,processedFrom;
-    private String deadline;
+    private String deadline,name;
     private TaskStatus status;
 
-    public Task(int id, String deadline, TaskStatus status,int processedFrom){
+    public Task(int id,String name, String deadline, TaskStatus status,int processedFrom){
         this.id = id;
         this.deadline = deadline;
         this.status=status;
@@ -21,6 +21,14 @@ public class Task {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDeadline() {

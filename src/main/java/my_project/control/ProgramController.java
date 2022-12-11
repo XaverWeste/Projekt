@@ -21,7 +21,7 @@ public class ProgramController {
         v = viewController;
         databaseController = new DatabaseController();
         databaseController.connect();
-        //testsql("DELETE FROM X2022_Project_Project WHERE ProjectID=2");
+        //testsql("INSERT INTO X2022_Project_Task VALUES(2,5,1,'test','keine',1)");
         setUpScreens();
     }
 
@@ -56,6 +56,17 @@ public class ProgramController {
     public void startProgram() {
     }
 
+    public void leaveProjekt(){
+        databaseController.executeStatement("DELETE FROM X2022_Project_WorkingOn WHERE UserID="+user.getId()+" AND ProjectID="+user.getProjekt().getProjektID());
+        databaseController.executeStatement("SELECT * FROM X2022_Project_WorkingOn WHERE ProjectID="+user.getProjekt().getProjektID());
+        if(databaseController.getCurrentQueryResult().getRowCount()==0){
+            databaseController.executeStatement("DELETE FROM X2022_Project_Project WHERE ProjectIDID="+user.getProjekt().getProjektID());
+            databaseController.executeStatement("DELETE FROM X2022_Project_Task WHERE ProjectIDID="+user.getProjekt().getProjektID());
+        }
+        user.setProjekt(null);
+        v.showScene(3);
+    }
+
     public Projekt[] getProjekts(){
         databaseController.executeStatement("SELECT ProjectID FROM X2022_Project_WorkingOn WHERE UserID="+user.getId());
         int[] ids=new int[databaseController.getCurrentQueryResult().getRowCount()];
@@ -69,14 +80,24 @@ public class ProgramController {
         return projekts;
     }
 
-    public Task[] getTasks(){
-        databaseController.executeStatement("SELECT * FROM X2022_Project_Task WHERE ProjectID="+user.getProjekt().getProjektID());
+    public Task[] getTasks(String orderBy){
+        databaseController.executeStatement("SELECT * FROM X2022_Project_Task WHERE ProjectID="+user.getProjekt().getProjektID()+" ORDER BY "+orderBy+" ASC");
         String[][] data=databaseController.getCurrentQueryResult().getData();
         Task[] tasks=new Task[databaseController.getCurrentQueryResult().getRowCount()];
         for(int i = 0; tasks.length - 1 > i; i++){
-            tasks[i]=new Task(Integer.parseInt(data[i][0]),data[i][4],getStatus(Integer.parseInt(data[i][1])),Integer.parseInt(data[i][5]));
+            tasks[i]=new Task(Integer.parseInt(data[i][0]),data[i][3],data[i][4],getStatus(Integer.parseInt(data[i][1])),Integer.parseInt(data[i][5]));
         }
         return tasks;
+    }
+
+    public void updateTask(Task t){
+        databaseController.executeStatement("UPDATE X2022_Project_Task SET Status="+getStatus(t.getStatus())+",Deadline='"+t.getDeadline()+"',ProcessedFrom='"+t.getPF()+"',NAME='"+getStatus(t.getStatus())+"' WHERE TaskID="+t.getId());
+    }
+
+    public void createTask(Task t){
+        databaseController.executeStatement("SELECT MAX(TaskID) FROM X2022_Project_Task");
+        int id=Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0])+1;
+        databaseController.executeStatement("INSERT INTO X2022_Project_Task VALUES ("+id+", "+getStatus(t.getStatus())+","+user.getProjekt().getProjektID()+",'"+t.getName()+"','"+t.getDeadline()+"',"+t.getPF()+")");
     }
 
     public void createProject(String name){
