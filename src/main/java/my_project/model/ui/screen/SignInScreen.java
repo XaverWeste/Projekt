@@ -17,9 +17,10 @@ public class SignInScreen extends Screen{
 
     @Override
     void setUp() {
-        interactables.add(new Inputfield(Config.WINDOW_WIDTH/2-200,Config.WINDOW_HEIGHT/2-30,400,20,"username"));
-        interactables.add(new Inputfield(Config.WINDOW_WIDTH/2-200,Config.WINDOW_HEIGHT/2,400,20,"password"));
-        interactables.add(new Button(Config.WINDOW_WIDTH / 2, Config.WINDOW_HEIGHT / 2 + 30, 200, 20, "Login", this::checkLogIn));
+        interactables.add(new Inputfield(300,Config.WINDOW_HEIGHT/2-30,400,20,"username"));
+        interactables.add(new Inputfield(300,Config.WINDOW_HEIGHT/2,400,20,"password"));
+        interactables.add(new Button(500, Config.WINDOW_HEIGHT / 2 + 30, 200, 20, "Login", this::checkLogIn));
+        interactables.add(new Button(10,10,50,20,"zurück",()->pc.showScene(0)));
     }
 
     public void checkLogIn(){
