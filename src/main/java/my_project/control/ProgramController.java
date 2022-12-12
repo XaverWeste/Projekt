@@ -25,10 +25,7 @@ public class ProgramController {
         v = viewController;
         databaseController = new DatabaseController();
         databaseController.connect();
-        //testsql("UPDATE X2022_Project_User SET Password='17dfca9b584f074b6a43606a8034461b155c79466e0c0581b2e1e67cd47998b0' WHERE UserID=1");
         //testsql("UPDATE TABLE X2022_Project_User ALTER COLUMN Password varchar(255)");
-        //System.out.println(hash(new char[]{'A','B','C'},hexToBytes("fb19b9114b697f792faf5652d669789f")));
-        //String salt="68,51,-71,-26,-87,78,34,82,6,46,-24,-110,-5,-104,30,1,";
         setUpScreens();
     }
 
@@ -121,10 +118,12 @@ public class ProgramController {
     }
 
     public int checkLogIn(String username,String password){
-        databaseController.executeStatement("SELECT Password FROM X2022_Project_User WHERE Username = '"+username+"';");
-        if(password.equals(databaseController.getCurrentQueryResult().getData()[0][0])){
+        databaseController.executeStatement("SELECT * FROM X2022_Project_User WHERE Username = '"+username+"';");
+        String[][] data=databaseController.getCurrentQueryResult().getData();
+        String salt=data[0][3];
+        if(hash(password.toCharArray(),hexToBytes(salt)).equals(data[0][2])){
             databaseController.executeStatement("SELECT UserID FROM X2022_Project_User WHERE Username = '"+username+"';");
-            return Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0]);
+            return Integer.parseInt(data[0][0]);
         }
         return -1;
     }
@@ -134,7 +133,8 @@ public class ProgramController {
         if(Arrays.deepToString(databaseController.getCurrentQueryResult().getData()).equals("[]")){
             databaseController.executeStatement("SELECT MAX(UserID) FROM X2022_Project_User");
             int id=Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0])+1;
-            databaseController.executeStatement("INSERT INTO X2022_Project_User VALUES ("+id+", '"+username+"', '"+password+"')");
+            byte[] salt=generateSalt();
+            databaseController.executeStatement("INSERT INTO X2022_Project_User VALUES ("+id+", '"+username+"', '"+hash(password.toCharArray(),salt)+"','"+bytesToHex(salt)+"')");
             user=new User(id,username);
             return true;
         }else return false;
@@ -152,7 +152,6 @@ public class ProgramController {
             messageDigest.update(salt);
             final byte[] hashedBytes = messageDigest.digest(new String(input).getBytes(StandardCharsets.UTF_8));
             return bytesToHex(hashedBytes);
-
         } catch (NoSuchAlgorithmException ignored) {return null;}
     }
 
