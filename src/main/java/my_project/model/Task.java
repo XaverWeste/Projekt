@@ -10,6 +10,7 @@ public class Task {
 
     public Task(int id,String name, String deadline, TaskStatus status,int processedFrom){
         this.id = id;
+        this.name=name;
         this.deadline = deadline;
         this.status=status;
         this.processedFrom=processedFrom;

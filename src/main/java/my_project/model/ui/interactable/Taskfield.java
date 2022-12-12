@@ -7,33 +7,37 @@ import java.awt.*;
 
 public class Taskfield extends Interactable{
 
-    private final Task t;
-    private boolean marked;
+    private Task[] t;
+    private Task selected;
 
-    public Taskfield(double x,double y,double w,double h,Task task) {
-        this.x = x;
-        this.y = y;
-        width = w;
-        height = h;
+    public Taskfield(Task...task) {
         t = task;
+        x=10;
+        y=150;
+        height=20;
+        width=200;
     }
 
     public void draw(DrawTool d){
-        d.setCurrentColor(Color.GRAY);
-        d.drawFilledRectangle(x,y,width,height);
-        d.setCurrentColor(Color.BLACK);
-        d.drawRectangle(x,y,width,height);
-        d.drawText(x+5,y+height-5,t.getName());
+        if(t.length>0){
+            d.setCurrentColor(Color.GRAY);
+            for (int i = 0; i < t.length; i++) {
+                d.drawFilledRectangle(x, y + 30 * i, width, height);
+            }
+            d.setCurrentColor(Color.BLACK);
+            for (int i = 0; i < t.length; i++) {
+                d.drawRectangle(x, y + 30 * i, width, height);
+                d.drawText(x + 5, y + height + 30 * i - 5, t[i].getName());
+            }
+        }
     }
 
     public void clickOn(double x,double y){
-        if(x>this.x&&y>this.y&&x<this.x+width&&y<this.y+height) marked=true;
-        else marked=false;
+        //if(x>this.x&&y>this.y&&x<this.x+width&&y<this.y+height) marked=true;
     }
 
-    public void setXY(double x,double y){
-        this.x=x;
-        this.y=y;
+    public void setTasks(Task...task){
+        t=task;
     }
 
 }

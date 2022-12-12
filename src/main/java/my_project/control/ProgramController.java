@@ -84,7 +84,7 @@ public class ProgramController {
         databaseController.executeStatement("SELECT * FROM X2022_Project_Task WHERE ProjectID="+user.getProjekt().getProjektID()+" ORDER BY "+orderBy+" ASC");
         String[][] data=databaseController.getCurrentQueryResult().getData();
         Task[] tasks=new Task[databaseController.getCurrentQueryResult().getRowCount()];
-        for(int i = 0; tasks.length - 1 > i; i++){
+        for(int i = 0; tasks.length > i; i++){
             tasks[i]=new Task(Integer.parseInt(data[i][0]),data[i][3],data[i][4],getStatus(Integer.parseInt(data[i][1])),Integer.parseInt(data[i][5]));
         }
         return tasks;
