@@ -8,6 +8,10 @@ import my_project.model.User;
 import my_project.model.ui.screen.*;
 import my_project.view.InputManager;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Arrays;
 
 public class ProgramController {
@@ -21,7 +25,10 @@ public class ProgramController {
         v = viewController;
         databaseController = new DatabaseController();
         databaseController.connect();
-        //testsql("INSERT INTO X2022_Project_Task VALUES(2,5,1,'test','keine',1)");
+        //testsql("UPDATE X2022_Project_User SET Password='17dfca9b584f074b6a43606a8034461b155c79466e0c0581b2e1e67cd47998b0' WHERE UserID=1");
+        //testsql("UPDATE TABLE X2022_Project_User ALTER COLUMN Password varchar(255)");
+        //System.out.println(hash(new char[]{'A','B','C'},hexToBytes("fb19b9114b697f792faf5652d669789f")));
+        //String salt="68,51,-71,-26,-87,78,34,82,6,46,-24,-110,-5,-104,30,1,";
         setUpScreens();
     }
 
@@ -131,6 +138,39 @@ public class ProgramController {
             user=new User(id,username);
             return true;
         }else return false;
+    }
+
+    private byte[] generateSalt() {
+        byte[] bytes = new byte[16];
+        new SecureRandom().nextBytes(bytes);
+        return bytes;
+    }
+
+    private String hash(char[] input, byte[] salt) {
+        try {
+            final MessageDigest messageDigest = MessageDigest.getInstance("SHA3-256");
+            messageDigest.update(salt);
+            final byte[] hashedBytes = messageDigest.digest(new String(input).getBytes(StandardCharsets.UTF_8));
+            return bytesToHex(hashedBytes);
+
+        } catch (NoSuchAlgorithmException ignored) {return null;}
+    }
+
+    private String bytesToHex(byte[] hash) {
+        StringBuilder hexString = new StringBuilder(2 * hash.length);
+        for (byte b : hash){
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
+        }
+        return hexString.toString();
+    }
+
+    private byte[] hexToBytes(String hex) {
+        int len = hex.length();
+        byte[] bytes = new byte[len/2];
+        for (int i = 0; i < len; i += 2) bytes[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4) + Character.digit(hex.charAt(i+1), 16));
+        return bytes;
     }
 
     private Task.TaskStatus getStatus(int i){

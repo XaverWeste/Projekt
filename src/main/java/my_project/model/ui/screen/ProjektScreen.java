@@ -2,7 +2,6 @@ package my_project.model.ui.screen;
 
 import my_project.control.ProgramController;
 import my_project.model.Projekt;
-import my_project.model.Task;
 import my_project.model.ui.interactable.*;
 
 public class ProjektScreen extends Screen{
