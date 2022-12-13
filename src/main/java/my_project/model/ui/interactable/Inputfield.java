@@ -3,50 +3,24 @@ package my_project.model.ui.interactable;
 import KAGO_framework.view.DrawTool;
 
 import java.awt.*;
-import java.awt.Font;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.AffineTransform;
 import KAGO_framework.model.abitur.datenstrukturen.List;
 
 public class Inputfield extends Interactable {
 
-    private List<String> stringList = new List();
-    private String s="",t;
-    private double errorX,errorY, maxWidth, maxHeight;
-    private boolean showError = false, resize = false, maxWidthReached = false;
-    double minWidth;
-    AffineTransform affinetransform;
-    FontRenderContext frc;
-    Font font;
+    private List<StringRow> stringList = new List();
+    private String t;
+    private double maxWidth, maxHeight;
+    private boolean maxWidthReached = false, maxHeightReached = false;
 
-    public Inputfield(double x,double y,double w,double h,String text,double errorX, double errorY){
+    public Inputfield(double x, double y, double w, double h, String text, double maxWidth, double maxHeight){
         this.x=x;
         this.y=y;
-        width=w;
+        width = w;
         height=h;
         t=text;
-        this.errorX = errorX;
-        this.errorY = errorY;
-
-        affinetransform = new AffineTransform();
-        frc = new FontRenderContext(affinetransform,true,true);
-        font = new Font("Tahoma", Font.PLAIN, 12);
-
-    }
-
-    public Inputfield(double x, double y, double w, double h, String text, boolean resize, double maxWidth, double maxHeight){
-        this.x=x;
-        this.y=y;
-        width = minWidth = w;
-        height=h;
-        t=text;
-        this.resize=resize;
         this.maxWidth =maxWidth;
-        stringList.append("");
-        stringList.toFirst();
-        affinetransform = new AffineTransform();
-        frc = new FontRenderContext(affinetransform,true,true);
-        font = new Font("Tahoma", Font.PLAIN, 12);
+        this.maxHeight = maxHeight;
+        if(maxHeight < 5) maxHeightReached = true;
 
     }
 
@@ -56,85 +30,101 @@ public class Inputfield extends Interactable {
         width=w;
         height=h;
         t=text;
-        this.errorX = x+5;
-        this.errorY = y+height-5;
+        maxHeightReached = true;
     }
 
     public void draw(DrawTool d){
-        if(resize){
-            resizeInputfield();
-        }
+
+        //Recangel
         d.setCurrentColor(Color.BLACK);
         if(maxWidthReached){
-            d.drawRectangle(x,y,maxWidth,height);
+            int i = -1;
+            stringList.toFirst();
+            while(stringList.hasAccess()){
+                i++;
+                stringList.next();
+            }
+            if(height+i*15 > maxHeight) maxHeightReached = true;
+            d.drawRectangle(x,y,maxWidth,height+i*15);
+            System.out.println("i: " + i);
             d.setCurrentColor(Color.GRAY);
-            d.drawFilledRectangle(x,y,maxWidth,height);
+            d.drawFilledRectangle(x,y,maxWidth,height+i*15);
         }else{
             d.drawRectangle(x,y,width,height);
             d.setCurrentColor(Color.GRAY);
             d.drawFilledRectangle(x,y,width,height);
         }
+
+        //Text
         d.setCurrentColor(Color.BLACK);
-        if(s.equals("")){
-            d.setCurrentColor(Color.DARK_GRAY);
+        if(stringList.isEmpty()){
             d.drawText(x+5,y+height-5,t);
         }else{
+            stringList.toFirst();
+            for(int i=0; stringList.hasAccess();i++){
+                d.drawText(x+5,y+height-5+i*15,stringList.getContent().getString());
+                stringList.next();
+            }
 
-            d.drawText(x+5,y+height-5,s);
-        }
-        if(showError){
-            d.setCurrentColor(Color.RED);
-            d.drawText(errorX,errorY,"You can only use up to 18 characters!");
         }
     }
 
     public void clear(){
-        s="";
-        showError = false;
+        stringList.toFirst();
+        while(stringList.hasAccess()){
+            stringList.remove();
+        }
     }
 
     public void add(char c){
-        //if(s.toCharArray().length < 18){
-            s+=c;
-            if(resize && stringList.hasAccess()){
-                //stringList.setContent(stringList.getContent() += c);
+        stringList.toLast();
+        if(stringList.hasAccess()){
+            if(stringList.getContent().getSize() >= maxWidth){
+                if(!maxHeightReached){
+                    stringList.append(new StringRow(""+c));
+                }
+                maxWidthReached = true;
+            }else{
+                stringList.getContent().addChar(c);
             }
-       // }else{
-       //     showError = true;
-       // }
-
+        }else{
+            stringList.append(new StringRow(""+c));
+        }
     }
 
     public void setText(String t){
-        this.s=t;
+        stringList.toFirst();
+        while(stringList.hasAccess()){
+            stringList.remove();
+        }
+        this.t = t;
     }
 
     public void clearLast(){
-        char[] c=s.toCharArray();
-        clear();
-        showError = false;
-        for(int i=0;i<c.length-1;i++) add(c[i]);
+        stringList.toLast();
+        if(stringList.hasAccess() && stringList.getContent().getString().equals("")) {
+            stringList.remove();
+            maxHeightReached = false;
+        }
+        if(stringList.hasAccess()) {
+            char[] c = stringList.getContent().getString().toCharArray();
+            stringList.getContent().setString("");
+            for (int i = 0; i < c.length - 1; i++) add(c[i]);
+            if(stringList.getContent().getString().equals("")) stringList.remove();
+        }
     }
 
     public boolean clickOn(double x,double y){
         return x > this.x && y > this.y && x < this.x + width && y < this.y + height;
     }
 
-    public void resizeInputfield() {
-        if(minWidth < (int)(font.getStringBounds(s, frc).getWidth())-40) {
-            //minWidth = (int) (font.getStringBounds(s, frc).getWidth())-40;
-            if(width >= maxWidth && !maxWidthReached){
-                height+=14;
-                s+='\n';
-                width = 5;
-                maxWidthReached=false;
-            }
-        }else {
-            width = minWidth;
-        }
-    }
 
     public String getContent(){
-        return s;
+        StringBuilder s = new StringBuilder();
+        stringList.toFirst();
+        while(stringList.hasAccess()){
+            s.append(stringList.getContent());
+        }
+        return s.toString();
     }
 }
