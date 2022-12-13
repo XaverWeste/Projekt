@@ -43,7 +43,7 @@ public class Inputfield extends Interactable {
     }
 
     public void add(char c){
-        if(s.split("").length < 18){
+        if(s.toCharArray().length < 18){
             s+=c;
         }else{
             showError = true;

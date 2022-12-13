@@ -46,6 +46,7 @@ public class Combobox extends Interactable{
             else if(y<this.y+height) ismarked=false;
             else if(this.y+height<y){
                 current=options[(int) ((y-this.y-height)/20)];
+                ismarked=false;
                 oc.execute();
             }
         }else{
