@@ -9,19 +9,19 @@ public class Inputfield extends Interactable {
 
     private List<StringRow> stringList = new List();
     private String t;
-    private double maxWidth, maxHeight;
-    private boolean maxWidthReached = false, maxHeightReached = false;
+    private double maxWidth, maxHeight, minWidth;
+    private boolean maxWidthReached = false, maxHeightReached = false, adjust = false;
 
     public Inputfield(double x, double y, double w, double h, String text, double maxWidth, double maxHeight){
         this.x=x;
         this.y=y;
-        width = w;
+        width = minWidth = w;
         height=h;
         t=text;
         this.maxWidth =maxWidth;
         this.maxHeight = maxHeight;
         if(maxHeight < 5) maxHeightReached = true;
-
+        adjust = true;
     }
 
     public Inputfield(double x,double y,double w,double h,String text){
@@ -39,16 +39,15 @@ public class Inputfield extends Interactable {
 
         //Recangel
         d.setCurrentColor(Color.BLACK);
-        if(maxWidthReached){
+        stringList.toFirst();
+        if(maxWidthReached && stringList.hasAccess()){
             int i = -1;
-            stringList.toFirst();
             while(stringList.hasAccess()){
                 i++;
                 stringList.next();
             }
             if(height+i*15 > maxHeight) maxHeightReached = true;
             d.drawRectangle(x,y,maxWidth,height+i*15);
-            System.out.println("i: " + i);
             d.setCurrentColor(Color.GRAY);
             d.drawFilledRectangle(x,y,maxWidth,height+i*15);
         }else{
@@ -88,6 +87,14 @@ public class Inputfield extends Interactable {
                 maxWidthReached = true;
             }else{
                 stringList.getContent().addChar(c);
+                if(adjust) {
+                    stringList.toFirst();
+                    if (stringList.getContent().getSize() > minWidth) {
+                        width = stringList.getContent().getSize();
+                    } else {
+                        width = minWidth;
+                    }
+                }
             }
         }else{
             stringList.append(new StringRow(""+c));
