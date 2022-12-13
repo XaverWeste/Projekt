@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public abstract class Screen extends GraphicalObject {
 
-    protected final ArrayList<Interactable> interactables=new ArrayList<>();
+    protected ArrayList<Interactable> interactables=new ArrayList<>();
     protected final ProgramController pc;
     protected Inputfield activeIf=null;
 
@@ -23,6 +23,12 @@ public abstract class Screen extends GraphicalObject {
     }
 
     abstract void setUp();
+    
+    public void resetUp(){
+        interactables=new ArrayList<>();
+        activeIf=null;
+        setUp();
+    }
 
     public void draw(DrawTool d){
         d.setCurrentColor(Color.DARK_GRAY);

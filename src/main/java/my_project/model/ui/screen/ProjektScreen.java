@@ -59,6 +59,7 @@ public class ProjektScreen extends Screen{
         if(i instanceof Combobox) t.setStatus(pc.getStatus(((Combobox) i).getSelected()));
         if((t.getId()>-1)) pc.updateTask(t);
         else pc.createTask(t);
+        sortBy();
     }
 
     private void setStatus(){
