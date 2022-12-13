@@ -1,0 +1,25 @@
+package my_project.model.ui.interactable;
+
+import KAGO_framework.view.DrawTool;
+
+import java.awt.*;
+
+public class TextField extends Interactable{
+
+    private String t;
+
+    public TextField(double x, double y, String t){
+        this.t=t;
+        this.x=x;
+        this.y=y;
+    }
+
+    public void draw(DrawTool d){
+        d.setCurrentColor(Color.BLACK);
+        d.drawText(x,y,t);
+    }
+
+    public void setText(String text){
+        t=text;
+    }
+}

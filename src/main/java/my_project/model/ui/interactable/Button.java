@@ -6,14 +6,14 @@ import java.awt.*;
 
 public class Button extends Interactable {
 
-    public interface onClick{
+    public interface OnClick {
         void execute();
     }
 
     private final String s;
-    private final onClick oc;
+    private final OnClick oc;
 
-    public Button(double x,double y,double w,double h,String t,onClick oc){
+    public Button(double x, double y, double w, double h, String t, OnClick oc){
         this.x=x;
         this.y=y;
         width=w;

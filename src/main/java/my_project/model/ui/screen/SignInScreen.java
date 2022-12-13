@@ -7,17 +7,20 @@ import my_project.model.ui.interactable.Button;
 import my_project.model.ui.interactable.Inputfield;
 import my_project.model.ui.interactable.Interactable;
 
-public class LogInScreen extends Screen{
+import javax.swing.*;
 
-    public LogInScreen(ProgramController pc) {
+public class SignInScreen extends Screen{
+
+    public SignInScreen(ProgramController pc) {
         super(pc);
     }
 
     @Override
     void setUp() {
-        interactables.add(new Inputfield(Config.WINDOW_WIDTH/2-200,Config.WINDOW_HEIGHT/2-30,400,20,"username"));
-        interactables.add(new Inputfield(Config.WINDOW_WIDTH/2-200,Config.WINDOW_HEIGHT/2,400,20,"password"));
-        interactables.add(new Button(Config.WINDOW_WIDTH / 2, Config.WINDOW_HEIGHT / 2 + 30, 200, 20, "Login", this::checkLogIn));
+        interactables.add(new Inputfield(300,Config.WINDOW_HEIGHT/2-30,400,20,"username", 305, Config.WINDOW_HEIGHT/2-45));
+        interactables.add(new Inputfield(300,Config.WINDOW_HEIGHT/2,400,20,"password",305, Config.WINDOW_HEIGHT/2-45));
+        interactables.add(new Button(500, Config.WINDOW_HEIGHT / 2 + 30, 200, 20, "Login", this::checkLogIn));
+        interactables.add(new Button(10,10,50,20,"zurück",()->pc.showScene(0)));
     }
 
     public void checkLogIn(){
@@ -30,7 +33,10 @@ public class LogInScreen extends Screen{
         int i=pc.checkLogIn(username,password);
         if(i>=0){
             pc.setUser(new User(i,username));
-            pc.showScene(1);
+            pc.setUpOverviewScreen();
+            pc.showScene(3);
+        }else{
+            JOptionPane.showMessageDialog(null,"Password und/oder Benutzername ungültig");
         }
     }
 }

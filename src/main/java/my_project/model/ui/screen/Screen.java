@@ -4,8 +4,7 @@ import KAGO_framework.model.GraphicalObject;
 import KAGO_framework.view.DrawTool;
 import my_project.Config;
 import my_project.control.ProgramController;
-import my_project.model.ui.interactable.Inputfield;
-import my_project.model.ui.interactable.Interactable;
+import my_project.model.ui.interactable.*;
 import my_project.model.ui.interactable.Button;
 
 import java.awt.*;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 
 public abstract class Screen extends GraphicalObject {
 
-    protected final ArrayList<Interactable> interactables=new ArrayList<>();
+    protected ArrayList<Interactable> interactables=new ArrayList<>();
     protected final ProgramController pc;
     protected Inputfield activeIf=null;
 
@@ -24,6 +23,12 @@ public abstract class Screen extends GraphicalObject {
     }
 
     abstract void setUp();
+    
+    public void resetUp(){
+        interactables=new ArrayList<>();
+        activeIf=null;
+        setUp();
+    }
 
     public void draw(DrawTool d){
         d.setCurrentColor(Color.DARK_GRAY);
@@ -32,8 +37,12 @@ public abstract class Screen extends GraphicalObject {
     }
 
     public void mouseReleased(MouseEvent e){
-        for(Interactable i:interactables) if(i instanceof Button) ((Button) i).clickOn(e.getX(),e.getY());
-        for(Interactable i:interactables) if(i instanceof Inputfield) if(((Inputfield) i).clickOn(e.getX(),e.getY())) activeIf=(Inputfield)i;
+        for(Interactable i:interactables){
+            if(i instanceof Button) ((Button) i).clickOn(e.getX(),e.getY());
+            else if(i instanceof Combobox) ((Combobox) i).clickOn(e.getX(),e.getY());
+            else if(i instanceof Taskfield) ((Taskfield) i).clickOn(e.getX(),e.getY());
+            else if(i instanceof Inputfield) if(((Inputfield) i).clickOn(e.getX(),e.getY())) activeIf=(Inputfield)i;
+        }
     }
 
     public void keyReleased(int key) {
