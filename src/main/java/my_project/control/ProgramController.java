@@ -172,7 +172,7 @@ public class ProgramController {
         return bytes;
     }
 
-    private Task.TaskStatus getStatus(int i){
+    public Task.TaskStatus getStatus(int i){
         switch(i){
             case 1 -> {
                 return Task.TaskStatus.notStartedYet;
@@ -184,6 +184,26 @@ public class ProgramController {
                 return Task.TaskStatus.finished;
             }
             case 4 -> {
+                return Task.TaskStatus.canceled;
+            }
+            default -> {
+                return Task.TaskStatus.unknown;
+            }
+        }
+    }
+
+    public Task.TaskStatus getStatus(String s){
+        switch(s){
+            case "notStartedYet" -> {
+                return Task.TaskStatus.notStartedYet;
+            }
+            case "workingOn" -> {
+                return Task.TaskStatus.workingOn;
+            }
+            case "finished" -> {
+                return Task.TaskStatus.finished;
+            }
+            case "canceled" -> {
                 return Task.TaskStatus.canceled;
             }
             default -> {

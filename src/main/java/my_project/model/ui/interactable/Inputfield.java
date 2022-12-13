@@ -61,6 +61,10 @@ public class Inputfield extends Interactable {
 
     }
 
+    public void setText(String t){
+        this.s=t;
+    }
+
     public void clearLast(){
         char[] c=s.toCharArray();
         clear();

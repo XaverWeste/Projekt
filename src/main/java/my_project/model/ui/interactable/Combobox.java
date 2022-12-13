@@ -54,6 +54,10 @@ public class Combobox extends Interactable{
         }
     }
 
+    public void setCurrent(String s){
+        current=s;
+    }
+
     public String getSelected(){
         return current;
     }
