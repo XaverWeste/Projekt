@@ -30,7 +30,9 @@ public class Inputfield extends Interactable {
         width=w;
         height=h;
         t=text;
+        maxHeight = 0;
         maxHeightReached = true;
+        maxWidth = width;
     }
 
     public void draw(DrawTool d){
@@ -123,7 +125,8 @@ public class Inputfield extends Interactable {
         StringBuilder s = new StringBuilder();
         stringList.toFirst();
         while(stringList.hasAccess()){
-            s.append(stringList.getContent());
+            s.append(stringList.getContent().getString());
+            stringList.next();
         }
         return s.toString();
     }
