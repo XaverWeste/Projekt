@@ -4,9 +4,7 @@ import KAGO_framework.model.GraphicalObject;
 import KAGO_framework.view.DrawTool;
 import my_project.Config;
 import my_project.control.ProgramController;
-import my_project.model.ui.interactable.Combobox;
-import my_project.model.ui.interactable.Inputfield;
-import my_project.model.ui.interactable.Interactable;
+import my_project.model.ui.interactable.*;
 import my_project.model.ui.interactable.Button;
 
 import java.awt.*;
@@ -36,6 +34,7 @@ public abstract class Screen extends GraphicalObject {
         for(Interactable i:interactables){
             if(i instanceof Button) ((Button) i).clickOn(e.getX(),e.getY());
             else if(i instanceof Combobox) ((Combobox) i).clickOn(e.getX(),e.getY());
+            else if(i instanceof Taskfield) ((Taskfield) i).clickOn(e.getX(),e.getY());
             else if(i instanceof Inputfield) if(((Inputfield) i).clickOn(e.getX(),e.getY())) activeIf=(Inputfield)i;
         }
     }

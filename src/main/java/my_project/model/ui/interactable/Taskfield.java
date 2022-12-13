@@ -37,7 +37,7 @@ public class Taskfield extends Interactable{
 
     public void clickOn(double x,double y){
         if(x>this.x&&y>this.y&&x<this.x+width){
-            int i=(int) ((y-this.y-height)/30);
+            int i=(int) ((y-this.y)/30);
             if(i<=t.size()) selected=t.get(i);
             System.out.println(i);
         }
