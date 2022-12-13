@@ -43,6 +43,10 @@ public class Taskfield extends Interactable{
         }
     }
 
+    public Task getSelected(){
+        return selected;
+    }
+
     public void setTasks(Task...task){
         t=new ArrayList<>();
         t.add(new Task(-1,"","",Task.TaskStatus.unknown,-1));

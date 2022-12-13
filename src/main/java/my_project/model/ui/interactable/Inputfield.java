@@ -7,7 +7,7 @@ import java.awt.*;
 public class Inputfield extends Interactable {
 
     private String s="",t;
-    private double errorX, errorY;
+    private final double errorX,errorY;
     private boolean showError = false;
 
     public Inputfield(double x,double y,double w,double h,String text,double errorX, double errorY){
@@ -18,6 +18,16 @@ public class Inputfield extends Interactable {
         t=text;
         this.errorX = errorX;
         this.errorY = errorY;
+    }
+
+    public Inputfield(double x,double y,double w,double h,String text){
+        this.x=x;
+        this.y=y;
+        width=w;
+        height=h;
+        t=text;
+        this.errorX = x+5;
+        this.errorY = y+height-5;
     }
 
     public void draw(DrawTool d){

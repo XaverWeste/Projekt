@@ -20,6 +20,10 @@ public class ProjektScreen extends Screen{
         t.setTasks(pc.getTasks("Name"));
         interactables.add(t);
         interactables.add(new Combobox(10, 100, 200, 20, "sort by", this::sortBy,"deadline","status","name"));
+        interactables.add(new Button(800, 100, 100, 20, "save",this::save));
+        interactables.add(new Inputfield(300,130,200,20,"name"));
+        interactables.add(new Inputfield(300,160,200,20,"deadline"));
+        interactables.add(new Combobox(300, 190, 200, 20, "status", this::setStatus,"notStartedYet","workingOn","finished","canceled","unknown"));
     }
 
     private void sortBy(){
@@ -31,5 +35,13 @@ public class ProjektScreen extends Screen{
                 case "name" -> t.setTasks(pc.getTasks("Name"));
             }
         }
+    }
+
+    private void setStatus(){
+
+    }
+
+    private void save(){
+
     }
 }
