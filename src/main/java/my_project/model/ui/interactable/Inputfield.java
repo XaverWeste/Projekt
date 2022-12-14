@@ -9,13 +9,13 @@ public class Inputfield extends Interactable {
 
     private List<StringRow> stringList = new List();
     private String t;
-    private double maxWidth, maxHeight, minWidth;
+    private double maxWidth, maxHeight, minWidth, currentHeight, currentWidth;
     private boolean maxWidthReached = false, maxHeightReached = false, adjust = false;
 
-    public Inputfield(double x, double y, double w, double h, String text, double maxWidth, double maxHeight){
+    public Inputfield(double x, double y, double minWidth, double h, String text, double maxWidth, double maxHeight){
         this.x=x;
         this.y=y;
-        width = minWidth = w;
+        width = this.minWidth = minWidth;
         height=h;
         t=text;
         this.maxWidth =maxWidth;
@@ -46,15 +46,16 @@ public class Inputfield extends Interactable {
                 i++;
                 stringList.next();
             }
+            currentWidth = maxWidth;
+            currentHeight = height+i*15;
             if(height+i*15 > maxHeight) maxHeightReached = true;
-            d.drawRectangle(x,y,maxWidth,height+i*15);
-            d.setCurrentColor(Color.GRAY);
-            d.drawFilledRectangle(x,y,maxWidth,height+i*15);
         }else{
-            d.drawRectangle(x,y,width,height);
-            d.setCurrentColor(Color.GRAY);
-            d.drawFilledRectangle(x,y,width,height);
+            currentWidth = width;
+            currentHeight = height;
         }
+        d.drawRectangle(x,y,currentWidth, currentHeight);
+        d.setCurrentColor(Color.GRAY);
+        d.drawFilledRectangle(x,y,currentWidth, currentHeight);
 
         //Text
         d.setCurrentColor(Color.BLACK);
@@ -68,6 +69,11 @@ public class Inputfield extends Interactable {
             }
 
         }
+    }
+
+    public void makiereDich(DrawTool d){
+        d.setCurrentColor(Color.red);
+        d.drawRectangle(x,y,currentWidth, currentHeight);
     }
 
     public void clear(){
