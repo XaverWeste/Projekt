@@ -12,10 +12,10 @@ public class Inputfield extends Interactable {
     private double maxWidth, maxHeight, minWidth;
     private boolean maxWidthReached = false, maxHeightReached = false, adjust = false;
 
-    public Inputfield(double x, double y, double w, double h, String text, double maxWidth, double maxHeight){
+    public Inputfield(double x, double y, double minWidth, double h, String text, double maxWidth, double maxHeight){
         this.x=x;
         this.y=y;
-        width = minWidth = w;
+        width = this.minWidth = minWidth;
         height=h;
         t=text;
         this.maxWidth =maxWidth;
