@@ -98,6 +98,7 @@ public class ProgramController {
     }
 
     public void updateTask(Task t){
+        //databaseController.executeStatement("UPDATE X2022_Poject_Task set Status=" + getStatus(t.getStatus()));
         databaseController.executeStatement("UPDATE X2022_Project_Task SET Status="+getStatus(t.getStatus())+",Deadline='"+t.getDeadline()+"',ProcessedFrom='"+t.getPF()+"',NAME='"+t.getName()+"' WHERE TaskID="+t.getId());
     }
 
@@ -119,6 +120,7 @@ public class ProgramController {
         databaseController.executeStatement("SELECT * FROM X2022_Project_WorkingOn WHERE UserID="+user.getId()+" AND ProjectID="+id);
         if(databaseController.getCurrentQueryResult().getRowCount()==0) databaseController.executeStatement("INSERT INTO X2022_Project_WorkingOn VALUES ("+user.getId()+", '"+id+"')");
     }
+
 
     public int checkLogIn(String username,String password){
         databaseController.executeStatement("SELECT * FROM X2022_Project_User WHERE Username = '"+username+"';");
