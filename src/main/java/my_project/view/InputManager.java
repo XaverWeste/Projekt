@@ -20,6 +20,11 @@ public class InputManager extends InteractiveGraphicalObject {
     }
 
     @Override
+    public void keyPressed(int key) {
+        s.keyPressed(key);
+    }
+
+    @Override
     public void mouseReleased(MouseEvent e) {
         s.mouseReleased(e);
     }
