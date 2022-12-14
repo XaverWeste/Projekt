@@ -20,6 +20,7 @@ public class ProgramController {
     private final String dbPrefix="X2022_Project_";
     private final DatabaseController databaseController;
     private User user;
+    private Screen po,p;
 
     public ProgramController(ViewController viewController){
         v = viewController;
@@ -36,12 +37,14 @@ public class ProgramController {
     }
 
     public void setUpOverviewScreen(){
-        setUpScreen(new ProjectOverviewScreen(this),3);
+        po=new ProjectOverviewScreen(this);
+        setUpScreen(po,3);
     }
 
     public void setUpProject(Projekt p){
         user.setProjekt(p);
-        setUpScreen(new ProjektScreen(this),4);
+        this.p=new ProjektScreen(this);
+        setUpScreen(this.p,4);
         v.showScene(4);
     }
 
@@ -229,6 +232,10 @@ public class ProgramController {
     }
 
     public void showScene(int i){
+        switch(i){
+            case 3 -> po.resetUp();
+            case 4 -> p.resetUp();
+        }
         v.showScene(i);
     }
 

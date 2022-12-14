@@ -115,6 +115,13 @@ public class Inputfield extends Interactable {
         this.t = t;
     }
 
+    public void setStringList(String s){
+        char[] chars=s.toCharArray();
+        stringList.toFirst();
+        while(!stringList.isEmpty()) stringList.remove();
+        for(char c:chars) add(c);
+    }
+
     public void clearLast(){
         stringList.toLast();
         if(stringList.hasAccess() && stringList.getContent().getString().equals("")) {
