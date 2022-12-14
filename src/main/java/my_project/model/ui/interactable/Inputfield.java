@@ -70,6 +70,11 @@ public class Inputfield extends Interactable {
         }
     }
 
+    public void makiereDich(DrawTool d){
+        d.setCurrentColor(Color.red);
+        d.drawRectangle(x,y,width,height);
+    }
+
     public void clear(){
         stringList.toFirst();
         while(stringList.hasAccess()){

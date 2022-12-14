@@ -34,6 +34,7 @@ public abstract class Screen extends GraphicalObject {
         d.setCurrentColor(Color.DARK_GRAY);
         d.drawFilledRectangle(0,0, Config.WINDOW_WIDTH,Config.WINDOW_HEIGHT);
         for(Interactable i:interactables) i.draw(d);
+        if(activeIf!=null) activeIf.makiereDich(d);
     }
 
     public void mouseReleased(MouseEvent e){

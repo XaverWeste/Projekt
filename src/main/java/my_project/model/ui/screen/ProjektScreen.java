@@ -26,6 +26,7 @@ public class ProjektScreen extends Screen{
         interactables.add(new Inputfield(300,160,450,20,"deadline"));
         interactables.add(new Combobox(300, 190, 450, 20, "status", this::setStatus,"notStartedYet","workingOn","finished","canceled","unknown"));
         t.setTasks(pc.getTasks("Name"));
+        interactables.add(new Button());
     }
 
     private void sortBy(){
