@@ -26,7 +26,8 @@ public class ProjektScreen extends Screen{
         interactables.add(new Inputfield(300,160,450,20,"deadline"));
         interactables.add(new Combobox(300, 190, 450, 20, "status", this::setStatus,"notStartedYet","workingOn","finished","canceled","unknown"));
         t.setTasks(pc.getTasks("Name"));
-        //interactables.add(new Button());
+        interactables.add(new Button(880,10,100,20,"leave Project",this::leaveProjekt));
+        interactables.add(new Button(880,40,100,20,"close Project",this::closeProject));
     }
 
     private void sortBy(){
@@ -43,9 +44,9 @@ public class ProjektScreen extends Screen{
     public void setUpTask(Task t){
         id=t.getId();
         Interactable i= interactables.get(4);
-        if(i instanceof Inputfield) ((Inputfield) i).setText(t.getName());
+        if(i instanceof Inputfield) ((Inputfield) i).setStringList(t.getName());
         i= interactables.get(5);
-        if(i instanceof Inputfield) ((Inputfield) i).setText(t.getDeadline());
+        if(i instanceof Inputfield) ((Inputfield) i).setStringList(t.getDeadline());
         i= interactables.get(6);
         if(i instanceof Combobox) ((Combobox) i).setCurrent(t.getStatus().toString());
     }
@@ -61,6 +62,16 @@ public class ProjektScreen extends Screen{
         if((t.getId()>-1)) pc.updateTask(t);
         else pc.createTask(t);
         sortBy();
+    }
+
+    private void leaveProjekt(){
+        pc.leaveProjekt();
+        pc.showScene(3);
+    }
+
+    private void closeProject(){
+        pc.getUser().setProjekt(null);
+        pc.showScene(3);
     }
 
     private void setStatus(){
