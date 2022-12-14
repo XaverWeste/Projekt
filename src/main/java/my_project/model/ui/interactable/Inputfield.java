@@ -3,21 +3,25 @@ package my_project.model.ui.interactable;
 import KAGO_framework.view.DrawTool;
 
 import java.awt.*;
+import KAGO_framework.model.abitur.datenstrukturen.List;
 
 public class Inputfield extends Interactable {
 
-    private String s="",t;
-    private final double errorX,errorY;
-    private boolean showError = false;
+    private List<StringRow> stringList = new List();
+    private String t;
+    private double maxWidth, maxHeight, minWidth;
+    private boolean maxWidthReached = false, maxHeightReached = false, adjust = false;
 
-    public Inputfield(double x,double y,double w,double h,String text,double errorX, double errorY){
+    public Inputfield(double x, double y, double w, double h, String text, double maxWidth, double maxHeight){
         this.x=x;
         this.y=y;
-        width=w;
+        width = minWidth = w;
         height=h;
         t=text;
-        this.errorX = errorX;
-        this.errorY = errorY;
+        this.maxWidth =maxWidth;
+        this.maxHeight = maxHeight;
+        if(maxHeight < 5) maxHeightReached = true;
+        adjust = true;
     }
 
     public Inputfield(double x,double y,double w,double h,String text){
@@ -26,57 +30,111 @@ public class Inputfield extends Interactable {
         width=w;
         height=h;
         t=text;
-        this.errorX = x+5;
-        this.errorY = y+height-5;
+        maxHeight = 0;
+        maxHeightReached = true;
+        maxWidth = width;
     }
 
     public void draw(DrawTool d){
-        d.setCurrentColor(Color.GRAY);
-        d.drawFilledRectangle(x,y,width,height);
+
+        //Recangel
         d.setCurrentColor(Color.BLACK);
-        d.drawRectangle(x,y,width,height);
-        if(s.equals("")){
-            d.setCurrentColor(Color.DARK_GRAY);
+        stringList.toFirst();
+        if(maxWidthReached && stringList.hasAccess()){
+            int i = -1;
+            while(stringList.hasAccess()){
+                i++;
+                stringList.next();
+            }
+            if(height+i*15 > maxHeight) maxHeightReached = true;
+            d.drawRectangle(x,y,maxWidth,height+i*15);
+            d.setCurrentColor(Color.GRAY);
+            d.drawFilledRectangle(x,y,maxWidth,height+i*15);
+        }else{
+            d.drawRectangle(x,y,width,height);
+            d.setCurrentColor(Color.GRAY);
+            d.drawFilledRectangle(x,y,width,height);
+        }
+
+        //Text
+        d.setCurrentColor(Color.BLACK);
+        if(stringList.isEmpty()){
             d.drawText(x+5,y+height-5,t);
         }else{
-            d.drawText(x+5,y+height-5,s);
-        }
-        if(showError){
-            d.setCurrentColor(Color.RED);
-            d.drawText(errorX,errorY,"You can only use up to 18 characters!");
+            stringList.toFirst();
+            for(int i=0; stringList.hasAccess();i++){
+                d.drawText(x+5,y+height-5+i*15,stringList.getContent().getString());
+                stringList.next();
+            }
+
         }
     }
 
     public void clear(){
-        s="";
-        showError = false;
+        stringList.toFirst();
+        while(stringList.hasAccess()){
+            stringList.remove();
+        }
     }
 
     public void add(char c){
-        if(s.toCharArray().length < 18){
-            s+=c;
+        stringList.toLast();
+        if(stringList.hasAccess()){
+            if(stringList.getContent().getSize() >= maxWidth){
+                if(!maxHeightReached){
+                    stringList.append(new StringRow(""+c));
+                }
+                maxWidthReached = true;
+            }else{
+                stringList.getContent().addChar(c);
+                if(adjust) {
+                    stringList.toFirst();
+                    if (stringList.getContent().getSize() > minWidth) {
+                        width = stringList.getContent().getSize();
+                    } else {
+                        width = minWidth;
+                    }
+                }
+            }
         }else{
-            showError = true;
+            stringList.append(new StringRow(""+c));
         }
-
     }
 
     public void setText(String t){
-        this.s=t;
+        stringList.toFirst();
+        while(stringList.hasAccess()){
+            stringList.remove();
+        }
+        this.t = t;
     }
 
     public void clearLast(){
-        char[] c=s.toCharArray();
-        clear();
-        showError = false;
-        for(int i=0;i<c.length-1;i++) add(c[i]);
+        stringList.toLast();
+        if(stringList.hasAccess() && stringList.getContent().getString().equals("")) {
+            stringList.remove();
+            maxHeightReached = false;
+        }
+        if(stringList.hasAccess()) {
+            char[] c = stringList.getContent().getString().toCharArray();
+            stringList.getContent().setString("");
+            for (int i = 0; i < c.length - 1; i++) add(c[i]);
+            if(stringList.getContent().getString().equals("")) stringList.remove();
+        }
     }
 
     public boolean clickOn(double x,double y){
         return x > this.x && y > this.y && x < this.x + width && y < this.y + height;
     }
 
+
     public String getContent(){
-        return s;
+        StringBuilder s = new StringBuilder();
+        stringList.toFirst();
+        while(stringList.hasAccess()){
+            s.append(stringList.getContent().getString());
+            stringList.next();
+        }
+        return s.toString();
     }
 }
