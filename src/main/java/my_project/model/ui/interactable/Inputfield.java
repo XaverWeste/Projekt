@@ -26,7 +26,6 @@ public class Inputfield extends Interactable {
             font = new Font("Serif", Font.PLAIN, 13);
         }
 
-
         public void addChar(char c){
             string += c;
         }
@@ -75,9 +74,7 @@ public class Inputfield extends Interactable {
     }
 
     public void draw(DrawTool d){
-
-        //Recangel
-        d.setCurrentColor(Color.BLACK);
+        d.setCurrentColor(pc.getTheme().getLine());
         stringList.toFirst();
         if(maxWidthReached && stringList.hasAccess()){
             int i = -1;
@@ -93,14 +90,13 @@ public class Inputfield extends Interactable {
             currentHeight = height;
         }
         d.drawRectangle(x,y,currentWidth, currentHeight);
-        d.setCurrentColor(Color.GRAY);
+        d.setCurrentColor(pc.getTheme().getButton());
         d.drawFilledRectangle(x,y,currentWidth, currentHeight);
-
-        //Text
-        d.setCurrentColor(Color.BLACK);
         if(stringList.isEmpty()){
+            d.setCurrentColor(pc.getTheme().getBgText());
             d.drawText(x+5,y+height-5,t);
         }else{
+            d.setCurrentColor(pc.getTheme().getText());
             stringList.toFirst();
             for(int i=0; stringList.hasAccess();i++){
                 d.drawText(x+5,y+height-5+i*15,stringList.getContent().getString());
@@ -111,7 +107,7 @@ public class Inputfield extends Interactable {
     }
 
     public void highlight(DrawTool d){
-        d.setCurrentColor(Color.red);
+        d.setCurrentColor(pc.getTheme().getMark());
         d.drawRectangle(x,y,currentWidth, currentHeight);
     }
 
@@ -144,14 +140,6 @@ public class Inputfield extends Interactable {
         }else{
             stringList.append(new StringRow(""+c));
         }
-    }
-
-    public void setText(String t){
-        stringList.toFirst();
-        while(stringList.hasAccess()){
-            stringList.remove();
-        }
-        this.t = t;
     }
 
     public void setStringList(String s){

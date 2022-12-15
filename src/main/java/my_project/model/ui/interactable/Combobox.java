@@ -29,20 +29,22 @@ public class Combobox extends Interactable{
     }
 
     public void draw(DrawTool d){
-        d.setCurrentColor(Color.GRAY);
+        d.setCurrentColor(pc.getTheme().getButton());
         d.drawFilledRectangle(x,y,width,height);
-        d.setCurrentColor(Color.BLACK);
+        d.setCurrentColor(pc.getTheme().getLine());
         d.drawRectangle(x,y,width,height);
+        d.setCurrentColor(pc.getTheme().getText());
         if(current.equals("")) d.drawText(x+5,y+height-5,text);
         else d.drawText(x+5, y+height-5, current);
     }
 
     public void drawOptions(DrawTool d){
-        d.setCurrentColor(Color.GRAY);
-        if(ismarked) d.drawFilledRectangle(x,y+height,width,20*options.length);
-        d.setCurrentColor(Color.BLACK);
         if(ismarked){
+            d.setCurrentColor(pc.getTheme().getButton());
+            d.drawFilledRectangle(x,y+height,width,20*options.length);
+            d.setCurrentColor(pc.getTheme().getLine());
             d.drawRectangle(x,y+height,width,20*options.length);
+            d.setCurrentColor(pc.getTheme().getText());
             for(int i=0;i< options.length;i++) d.drawText(x+5,y+height*2+20*i-5,options[i]);
         }
     }

@@ -3,8 +3,6 @@ package my_project.model.ui.interactable;
 import KAGO_framework.view.DrawTool;
 import my_project.control.ProgramController;
 
-import java.awt.*;
-
 public class TextField extends Interactable{
 
     private String t;
@@ -17,7 +15,7 @@ public class TextField extends Interactable{
     }
 
     public void draw(DrawTool d){
-        d.setCurrentColor(Color.BLACK);
+        d.setCurrentColor(pc.getTheme().getText());
         d.drawText(x,y,t);
     }
 

@@ -27,11 +27,11 @@ public class Taskfield extends Interactable{
 
     public void draw(DrawTool d){
         if(t.size()>0){
-            d.setCurrentColor(Color.GRAY);
+            d.setCurrentColor(pc.getTheme().getButton());
             for (int i = 0; i < t.size(); i++) {
                 d.drawFilledRectangle(x, y + 30 * i, width, height);
             }
-            d.setCurrentColor(Color.BLACK);
+            d.setCurrentColor(pc.getTheme().getLine());
             for (int i = 0; i < t.size(); i++) {
                 d.drawRectangle(x, y + 30 * i, width, height);
                 d.drawText(x + 5, y + height + 30 * i - 5, t.get(i).getName());
