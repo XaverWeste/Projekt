@@ -20,7 +20,7 @@ public class ProjectOverviewScreen extends Screen{
         interactables.add(new Button(300, 100, 200, 20, "erstelle ein neues Projekt", this::createProjekt));
         interactables.add(new Button(880,10,100,20,"Log out",this::logout));
         int i=0;
-        for(Projekt p:pc.getProjekts()){
+        for(Projekt p:pc.getYourProjekts()){
             i++;
             double[] c=getC(i);
             interactables.add(new Button(c[0], c[1], 350, 20, p.getName(),()->selectProjekt(p)));

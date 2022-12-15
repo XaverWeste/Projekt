@@ -19,7 +19,6 @@ public abstract class Screen extends GraphicalObject {
     protected Inputfield activeIf=null;
     private int[] allowedNumber;
     private int[] allowedLetter;
-    private boolean shift = false;
 
     public Screen(ProgramController pc){
         allowedNumber = new int[]{48,49,50,51,52,53,54,55,56,57,}; //Zahlen
@@ -53,7 +52,7 @@ public abstract class Screen extends GraphicalObject {
         }
     }
 
-    public void keyPressed(int key) {
+    public void keyPressed(int key,boolean shift) {
         if(activeIf!=null){
             switch(key){
                 case KeyEvent.VK_BACK_SPACE-> activeIf.clearLast(); //Delete
@@ -77,9 +76,6 @@ public abstract class Screen extends GraphicalObject {
     }
 
     public void keyReleased(int key){
-        if(key == KeyEvent.VK_CAPS_LOCK){
-            shift = !shift;
-        }
 
     }
 }
