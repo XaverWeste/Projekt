@@ -26,9 +26,15 @@ public class SignUpScreen extends Screen{
         String username="";
         String password="";
         Interactable interactable=interactables.get(0);
-        if(interactable instanceof Inputfield) username=((Inputfield) interactable).getContent();
+        if(interactable instanceof Inputfield){
+            username=((Inputfield) interactable).getContent();
+            ((Inputfield) interactable).clear();
+        }
         interactable=interactables.get(1);
-        if(interactable instanceof Inputfield) password=((Inputfield) interactable).getContent();
+        if(interactable instanceof Inputfield){
+            password=((Inputfield) interactable).getContent();
+            ((Inputfield) interactable).clear();
+        }
         if(pc.signUp(username,password)){
             pc.setUpOverviewScreen();
             pc.showScene(3);

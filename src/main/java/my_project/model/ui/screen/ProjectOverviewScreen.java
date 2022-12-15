@@ -19,7 +19,7 @@ public class ProjectOverviewScreen extends Screen{
         interactables.add(new Inputfield(50,100,200,20,"Projektname",pc));
         interactables.add(new Button(300, 100, 200, 20, "erstelle ein neues Projekt",pc, this::createProjekt));
         interactables.add(new Button(880,10,100,20,"Log out",pc,this::logout));
-        interactables.add(new Button(550,75,200,20,"Suche Projekte", this::searchProjekt));
+        interactables.add(new Button(550,75,200,20,"Suche Projekte",pc, this::searchProjekt));
         int i=0;
         for(Projekt p:pc.getYourProjekts()){
             i++;

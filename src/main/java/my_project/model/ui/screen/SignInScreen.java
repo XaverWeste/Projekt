@@ -28,9 +28,15 @@ public class SignInScreen extends Screen{
         String username="";
         String password="";
         Interactable interactable=interactables.get(0);
-        if(interactable instanceof Inputfield) username=((Inputfield) interactable).getContent();
+        if(interactable instanceof Inputfield){
+            username=((Inputfield) interactable).getContent();
+            ((Inputfield) interactable).clear();
+        }
         interactable=interactables.get(1);
-        if(interactable instanceof Inputfield) password=((Inputfield) interactable).getContent();
+        if(interactable instanceof Inputfield){
+            password=((Inputfield) interactable).getContent();
+            ((Inputfield) interactable).clear();
+        }
         int i=pc.checkLogIn(username,password);
         if(i>=0){
             pc.setUser(new User(i,username));
