@@ -18,8 +18,8 @@ public class ProjectListScreen extends Screen{
 
     @Override
     void setUp() {
-        interactables.add(new Inputfield(50,50,200,20,"name"));
-        interactables.add(new Button(250, 50, 50, 20, "Search", this::searchProjekt));
+        interactables.add(new Inputfield(50,50,200,20,"name",pc));
+        interactables.add(new Button(250, 50, 50, 20, "Search",pc, this::searchProjekt));
     }
 
 
@@ -28,7 +28,7 @@ public class ProjectListScreen extends Screen{
     public void searchProjekt() {
         projektList = pc.getProjekts(getSearchKey());
         for (int i = 0; i < projektList.length - 1; i++) {
-            interactables.add(new Button(x, y, 50, 20, projektList[i].getName(), this::applyToProject));
+            interactables.add(new Button(x, y, 50, 20, projektList[i].getName(),pc, this::applyToProject));
             y += 30;
             if (y > 600) {
                 y = 200;

@@ -116,7 +116,7 @@ public class ProgramController {
         v.showScene(3);
     }
 
-    public Projekt[] getProjekts(){
+    public Projekt[] getProjekts(String key){
         databaseController.executeStatement("SELECT Name FROM X2022_Project_Project WHERE Invisible = 'false';");
         String[][] data=databaseController.getCurrentQueryResult().getData();
         Projekt[] projekts = new Projekt[data.length];
