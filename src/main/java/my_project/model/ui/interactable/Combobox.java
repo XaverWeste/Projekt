@@ -29,18 +29,23 @@ public class Combobox extends Interactable{
     public void draw(DrawTool d){
         d.setCurrentColor(Color.GRAY);
         d.drawFilledRectangle(x,y,width,height);
-        if(ismarked) d.drawFilledRectangle(x,y+height,width,20*options.length);
         d.setCurrentColor(Color.BLACK);
         d.drawRectangle(x,y,width,height);
         if(current.equals("")) d.drawText(x+5,y+height-5,text);
         else d.drawText(x+5, y+height-5, current);
+    }
+
+    public void drawOptions(DrawTool d){
+        d.setCurrentColor(Color.GRAY);
+        if(ismarked) d.drawFilledRectangle(x,y+height,width,20*options.length);
+        d.setCurrentColor(Color.BLACK);
         if(ismarked){
             d.drawRectangle(x,y+height,width,20*options.length);
             for(int i=0;i< options.length;i++) d.drawText(x+5,y+height*2+20*i-5,options[i]);
         }
     }
 
-    public void clickOn(double x,double y){
+    public boolean clickOn(double x,double y){
         if(x>this.x&&y>this.y&&x<this.x+width&&y<this.y+height+20*options.length){
             if(!ismarked&&y<this.y+height) ismarked=true;
             else if(y<this.y+height) ismarked=false;
@@ -49,8 +54,10 @@ public class Combobox extends Interactable{
                 ismarked=false;
                 oc.execute();
             }
+            return true;
         }else{
             ismarked=false;
+            return false;
         }
     }
 

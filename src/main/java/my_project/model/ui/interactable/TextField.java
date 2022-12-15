@@ -22,4 +22,9 @@ public class TextField extends Interactable{
     public void setText(String text){
         t=text;
     }
+
+    @Override
+    public boolean clickOn(double x, double y) {
+        return false;
+    }
 }
