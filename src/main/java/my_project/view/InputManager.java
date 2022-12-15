@@ -20,12 +20,11 @@ public class InputManager extends InteractiveGraphicalObject {
     public void keyReleased(int key) {
         if(key == KeyEvent.VK_CAPS_LOCK){
             shift = !shift;
-        }
+        }else s.keyReleased(key,shift);
     }
 
     @Override
     public void keyPressed(int key) {
-        s.keyPressed(key,shift);
     }
 
     @Override

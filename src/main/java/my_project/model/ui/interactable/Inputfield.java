@@ -3,9 +3,45 @@ package my_project.model.ui.interactable;
 import KAGO_framework.view.DrawTool;
 
 import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
+
 import KAGO_framework.model.abitur.datenstrukturen.List;
 
 public class Inputfield extends Interactable {
+
+    public class StringRow {
+
+        private AffineTransform affinetransform;
+        private FontRenderContext frc;
+        private Font font;
+        private String string;
+
+        public StringRow(String string){
+            this.string = string;
+
+            affinetransform = new AffineTransform();
+            frc = new FontRenderContext(affinetransform,true,true);
+            font = new Font("Serif", Font.PLAIN, 13);
+        }
+
+
+        public void addChar(char c){
+            string += c;
+        }
+
+        public double getSize(){
+            return font.getStringBounds(string,frc).getWidth();
+        }
+
+        public String getString() {
+            return string;
+        }
+
+        public void setString(String string) {
+            this.string = string;
+        }
+    }
 
     private List<StringRow> stringList = new List();
     private String t;

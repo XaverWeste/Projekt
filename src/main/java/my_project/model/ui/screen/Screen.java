@@ -58,10 +58,13 @@ public abstract class Screen extends GraphicalObject {
     }
 
     public void keyPressed(int key,boolean shift) {
+
+    }
+
+    public void keyReleased(int key,boolean shift){
         if(activeIf!=null){
-            switch(key){
-                case KeyEvent.VK_BACK_SPACE-> activeIf.clearLast(); //Delete
-                case KeyEvent.VK_ENTER -> activeIf=null;       //Enter
+            if (key == KeyEvent.VK_BACK_SPACE) {
+                activeIf.clearLast(); //Delete
             }
             for(int i = 0; i < allowedNumber.length-1; i++){
                 if(key == allowedNumber[i]){
@@ -78,9 +81,5 @@ public abstract class Screen extends GraphicalObject {
                 }
             }
         }
-    }
-
-    public void keyReleased(int key){
-
     }
 }

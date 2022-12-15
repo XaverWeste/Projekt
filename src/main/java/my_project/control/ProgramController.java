@@ -26,7 +26,7 @@ public class ProgramController {
         v = viewController;
         databaseController = new DatabaseController();
         databaseController.connect();
-        //testsql("SELECT * FROM X2022_Project_WorkingOn WHERE UserID=1 AND ProjectID=1");
+        //testsql("SELECT ProjectID FROM X2022_Project_WorkingOn WHERE UserID=1 AND Joined = 'true'");
         setUpScreens();
     }
 
@@ -129,7 +129,6 @@ public class ProgramController {
     }
 
     public void updateTask(Task t){
-        //databaseController.executeStatement("UPDATE X2022_Poject_Task set Status=" + getStatus(t.getStatus()));
         databaseController.executeStatement("UPDATE X2022_Project_Task SET Status="+getStatus(t.getStatus())+",Deadline='"+t.getDeadline()+"',ProcessedFrom='"+t.getPF()+"',NAME='"+t.getName()+"' WHERE TaskID="+t.getId());
     }
 
