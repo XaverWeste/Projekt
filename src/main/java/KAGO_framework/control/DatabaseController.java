@@ -18,7 +18,7 @@ public class DatabaseController {
     /**
      * Erzeugt ein Database-Controller-Objekt und richtet es für die Verbindung mit einer beliebigen SQL-Datenbank ein.
      * @param serverIP die IP des SQL-Servers
-     * @param port der gewünschte Port (Standard für SQL ist 1433
+     * @param port der gewünschte Port (Standard für SQL ist 1433)
      * @param database der Name der Datenbank
      * @param user der Nutzername
      * @param password das Passwort für den genannten Nutzer

@@ -1,6 +1,7 @@
 package my_project.model.ui.interactable;
 
 import KAGO_framework.view.DrawTool;
+import my_project.control.ProgramController;
 import my_project.model.Task;
 import my_project.model.ui.screen.ProjektScreen;
 
@@ -12,10 +13,12 @@ public class Taskfield extends Interactable{
 
     private ArrayList<Task> t=new ArrayList<>();
     private final ProjektScreen screen;
+    private final ProgramController pc;
 
-    public Taskfield(ProjektScreen s,Task...task) {
+    public Taskfield(ProjektScreen s, ProgramController pc, Task...task) {
         screen=s;
-        t.add(new Task(-1,"new Task","",Task.TaskStatus.unknown,-1));
+        this.pc=pc;
+        t.add(new Task(-1,"new Task","",Task.TaskStatus.unknown,pc.getUser().getId()));
         t.addAll(Arrays.asList(task));
         x=10;
         y=150;
@@ -56,7 +59,7 @@ public class Taskfield extends Interactable{
 
     public void setTasks(Task...task){
         t=new ArrayList<>();
-        t.add(new Task(-1,"new Task","",Task.TaskStatus.unknown,-1));
+        t.add(new Task(-1,"new Task","",Task.TaskStatus.unknown,pc.getUser().getId()));
         t.addAll(Arrays.asList(task));
         if(t.size()>0) screen.setUpTask(t.get(0));
     }

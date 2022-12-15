@@ -34,7 +34,7 @@ public class ProjectOverviewScreen extends Screen{
             if(!s.equals("")){
                 pc.joinProject(Integer.parseInt(s));
                 ((Inputfield) i).clear();
-                pc.showScene(4);
+                this.resetUp();
             }
         }
     }
@@ -46,7 +46,7 @@ public class ProjectOverviewScreen extends Screen{
             if(!s.equals("")){
                 pc.createProject(s);
                 ((Inputfield) i).clear();
-                pc.showScene(4);
+                this.resetUp();
             }
         }
     }

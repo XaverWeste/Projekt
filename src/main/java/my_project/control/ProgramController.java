@@ -26,7 +26,7 @@ public class ProgramController {
         v = viewController;
         databaseController = new DatabaseController();
         databaseController.connect();
-        //testsql("UPDATE TABLE X2022_Project_User ALTER COLUMN Password varchar(255)");
+        //testsql("SELECT * FROM X2022_Project_WorkingOn WHERE UserID=1 AND ProjectID=1");
         setUpScreens();
     }
 
@@ -61,6 +61,27 @@ public class ProgramController {
     }
 
     public void startProgram() {
+    }
+
+    public String[] getCollaborators(){
+        databaseController.executeStatement("SELECT UserID FROM X2022_Project_WorkingOn WHERE ProjectID="+user.getProjekt().getProjektID());
+        String[] s=new String[databaseController.getCurrentQueryResult().getRowCount()];
+        String[][] data=databaseController.getCurrentQueryResult().getData();
+        for(int i=0;i<s.length;i++) {
+            databaseController.executeStatement("SELECT Username FROM X2022_Project_User WHERE UserID="+data[i][0]);
+            s[i]=databaseController.getCurrentQueryResult().getData()[0][0];
+        }
+        return s;
+    }
+
+    public int getUserId(String name){
+        databaseController.executeStatement("SELECT UserID FROM X2022_Project_User WHERE Username='"+name+"'");
+        return Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0]);
+    }
+
+    public String getUsername(int id){
+        databaseController.executeStatement("SELECT Username FROM X2022_Project_User WHERE UserID="+id);
+        return databaseController.getCurrentQueryResult().getData()[0][0];
     }
 
     public void leaveProjekt(){
@@ -108,6 +129,7 @@ public class ProgramController {
     }
 
     public void updateTask(Task t){
+        //databaseController.executeStatement("UPDATE X2022_Poject_Task set Status=" + getStatus(t.getStatus()));
         databaseController.executeStatement("UPDATE X2022_Project_Task SET Status="+getStatus(t.getStatus())+",Deadline='"+t.getDeadline()+"',ProcessedFrom='"+t.getPF()+"',NAME='"+t.getName()+"' WHERE TaskID="+t.getId());
     }
 
