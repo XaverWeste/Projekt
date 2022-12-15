@@ -30,7 +30,9 @@ public class Button extends Interactable {
         d.drawText(x+5,y+height-5,s);
     }
 
-    public void clickOn(double x,double y){
-        if(x>this.x&&y>this.y&&x<this.x+width&&y<this.y+height) oc.execute();
+    public boolean clickOn(double x,double y){
+        boolean b=x>this.x&&y>this.y&&x<this.x+width&&y<this.y+height;
+        if(b) oc.execute();
+        return b;
     }
 }

@@ -22,7 +22,7 @@ public abstract class Screen extends GraphicalObject {
 
     public Screen(ProgramController pc){
         allowedNumber = new int[]{48,49,50,51,52,53,54,55,56,57,}; //Zahlen
-        allowedLetter = new int[]{  65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90, //Buchstaben-Groß
+        allowedLetter = new int[]{ 65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90, //Buchstaben-Groß
                 97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122}; //Buchstaben-Klein
         this.pc = pc;
         setUp();
@@ -40,15 +40,20 @@ public abstract class Screen extends GraphicalObject {
         d.setCurrentColor(Color.DARK_GRAY);
         d.drawFilledRectangle(0,0, Config.WINDOW_WIDTH,Config.WINDOW_HEIGHT);
         for(Interactable i:interactables) i.draw(d);
+        for(Interactable i:interactables) if(i instanceof Combobox) ((Combobox) i).drawOptions(d);
         if(activeIf!=null) activeIf.highlight(d);
     }
 
     public void mouseReleased(MouseEvent e){
         for(Interactable i:interactables){
-            if(i instanceof Button) ((Button) i).clickOn(e.getX(),e.getY());
-            else if(i instanceof Combobox) ((Combobox) i).clickOn(e.getX(),e.getY());
-            else if(i instanceof Taskfield) ((Taskfield) i).clickOn(e.getX(),e.getY());
-            else if(i instanceof Inputfield) if(((Inputfield) i).clickOn(e.getX(),e.getY())) activeIf=(Inputfield)i;
+            if(!(i instanceof Inputfield)){
+                if(i.clickOn(e.getX(),e.getY())) break;
+            }else{
+                if(i.clickOn(e.getX(),e.getY())){
+                    activeIf=(Inputfield)i;
+                    break;
+                }
+            }
         }
     }
 

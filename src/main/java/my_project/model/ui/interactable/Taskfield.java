@@ -50,11 +50,13 @@ public class Taskfield extends Interactable{
         }
     }
 
-    public void clickOn(double x,double y){
+    public boolean clickOn(double x,double y){
         if(x>this.x&&y>this.y&&x<this.x+width){
             int i=(int) ((y-this.y)/30);
             if(i<=t.size()) screen.setUpTask(t.get(i));
+            return true;
         }
+        return false;
     }
 
     public void setTasks(Task...task){
