@@ -19,7 +19,7 @@ public class ProgramController {
     private final ViewController v;
     private final DatabaseController databaseController;
     private User user;
-    private Screen po,p;
+    private Screen po,p,pl;
 
     public ProgramController(ViewController viewController){
         v = viewController;
@@ -45,6 +45,12 @@ public class ProgramController {
         this.p=new ProjektScreen(this);
         setUpScreen(this.p,4);
         v.showScene(4);
+    }
+
+    public void setUpListScreen(){
+        this.pl=new ProjectListScreen(this);
+        setUpScreen(this.pl,5);
+        v.showScene(5);
     }
 
     private void setUpScreen(Screen s,int scene){
@@ -94,8 +100,8 @@ public class ProgramController {
         v.showScene(3);
     }
 
-    public Projekt[] getProjekts(){
-        databaseController.executeStatement("SELECT Name FROM X2022_Project_Project WHERE Invisible = 'false';");
+    public Projekt[] getProjekts(String name){
+        databaseController.executeStatement("SELECT ProjectID,Name FROM X2022_Project_Project WHERE Invisible = 'false' AND Name = '%" + name + "%';");
         String[][] data=databaseController.getCurrentQueryResult().getData();
         Projekt[] projekts = new Projekt[data.length];
         for(int i = 0; i<data.length- 1; i++){
