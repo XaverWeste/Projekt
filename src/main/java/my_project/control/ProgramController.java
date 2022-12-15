@@ -75,7 +75,7 @@ public class ProgramController {
     }
 
     public int getUserId(String name){
-        databaseController.executeStatement("SELECT UserID FROM X2022_Project_User WHERE Username="+name);
+        databaseController.executeStatement("SELECT UserID FROM X2022_Project_User WHERE Username='"+name+"'");
         return Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0]);
     }
 
@@ -141,7 +141,6 @@ public class ProgramController {
         databaseController.executeStatement("SELECT * FROM X2022_Project_WorkingOn WHERE UserID="+user.getId()+" AND ProjectID="+id);
         if(databaseController.getCurrentQueryResult().getRowCount()==0) databaseController.executeStatement("INSERT INTO X2022_Project_WorkingOn VALUES ("+user.getId()+", '"+id+"')");
     }
-
 
     public int checkLogIn(String username,String password){
         databaseController.executeStatement("SELECT * FROM X2022_Project_User WHERE Username = '"+username+"';");

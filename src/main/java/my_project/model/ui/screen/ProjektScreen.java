@@ -37,7 +37,7 @@ public class ProjektScreen extends Screen{
             switch(((Combobox) i).getSelected()){
                 case "status" -> t.setTasks(pc.getTasks("Status"));
                 case "deadline" -> t.setTasks(pc.getTasks("Deadline"));
-                case "name" -> t.setTasks(pc.getTasks("Name"));
+                default -> t.setTasks(pc.getTasks("Name"));
             }
         }
     }
