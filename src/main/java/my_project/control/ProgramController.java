@@ -37,8 +37,9 @@ public class ProgramController {
 
     private void setUpThemes(){
         themes.put("Dark",new Theme(Color.DARK_GRAY,Color.BLACK,Color.GRAY,Color.BLACK,Color.DARK_GRAY,Color.RED));
-        themes.put("Light",new Theme(Color.WHITE,Color.BLACK,Color.GRAY,Color.BLACK,Color.DARK_GRAY,Color.ORANGE));
-        setTheme("Dark");
+        themes.put("Light",new Theme(Color.WHITE,Color.BLACK,Color.LIGHT_GRAY,Color.BLACK,Color.GRAY,Color.ORANGE));
+        themes.put("Rainbow",new Theme(Color.WHITE,Color.RED,Color.YELLOW,Color.GREEN,Color.BLUE,Color.MAGENTA));
+        setTheme("Rainbow");
     }
 
     public void setTheme(String name){
@@ -175,10 +176,12 @@ public class ProgramController {
     public int checkLogIn(String username,String password){
         databaseController.executeStatement("SELECT * FROM X2022_Project_User WHERE Username = '"+username+"';");
         String[][] data=databaseController.getCurrentQueryResult().getData();
-        String salt=data[0][3];
-        if(hash(password.toCharArray(),hexToBytes(salt)).equals(data[0][2])){
-            databaseController.executeStatement("SELECT UserID FROM X2022_Project_User WHERE Username = '"+username+"';");
-            return Integer.parseInt(data[0][0]);
+        if(Arrays.deepToString(databaseController.getCurrentQueryResult().getData()).equals("[]")){
+            String salt = data[0][3];
+            if (hash(password.toCharArray(), hexToBytes(salt)).equals(data[0][2])) {
+                databaseController.executeStatement("SELECT UserID FROM X2022_Project_User WHERE Username = '" + username + "';");
+                return Integer.parseInt(data[0][0]);
+            }
         }
         return -1;
     }
