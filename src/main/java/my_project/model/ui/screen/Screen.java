@@ -32,7 +32,7 @@ public abstract class Screen extends GraphicalObject {
     }
 
     public void draw(DrawTool d){
-        d.setCurrentColor(Color.DARK_GRAY);
+        d.setCurrentColor(pc.getTheme().getBackground());
         d.drawFilledRectangle(0,0, Config.WINDOW_WIDTH,Config.WINDOW_HEIGHT);
         for(Interactable i:interactables) i.draw(d);
         for(Interactable i:interactables) if(i instanceof Combobox) ((Combobox) i).drawOptions(d);

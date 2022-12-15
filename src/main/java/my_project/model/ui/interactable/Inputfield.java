@@ -7,6 +7,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 
 import KAGO_framework.model.abitur.datenstrukturen.List;
+import my_project.control.ProgramController;
 
 public class Inputfield extends Interactable {
 
@@ -48,7 +49,8 @@ public class Inputfield extends Interactable {
     private double maxWidth, maxHeight, minWidth, currentHeight, currentWidth;
     private boolean maxWidthReached = false, maxHeightReached = false, adjust = false;
 
-    public Inputfield(double x, double y, double minWidth, double h, String text, double maxWidth, double maxHeight){
+    public Inputfield(double x, double y, double minWidth, double h, String text, double maxWidth, double maxHeight, ProgramController pc){
+        super(pc);
         this.x=x;
         this.y=y;
         width = this.minWidth = minWidth;
@@ -60,7 +62,8 @@ public class Inputfield extends Interactable {
         adjust = true;
     }
 
-    public Inputfield(double x,double y,double w,double h,String text){
+    public Inputfield(double x,double y,double w,double h,String text, ProgramController pc){
+        super(pc);
         this.x=x;
         this.y=y;
         width=w;

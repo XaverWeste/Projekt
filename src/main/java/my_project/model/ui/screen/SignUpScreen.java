@@ -16,10 +16,10 @@ public class SignUpScreen extends Screen{
 
     @Override
     void setUp() {
-        interactables.add(new Inputfield(300,Config.WINDOW_HEIGHT/2-30,400,20,"username"));
-        interactables.add(new Inputfield(300,Config.WINDOW_HEIGHT/2,400,20,"password"));
-        interactables.add(new Button(500, Config.WINDOW_HEIGHT / 2 + 30, 200, 20, "Sign up", this::checkSignUp));
-        interactables.add(new Button(10,10,50,20,"zurück",()->pc.showScene(0)));
+        interactables.add(new Inputfield(300,Config.WINDOW_HEIGHT/2-30,400,20,"username",pc));
+        interactables.add(new Inputfield(300,Config.WINDOW_HEIGHT/2,400,20,"password",pc));
+        interactables.add(new Button(500, Config.WINDOW_HEIGHT / 2 + 30, 200, 20, "Sign up",pc, this::checkSignUp));
+        interactables.add(new Button(10,10,50,20,"zurück",pc,()->pc.showScene(0)));
     }
 
     public void checkSignUp(){

@@ -1,6 +1,7 @@
 package my_project.model.ui.interactable;
 
 import KAGO_framework.view.DrawTool;
+import my_project.control.ProgramController;
 
 import java.awt.*;
 
@@ -8,7 +9,8 @@ public class TextField extends Interactable{
 
     private String t;
 
-    public TextField(double x, double y, String t){
+    public TextField(double x, double y, String t, ProgramController pc){
+        super(pc);
         this.t=t;
         this.x=x;
         this.y=y;

@@ -1,6 +1,7 @@
 package my_project.model.ui.interactable;
 
 import KAGO_framework.view.DrawTool;
+import my_project.control.ProgramController;
 
 import java.awt.*;
 
@@ -13,7 +14,8 @@ public class Button extends Interactable {
     private final String s;
     private final OnClick oc;
 
-    public Button(double x, double y, double w, double h, String t, OnClick oc){
+    public Button(double x, double y, double w, double h, String t, ProgramController pc, OnClick oc){
+        super(pc);
         this.x=x;
         this.y=y;
         width=w;
@@ -23,7 +25,7 @@ public class Button extends Interactable {
     }
 
     public void draw(DrawTool d){
-        d.setCurrentColor(Color.GRAY);
+        d.setCurrentColor(Color.DARK_GRAY);
         d.drawFilledRectangle(x,y,width,height);
         d.setCurrentColor(Color.BLACK);
         d.drawRectangle(x,y,width,height);

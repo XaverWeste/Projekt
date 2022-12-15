@@ -17,18 +17,18 @@ public class ProjektScreen extends Screen{
     @Override
     void setUp() {
         Projekt p=pc.getUser().getProjekt();
-        interactables.add(new TextField(10,20,"Projektname: "+p.getName()+" ,ProjektID: "+p.getProjektID()));
+        interactables.add(new TextField(10,20,"Projektname: "+p.getName()+" ,ProjektID: "+p.getProjektID(),pc));
         t=new Taskfield(this,pc);
         interactables.add(t);
-        interactables.add(new Combobox(10, 100, 200, 20, "sort by", this::sortBy,"deadline","status","name"));
-        interactables.add(new Button(800, 100, 100, 20, "save",this::save));
-        interactables.add(new Inputfield(300,130,450,20,"name"));
-        interactables.add(new Inputfield(300,160,450,20,"deadline"));
-        interactables.add(new Combobox(300, 190, 450, 20, "status", this::setStatus,"notStartedYet","workingOn","finished","canceled","unknown"));
-        interactables.add(new Combobox(300, 220, 450, 20, "processed from", this::setStatus,pc.getCollaborators()));
+        interactables.add(new Combobox(10, 100, 200, 20, "sort by", this::sortBy,pc,"deadline","status","name"));
+        interactables.add(new Button(800, 100, 100, 20, "save",pc,this::save));
+        interactables.add(new Inputfield(300,130,450,20,"name",pc));
+        interactables.add(new Inputfield(300,160,450,20,"deadline",pc));
+        interactables.add(new Combobox(300, 190, 450, 20, "status", this::setStatus,pc,"notStartedYet","workingOn","finished","canceled","unknown"));
+        interactables.add(new Combobox(300, 220, 450, 20, "processed from", this::setStatus,pc,pc.getCollaborators()));
         t.setTasks(pc.getTasks("Name"));
-        interactables.add(new Button(880,10,100,20,"leave Project",this::leaveProjekt));
-        interactables.add(new Button(880,40,100,20,"close Project",this::closeProject));
+        interactables.add(new Button(880,10,100,20,"leave Project",pc,this::leaveProjekt));
+        interactables.add(new Button(880,40,100,20,"close Project",pc,this::closeProject));
     }
 
     private void sortBy(){

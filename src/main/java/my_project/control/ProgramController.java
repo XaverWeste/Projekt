@@ -5,28 +5,44 @@ import KAGO_framework.control.ViewController;
 import my_project.model.Projekt;
 import my_project.model.Task;
 import my_project.model.User;
+import my_project.model.ui.Theme;
 import my_project.model.ui.screen.*;
 import my_project.view.InputManager;
 
+import java.awt.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class ProgramController {
 
     private final ViewController v;
     private final DatabaseController databaseController;
     private User user;
+    private HashMap<String,Theme> themes=new HashMap<>();
+    private Theme activeT=null;
     private Screen po,p,pl;
 
     public ProgramController(ViewController viewController){
         v = viewController;
         databaseController = new DatabaseController();
         databaseController.connect();
+        setUpThemes();
         //testsql("SELECT ProjectID FROM X2022_Project_WorkingOn WHERE UserID=1 AND Joined = 'true'");
         setUpScreens();
+    }
+
+    private void setUpThemes(){
+        themes.put("Dark",new Theme(Color.DARK_GRAY,Color.BLACK,Color.GRAY,Color.BLACK));
+        themes.put("Light",new Theme(Color.WHITE,Color.BLACK,Color.GRAY,Color.BLACK));
+        setTheme("Light");
+    }
+
+    public void setTheme(String name){
+        if(themes.containsKey(name)) activeT=themes.get(name);
     }
 
     private void setUpScreens(){
@@ -100,8 +116,8 @@ public class ProgramController {
         v.showScene(3);
     }
 
-    public Projekt[] getProjekts(String name){
-        databaseController.executeStatement("SELECT ProjectID,Name FROM X2022_Project_Project WHERE Invisible = 'false' AND Name = '%" + name + "%';");
+    public Projekt[] getProjekts(){
+        databaseController.executeStatement("SELECT Name FROM X2022_Project_Project WHERE Invisible = 'false';");
         String[][] data=databaseController.getCurrentQueryResult().getData();
         Projekt[] projekts = new Projekt[data.length];
         for(int i = 0; i<data.length- 1; i++){
@@ -273,6 +289,10 @@ public class ProgramController {
             case 4 -> p.resetUp();
         }
         v.showScene(i);
+    }
+
+    public Theme getTheme(){
+        return activeT;
     }
 
     public void updateProgram(double dt){

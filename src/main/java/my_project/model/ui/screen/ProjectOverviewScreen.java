@@ -14,17 +14,17 @@ public class ProjectOverviewScreen extends Screen{
 
     @Override
     void setUp() {
-        interactables.add(new Inputfield(50,50,200,20,"ProjektID"));
-        interactables.add(new Button(300, 50, 200, 20, "trete dem Projekt bei", this::joinProjekt));
-        interactables.add(new Inputfield(50,100,200,20,"Projektname"));
-        interactables.add(new Button(300, 100, 200, 20, "erstelle ein neues Projekt", this::createProjekt));
-        interactables.add(new Button(880,10,100,20,"Log out",this::logout));
+        interactables.add(new Inputfield(50,50,200,20,"ProjektID",pc));
+        interactables.add(new Button(300, 50, 200, 20, "trete dem Projekt bei",pc, this::joinProjekt));
+        interactables.add(new Inputfield(50,100,200,20,"Projektname",pc));
+        interactables.add(new Button(300, 100, 200, 20, "erstelle ein neues Projekt",pc, this::createProjekt));
+        interactables.add(new Button(880,10,100,20,"Log out",pc,this::logout));
         interactables.add(new Button(550,75,200,20,"Suche Projekte", this::searchProjekt));
         int i=0;
         for(Projekt p:pc.getYourProjekts()){
             i++;
             double[] c=getC(i);
-            interactables.add(new Button(c[0], c[1], 350, 20, p.getName(),()->selectProjekt(p)));
+            interactables.add(new Button(c[0], c[1], 350, 20, p.getName(),pc,()->selectProjekt(p)));
         }
     }
 

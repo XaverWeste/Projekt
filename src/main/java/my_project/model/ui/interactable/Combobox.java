@@ -1,6 +1,7 @@
 package my_project.model.ui.interactable;
 
 import KAGO_framework.view.DrawTool;
+import my_project.control.ProgramController;
 
 import java.awt.*;
 
@@ -16,7 +17,8 @@ public class Combobox extends Interactable{
     private boolean ismarked=false;
     private final OnClick oc;
 
-    public Combobox(double x,double y,double w,double h,String t,OnClick oc,String...o){
+    public Combobox(double x, double y, double w, double h, String t, OnClick oc, ProgramController pc,String...o){
+        super(pc);
         this.x=x;
         this.y=y;
         width=w;
