@@ -36,6 +36,7 @@ public class SignUpScreen extends Screen{
             ((Inputfield) interactable).clear();
         }
         if(pc.signUp(username,password)){
+            activeIf=null;
             pc.setUpOverviewScreen();
             pc.showScene(3);
         }else{

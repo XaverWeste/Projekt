@@ -38,7 +38,7 @@ public class ProgramController {
     private void setUpThemes(){
         themes.put("Dark",new Theme(Color.DARK_GRAY,Color.BLACK,Color.GRAY,Color.BLACK));
         themes.put("Light",new Theme(Color.WHITE,Color.BLACK,Color.GRAY,Color.BLACK));
-        setTheme("Light");
+        setTheme("Dark");
     }
 
     public void setTheme(String name){

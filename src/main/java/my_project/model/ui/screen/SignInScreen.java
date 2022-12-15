@@ -39,6 +39,7 @@ public class SignInScreen extends Screen{
         }
         int i=pc.checkLogIn(username,password);
         if(i>=0){
+            activeIf=null;
             pc.setUser(new User(i,username));
             pc.setUpOverviewScreen();
             pc.showScene(3);

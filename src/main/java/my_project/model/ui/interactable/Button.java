@@ -25,7 +25,7 @@ public class Button extends Interactable {
     }
 
     public void draw(DrawTool d){
-        d.setCurrentColor(Color.DARK_GRAY);
+        d.setCurrentColor(Color.GRAY);
         d.drawFilledRectangle(x,y,width,height);
         d.setCurrentColor(Color.BLACK);
         d.drawRectangle(x,y,width,height);
