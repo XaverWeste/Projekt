@@ -106,13 +106,13 @@ public class ProgramController {
     }
 
     public Projekt[] getYourProjekts(){
-        databaseController.executeStatement("SELECT ProjectID FROM X2022_Project_WorkingOn WHERE UserID="+user.getId() + "AND Joined = 'true';");
+        databaseController.executeStatement("SELECT ProjectID FROM X2022_Project_WorkingOn WHERE UserID="+user.getId());
         int[] ids=new int[databaseController.getCurrentQueryResult().getRowCount()];
         String[][] data=databaseController.getCurrentQueryResult().getData();
         for (int i = 0; i<ids.length; i++) ids[i]= Integer.parseInt(data[i][0]);
         Projekt[] projekts = new Projekt[ids.length];
         for(int i = 0; i<ids.length; i++){
-            databaseController.executeStatement("SELECT * FROM X2022_Project_Project WHERE ProjectID="+ids[i] + "AND Joined = 'true';");
+            databaseController.executeStatement("SELECT * FROM X2022_Project_Project WHERE ProjectID="+ids[i]);
             projekts[i]=new Projekt(Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0]),databaseController.getCurrentQueryResult().getData()[0][1]);
         }
         return projekts;
