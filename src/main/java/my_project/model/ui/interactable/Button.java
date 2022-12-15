@@ -27,8 +27,9 @@ public class Button extends Interactable {
     public void draw(DrawTool d){
         d.setCurrentColor(pc.getTheme().getButton());
         d.drawFilledRectangle(x,y,width,height);
-        d.setCurrentColor(pc.getTheme().getText());
+        d.setCurrentColor(pc.getTheme().getLine());
         d.drawRectangle(x,y,width,height);
+        d.setCurrentColor(pc.getTheme().getText());
         d.drawText(x+5,y+height-5,s);
     }
 

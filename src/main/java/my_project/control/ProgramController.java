@@ -38,12 +38,17 @@ public class ProgramController {
     private void setUpThemes(){
         themes.put("Dark",new Theme(Color.DARK_GRAY,Color.BLACK,Color.GRAY,Color.BLACK,Color.DARK_GRAY,Color.RED));
         themes.put("Light",new Theme(Color.WHITE,Color.BLACK,Color.LIGHT_GRAY,Color.BLACK,Color.GRAY,Color.ORANGE));
-        themes.put("Rainbow",new Theme(Color.WHITE,Color.RED,Color.YELLOW,Color.GREEN,Color.BLUE,Color.MAGENTA));
-        setTheme("Rainbow");
+        themes.put("Colors",new Theme(Color.PINK,Color.RED,Color.YELLOW,Color.BLUE,Color.GREEN,Color.MAGENTA));
+        themes.put("Random",new Theme(null,null,null,null,null,null));
+        setTheme("Light");
     }
 
     public void setTheme(String name){
-        if(themes.containsKey(name)) activeT=themes.get(name);
+        if(name.equals("Random")){
+            Color[] colors=new Color[6];
+            for(int i=0;i<colors.length;i++) colors[i]=new Color((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256),255);
+            activeT=new Theme(colors[0],colors[1],colors[2],colors[3],colors[4],colors[5]);
+        }else if(themes.containsKey(name)) activeT=themes.get(name);
     }
 
     private void setUpScreens(){
@@ -296,6 +301,10 @@ public class ProgramController {
 
     public Theme getTheme(){
         return activeT;
+    }
+
+    public String[] getThemes(){
+        return themes.keySet().toArray(new String[0]);
     }
 
     public void updateProgram(double dt){
