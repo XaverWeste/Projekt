@@ -2,7 +2,7 @@ package my_project.control;
 
 import KAGO_framework.control.DatabaseController;
 import KAGO_framework.control.ViewController;
-import my_project.model.Projekt;
+import my_project.model.Project;
 import my_project.model.Task;
 import my_project.model.User;
 import my_project.model.ui.Theme;
@@ -62,7 +62,7 @@ public class ProgramController {
         setUpScreen(po,3);
     }
 
-    public void setUpProject(Projekt p){
+    public void setUpProject(Project p){
         user.setProjekt(p);
         this.p=new ProjektScreen(this);
         setUpScreen(this.p,4);
@@ -122,30 +122,31 @@ public class ProgramController {
         v.showScene(3);
     }
 
-    public Projekt[] getProjekts(String key){
+    public Project[] getProjects(String key){
         databaseController.executeStatement("SELECT ProjectID,Name FROM X2022_Project_Project WHERE Invisible = 'false' AND Name LIKE '%"+key+"%';");
-        String[][] data=databaseController.getCurrentQueryResult().getData();
-        Projekt[] projekts = new Projekt[data.length];
-        for(int i = 0; i<data.length; i++){
-            projekts[i]=new Projekt(Integer.parseInt(databaseController.getCurrentQueryResult().getData()[i][0]),databaseController.getCurrentQueryResult().getData()[i][1]);
+        return fillProjectArray();
+    }
+
+    public Project[] getYourProjects(){
+        databaseController.executeStatement("SELECT X2022_Project_WorkingOn.ProjectID,Name FROM " +
+                "X2022_Project_WorkingOn INNER JOIN X2022_Project_Project ON X2022_Project_WorkingOn.ProjectID = X2022_Project_Project.ProjectID " +
+                "WHERE UserID= "+user.getId() + " AND Joined = 'true';");
+        return fillProjectArray();
+    }
+
+    private Project[] fillProjectArray(){
+        int length = 0;
+        if(databaseController.getCurrentQueryResult() != null){
+            length = databaseController.getCurrentQueryResult().getRowCount();
+        }
+        Project[] projekts = new Project[length];
+        for(int i = 0; i<projekts.length; i++){
+            projekts[i]=new Project(Integer.parseInt(databaseController.getCurrentQueryResult().getData()[i][0]),databaseController.getCurrentQueryResult().getData()[i][1]);
         }
         return projekts;
     }
 
-    public Projekt[] getYourProjekts(){
-        databaseController.executeStatement("SELECT ProjectID FROM X2022_Project_WorkingOn WHERE UserID="+user.getId());
-        int[] ids=new int[databaseController.getCurrentQueryResult().getRowCount()];
-        String[][] data=databaseController.getCurrentQueryResult().getData();
-        for (int i = 0; i<ids.length; i++) ids[i]= Integer.parseInt(data[i][0]);
-        Projekt[] projekts = new Projekt[ids.length];
-        for(int i = 0; i<ids.length; i++){
-            databaseController.executeStatement("SELECT * FROM X2022_Project_Project WHERE ProjectID="+ids[i]);
-            projekts[i]=new Projekt(Integer.parseInt(databaseController.getCurrentQueryResult().getData()[i][0]),databaseController.getCurrentQueryResult().getData()[i][1]);
-        }
-        return projekts;
-    }
-
-    public void applyToProjekt(int projectID){
+    public void applyToProject(int projectID){
         databaseController.executeStatement("SELECT ProjectID FROM X2022_Project_WorkingOn WHERE UserID = '"+user.getId() +"' AND ProjektID = '" + projectID + "';");
         if(databaseController.getCurrentQueryResult() == null){
             databaseController.executeStatement("INSERT INTO X2022_Project_WorkingOn VALUES (" + user.getId() + "," + projectID + ",'false');");
@@ -189,7 +190,7 @@ public class ProgramController {
         int id=Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0])+1;
         databaseController.executeStatement("INSERT INTO X2022_Project_Project VALUES ("+id+", '"+name+"', '-')");
         databaseController.executeStatement("INSERT INTO X2022_Project_WorkingOn VALUES ("+user.getId()+", '"+id+"')");
-        user.setProjekt(new Projekt(id,name));
+        user.setProjekt(new Project(id,name));
     }
 
     public void joinProject(int id){

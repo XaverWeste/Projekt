@@ -1,7 +1,7 @@
 package my_project.model.ui.screen;
 
 import my_project.control.ProgramController;
-import my_project.model.Projekt;
+import my_project.model.Project;
 import my_project.model.Task;
 import my_project.model.ui.interactable.*;
 
@@ -16,7 +16,7 @@ public class ProjektScreen extends Screen{
 
     @Override
     void setUp() {
-        Projekt p=pc.getUser().getProjekt();
+        Project p=pc.getUser().getProjekt();
         interactables.add(new TextField(10,20,"Projektname: "+p.getName()+" ,ProjektID: "+p.getProjektID(),pc));
         t=new Taskfield(this,pc);
         interactables.add(t);

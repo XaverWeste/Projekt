@@ -1,38 +1,34 @@
 package my_project.model.ui.screen;
 
 import my_project.control.ProgramController;
-import my_project.model.Projekt;
+import my_project.model.Project;
 import my_project.model.ui.interactable.Button;
 import my_project.model.ui.interactable.Inputfield;
 import my_project.model.ui.interactable.Interactable;
-import my_project.model.ui.interactable.TextField;
 
 public class ProjectListScreen extends Screen{
 
-    private Projekt[] projektList;
-    private Projekt p;
-
     public ProjectListScreen(ProgramController pc){
         super(pc);
-        searchProjekt();
+        searchProject();
     }
 
     @Override
     void setUp() {
         x = y = 200;
         interactables.add(new Inputfield(50,50,200,20,"name",pc));
-        interactables.add(new Button(250, 50, 50, 20, "Search",pc, this::searchProjekt));
+        interactables.add(new Button(250, 50, 50, 20, "Search",pc, this::searchProject));
     }
 
 
 
 
-    public void searchProjekt() {
+    public void searchProject() {
         if (interactables.size() > 2) {
             interactables.subList(2, interactables.size()).clear();
         }
         int i = 0;
-        for (Projekt p:pc.getProjekts(getSearchKey())) {
+        for (Project p:pc.getProjects(getSearchKey())) {
             i++;
             double[] c=getC(i);
             interactables.add(new Button(c[0], c[1], 350, 20, p.getName(),pc, ()->applyToProject(p.getProjektID())));
@@ -53,6 +49,6 @@ public class ProjectListScreen extends Screen{
     }
 
     public void applyToProject(int projectID){
-        pc.applyToProjekt(projectID);
+        pc.applyToProject(projectID);
     }
 }

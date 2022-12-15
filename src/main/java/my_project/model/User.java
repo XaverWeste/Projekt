@@ -4,7 +4,7 @@ public class User {
 
     private String username;
     private int id;
-    private Projekt workingOn=null;
+    private Project workingOn=null;
 
     public User(int id, String username){
         this.username = username;
@@ -27,11 +27,11 @@ public class User {
         this.id = id;
     }
 
-    public Projekt getProjekt() {
+    public Project getProjekt() {
         return workingOn;
     }
 
-    public void setProjekt(Projekt p) {
+    public void setProjekt(Project p) {
         workingOn=p;
     }
 }

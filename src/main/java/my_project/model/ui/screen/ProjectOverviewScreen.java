@@ -1,7 +1,7 @@
 package my_project.model.ui.screen;
 
 import my_project.control.ProgramController;
-import my_project.model.Projekt;
+import my_project.model.Project;
 import my_project.model.ui.interactable.Button;
 import my_project.model.ui.interactable.Inputfield;
 import my_project.model.ui.interactable.Interactable;
@@ -15,20 +15,20 @@ public class ProjectOverviewScreen extends Screen{
     @Override
     void setUp() {
         interactables.add(new Inputfield(50,50,200,20,"ProjektID",pc));
-        interactables.add(new Button(300, 50, 200, 20, "trete dem Projekt bei",pc, this::joinProjekt));
+        interactables.add(new Button(300, 50, 200, 20, "trete dem Projekt bei",pc, this::joinProject));
         interactables.add(new Inputfield(50,100,200,20,"Projektname",pc));
-        interactables.add(new Button(300, 100, 200, 20, "erstelle ein neues Projekt",pc, this::createProjekt));
+        interactables.add(new Button(300, 100, 200, 20, "erstelle ein neues Projekt",pc, this::createProject));
         interactables.add(new Button(880,10,100,20,"Log out",pc,this::logout));
         interactables.add(new Button(550,75,200,20,"Suche Projekte",pc, this::searchProjekt));
         int i=0;
-        for(Projekt p:pc.getYourProjekts()){
+        for(Project p:pc.getYourProjects()){
             i++;
             double[] c=getC(i);
             interactables.add(new Button(c[0], c[1], 350, 20, p.getName(),pc,()->selectProjekt(p)));
         }
     }
 
-    private void joinProjekt(){
+    private void joinProject(){
         Interactable i=interactables.get(0);
         if(i instanceof Inputfield){
             String s=((Inputfield) i).getContent();
@@ -40,7 +40,7 @@ public class ProjectOverviewScreen extends Screen{
         }
     }
 
-    private void createProjekt(){
+    private void createProject(){
         Interactable i=interactables.get(2);
         if(i instanceof Inputfield){
             String s=((Inputfield) i).getContent();
@@ -52,7 +52,7 @@ public class ProjectOverviewScreen extends Screen{
         }
     }
 
-    private void selectProjekt(Projekt p){
+    private void selectProjekt(Project p){
         pc.setUpProject(p);
     }
 

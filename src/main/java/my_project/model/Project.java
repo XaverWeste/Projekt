@@ -1,11 +1,11 @@
 package my_project.model;
 
-public class Projekt {
+public class Project {
 
     private int projektID;
     private String name;
 
-    public Projekt(int projektID, String name){
+    public Project(int projektID, String name){
         this.projektID = projektID;
         this.name = name;
     }
