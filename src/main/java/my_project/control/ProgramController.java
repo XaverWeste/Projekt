@@ -22,7 +22,7 @@ public class ProgramController {
     private final ViewController v;
     private final DatabaseController databaseController;
     private User user;
-    private HashMap<String,Theme> themes=new HashMap<>();
+    private final HashMap<String,Theme> themes=new HashMap<>();
     private Theme activeT=null;
     private Screen po,p,pl;
 
@@ -31,7 +31,7 @@ public class ProgramController {
         databaseController = new DatabaseController();
         databaseController.connect();
         setUpThemes();
-        //testsql("SELECT ProjectID FROM X2022_Project_WorkingOn WHERE UserID=1 AND Joined = 'true'");
+        //testsql("SELECT * FROM X2022_Project_User WHERE Username = 'asd'");
         setUpScreens();
     }
 
@@ -40,7 +40,7 @@ public class ProgramController {
         themes.put("Light",new Theme(Color.WHITE,Color.BLACK,Color.LIGHT_GRAY,Color.BLACK,Color.GRAY,Color.ORANGE));
         themes.put("Colors",new Theme(Color.PINK,Color.RED,Color.YELLOW,Color.BLUE,Color.GREEN,Color.MAGENTA));
         themes.put("Random",new Theme(null,null,null,null,null,null));
-        setTheme("Light");
+        setTheme("Dark");
     }
 
     public void setTheme(String name){
@@ -181,13 +181,13 @@ public class ProgramController {
     public int checkLogIn(String username,String password){
         databaseController.executeStatement("SELECT * FROM X2022_Project_User WHERE Username = '"+username+"';");
         String[][] data=databaseController.getCurrentQueryResult().getData();
-        if(Arrays.deepToString(databaseController.getCurrentQueryResult().getData()).equals("[]")){
+        try{
             String salt = data[0][3];
             if (hash(password.toCharArray(), hexToBytes(salt)).equals(data[0][2])) {
                 databaseController.executeStatement("SELECT UserID FROM X2022_Project_User WHERE Username = '" + username + "';");
                 return Integer.parseInt(data[0][0]);
             }
-        }
+        }catch(IndexOutOfBoundsException ignored){}
         return -1;
     }
 

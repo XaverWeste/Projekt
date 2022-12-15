@@ -7,6 +7,7 @@ import my_project.control.ProgramController;
 import my_project.model.ui.interactable.*;
 import my_project.model.ui.interactable.Button;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -56,7 +57,7 @@ public abstract class Screen extends GraphicalObject {
         if(activeIf!=null){
             if (key == KeyEvent.VK_BACK_SPACE) {
                 activeIf.clearLast();
-            }else if(key>=48&&key<=57){
+            }else if((key>=48&&key<=57)||key==44||key==46){
                 activeIf.add((char) key);
             }else if(key>=65&&key<=90){
                 if(shift) {
@@ -64,7 +65,7 @@ public abstract class Screen extends GraphicalObject {
                 }else{
                     activeIf.add((char) (key+32));
                 }
-            }
+            }else JOptionPane.showMessageDialog(null,"ungültige eingabe");
         }
     }
 }
