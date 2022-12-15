@@ -17,7 +17,6 @@ import java.util.Arrays;
 public class ProgramController {
 
     private final ViewController v;
-    private final String dbPrefix="X2022_Project_";
     private final DatabaseController databaseController;
     private User user;
     private Screen po,p;

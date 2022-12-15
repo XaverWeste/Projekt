@@ -18,13 +18,14 @@ public class InputManager extends InteractiveGraphicalObject {
 
     @Override
     public void keyReleased(int key) {
-        if(key == KeyEvent.VK_CAPS_LOCK){
-            shift = !shift;
+        if(key == 16){
+            shift = false;
         }else s.keyReleased(key,shift);
     }
 
     @Override
     public void keyPressed(int key) {
+        if(key == 16) shift = true;
     }
 
     @Override

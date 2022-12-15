@@ -17,13 +17,8 @@ public abstract class Screen extends GraphicalObject {
     protected ArrayList<Interactable> interactables=new ArrayList<>();
     protected final ProgramController pc;
     protected Inputfield activeIf=null;
-    private int[] allowedNumber;
-    private int[] allowedLetter;
 
     public Screen(ProgramController pc){
-        allowedNumber = new int[]{48,49,50,51,52,53,54,55,56,57,}; //Zahlen
-        allowedLetter = new int[]{ 65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90, //Buchstaben-Groß
-                97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122}; //Buchstaben-Klein
         this.pc = pc;
         setUp();
     }
@@ -57,27 +52,17 @@ public abstract class Screen extends GraphicalObject {
         }
     }
 
-    public void keyPressed(int key,boolean shift) {
-
-    }
-
     public void keyReleased(int key,boolean shift){
         if(activeIf!=null){
             if (key == KeyEvent.VK_BACK_SPACE) {
-                activeIf.clearLast(); //Delete
-            }
-            for(int i = 0; i < allowedNumber.length-1; i++){
-                if(key == allowedNumber[i]){
+                activeIf.clearLast();
+            }else if(key>=48&&key<=57){
+                activeIf.add((char) key);
+            }else if(key>=65&&key<=90){
+                if(shift) {
                     activeIf.add((char) key);
-                }
-            }
-            for(int i = 0; i < allowedLetter.length-1; i++){
-                if(key == allowedLetter[i]){
-                    if(shift) {
-                        activeIf.add((char) key);
-                    }else{
-                        activeIf.add((char) (key+32));
-                    }
+                }else{
+                    activeIf.add((char) (key+32));
                 }
             }
         }
