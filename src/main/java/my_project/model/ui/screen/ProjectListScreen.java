@@ -10,6 +10,7 @@ import my_project.model.ui.interactable.TextField;
 public class ProjectListScreen extends Screen{
 
     private Projekt[] projektList;
+    private Projekt p;
 
     public ProjectListScreen(ProgramController pc){
         super(pc);
@@ -18,6 +19,7 @@ public class ProjectListScreen extends Screen{
 
     @Override
     void setUp() {
+        x = y = 200;
         interactables.add(new Inputfield(50,50,200,20,"name",pc));
         interactables.add(new Button(250, 50, 50, 20, "Search",pc, this::searchProjekt));
     }
@@ -26,14 +28,14 @@ public class ProjectListScreen extends Screen{
 
 
     public void searchProjekt() {
-        projektList = pc.getProjekts(getSearchKey());
-        for (int i = 0; i < projektList.length - 1; i++) {
-            interactables.add(new Button(x, y, 50, 20, projektList[i].getName(),pc, this::applyToProject));
-            y += 30;
-            if (y > 600) {
-                y = 200;
-                x += 300;
-            }
+        if (interactables.size() > 2) {
+            interactables.subList(2, interactables.size()).clear();
+        }
+        int i = 0;
+        for (Projekt p:pc.getProjekts(getSearchKey())) {
+            i++;
+            double[] c=getC(i);
+            interactables.add(new Button(c[0], c[1], 350, 20, p.getName(),pc, ()->applyToProject(p.getProjektID())));
         }
     }
 
@@ -50,7 +52,7 @@ public class ProjectListScreen extends Screen{
         return "";
     }
 
-    public void applyToProject(){
-
+    public void applyToProject(int projectID){
+        pc.applyToProjekt(projectID);
     }
 }

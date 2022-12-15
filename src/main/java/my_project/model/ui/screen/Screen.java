@@ -53,6 +53,17 @@ public abstract class Screen extends GraphicalObject {
         }
     }
 
+    public double[] getC(int i){
+        double[] arr=new double[2];
+        if(i%2==0) arr[0]=550;
+        else{
+            arr[0]=100;
+            i++;
+        }
+        arr[1]=30*(i/2)+150;
+        return arr;
+    }
+
     public void keyReleased(int key,boolean shift){
         if(activeIf!=null){
             if (key == KeyEvent.VK_BACK_SPACE) {

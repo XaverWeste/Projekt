@@ -123,11 +123,11 @@ public class ProgramController {
     }
 
     public Projekt[] getProjekts(String key){
-        databaseController.executeStatement("SELECT Name FROM X2022_Project_Project WHERE Invisible = 'false';");
+        databaseController.executeStatement("SELECT ProjectID,Name FROM X2022_Project_Project WHERE Invisible = 'false' AND Name LIKE '%"+key+"%';");
         String[][] data=databaseController.getCurrentQueryResult().getData();
         Projekt[] projekts = new Projekt[data.length];
-        for(int i = 0; i<data.length- 1; i++){
-            projekts[i]=new Projekt(Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0]),databaseController.getCurrentQueryResult().getData()[0][1]);
+        for(int i = 0; i<data.length; i++){
+            projekts[i]=new Projekt(Integer.parseInt(databaseController.getCurrentQueryResult().getData()[i][0]),databaseController.getCurrentQueryResult().getData()[i][1]);
         }
         return projekts;
     }
@@ -140,9 +140,28 @@ public class ProgramController {
         Projekt[] projekts = new Projekt[ids.length];
         for(int i = 0; i<ids.length; i++){
             databaseController.executeStatement("SELECT * FROM X2022_Project_Project WHERE ProjectID="+ids[i]);
-            projekts[i]=new Projekt(Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0]),databaseController.getCurrentQueryResult().getData()[0][1]);
+            projekts[i]=new Projekt(Integer.parseInt(databaseController.getCurrentQueryResult().getData()[i][0]),databaseController.getCurrentQueryResult().getData()[i][1]);
         }
         return projekts;
+    }
+
+    public void applyToProjekt(int projectID){
+        databaseController.executeStatement("SELECT ProjectID FROM X2022_Project_WorkingOn WHERE UserID = '"+user.getId() +"' AND ProjektID = '" + projectID + "';");
+        if(databaseController.getCurrentQueryResult() == null){
+            databaseController.executeStatement("INSERT INTO X2022_Project_WorkingOn VALUES (" + user.getId() + "," + projectID + ",'false');");
+        }
+    }
+
+    public User[] getApplications(int projectID){
+        databaseController.executeStatement("SELECT X2022_Project_User.UserID,Username FROM " +
+                "X2022_Project_User INNER JOIN X2022_Project_WorkingOn ON X2022_Project_User.UserID = X2022_Project_WorkingOn.UserID " +
+                "WHERE Joined = 'false' AND ProjectID = '" + projectID + "';");
+        String[][] data=databaseController.getCurrentQueryResult().getData();
+        User[] user = new User[data.length];
+        for(int i = 0; i<data.length; i++){
+            user[i]=new User(Integer.parseInt(databaseController.getCurrentQueryResult().getData()[i][0]),databaseController.getCurrentQueryResult().getData()[i][1]);
+        }
+        return user;
     }
 
     public Task[] getTasks(String orderBy){
