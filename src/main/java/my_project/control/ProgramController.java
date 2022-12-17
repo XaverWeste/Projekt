@@ -53,8 +53,8 @@ public class ProgramController {
 
     private void setUpScreens(){
         setUpScreen(new StartScreen(this),0);
-        setUpScreen(new SignInScreen(this),1);
-        setUpScreen(new SignUpScreen(this),2);
+        setUpScreen(new SignInScreen(this, SignInScreen.SignInScreenOption.login),1);
+        setUpScreen(new SignInScreen(this, SignInScreen.SignInScreenOption.signUp),2);
     }
 
     public void setUpOverviewScreen(){
