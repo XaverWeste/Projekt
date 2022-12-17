@@ -68,7 +68,7 @@ public abstract class Screen extends GraphicalObject {
         if(activeIf!=null){
             if (key == KeyEvent.VK_BACK_SPACE) {
                 activeIf.clearLast();
-            }else if((key>=48&&key<=57)||key==44||key==46){
+            }else if((key>=48&&key<=57)||key==44||key==46||key==32){
                 activeIf.add((char) key);
             }else if(key>=65&&key<=90){
                 if(shift) {

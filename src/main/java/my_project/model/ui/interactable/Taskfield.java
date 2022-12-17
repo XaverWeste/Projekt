@@ -17,7 +17,7 @@ public class Taskfield extends Interactable{
     public Taskfield(ProjectScreen s, ProgramController pc, Task...task) {
         super(pc);
         screen=s;
-        t.add(new Task(-1,"new Task","",Task.TaskStatus.unknown,pc.getUser().getId()));
+        t.add(new Task(-1,"new Task","",Task.TaskStatus.unknown,pc.getUser().getId(),""));
         t.addAll(Arrays.asList(task));
         x=10;
         y=130;
@@ -60,7 +60,7 @@ public class Taskfield extends Interactable{
 
     public void setTasks(Task...task){
         t=new ArrayList<>();
-        t.add(new Task(-1,"new Task","",Task.TaskStatus.unknown,pc.getUser().getId()));
+        t.add(new Task(-1,"new Task","",Task.TaskStatus.unknown,pc.getUser().getId(),""));
         t.addAll(Arrays.asList(task));
         if(t.size()>0) screen.setUpTask(t.get(0));
     }

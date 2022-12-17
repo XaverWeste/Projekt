@@ -7,13 +7,15 @@ public class Task {
     private int id,processedFrom;
     private String deadline,name;
     private TaskStatus status;
+    private String notes;
 
-    public Task(int id,String name, String deadline, TaskStatus status,int processedFrom){
+    public Task(int id,String name, String deadline, TaskStatus status,int processedFrom,String note){
         this.id = id;
         this.name=name;
         this.deadline = deadline;
         this.status=status;
         this.processedFrom=processedFrom;
+        notes=note;
     }
 
     public int getId() {
@@ -54,5 +56,13 @@ public class Task {
 
     public void setPF(int id) {
         processedFrom = id;
+    }
+
+    public String getNote() {
+        return notes;
+    }
+
+    public void setNote(String note) {
+        notes=note;
     }
 }
