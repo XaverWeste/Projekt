@@ -3,8 +3,6 @@ package my_project.model.ui.interactable;
 import KAGO_framework.view.DrawTool;
 import my_project.control.ProgramController;
 
-import java.awt.*;
-
 public class Combobox extends Interactable{
 
     public interface OnClick{
@@ -51,19 +49,17 @@ public class Combobox extends Interactable{
 
     public boolean clickOn(double x,double y){
         if(x>this.x&&y>this.y&&x<this.x+width&&y<this.y+height+20*options.length){
-            if(!ismarked&&y<this.y+height) ismarked=true;
-            else if(y<this.y+height) ismarked=false;
-            else if(this.y+height<y&&ismarked){
+            if(y<this.y+height){
+                ismarked=!ismarked;
+                return true;
+            }else if(this.y+height<y&&ismarked){
                 current=options[(int) ((y-this.y-height)/20)];
                 ismarked=false;
                 oc.execute();
+                return true;
             }
-            if(ismarked) return true;
-            else return y<this.y+height;
-        }else{
-            ismarked=false;
-            return false;
-        }
+        }else ismarked=false;
+        return false;
     }
 
     public void setCurrent(String s){

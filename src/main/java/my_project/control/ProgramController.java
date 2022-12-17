@@ -64,7 +64,7 @@ public class ProgramController {
 
     public void setUpProject(Project p){
         user.setProjekt(p);
-        this.p=new ProjektScreen(this);
+        this.p=new ProjectScreen(this);
         setUpScreen(this.p,4);
         v.showScene(4);
     }

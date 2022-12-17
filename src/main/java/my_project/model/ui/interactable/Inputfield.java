@@ -43,8 +43,8 @@ public class Inputfield extends Interactable {
         }
     }
 
-    private List<StringRow> stringList = new List();
-    private String t;
+    private final List<StringRow> stringList = new List();
+    private final String t;
     private double maxWidth, maxHeight, minWidth, currentHeight, currentWidth;
     private boolean maxWidthReached = false, maxHeightReached = false, adjust = false, passField=false;
 
