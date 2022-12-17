@@ -91,7 +91,7 @@ public class ProgramController {
     }
 
     public String[] getCollaborators(){
-        databaseController.executeStatement("SELECT UserID FROM X2022_Project_WorkingOn WHERE ProjectID="+user.getProjekt().getProjektID());
+        databaseController.executeStatement("SELECT UserID FROM X2022_Project_WorkingOn WHERE ProjectID="+user.getProjekt().getProjektID()+" AND Joined = 'true'");
         String[] s=new String[databaseController.getCurrentQueryResult().getRowCount()];
         String[][] data=databaseController.getCurrentQueryResult().getData();
         for(int i=0;i<s.length;i++) {
@@ -148,7 +148,7 @@ public class ProgramController {
 
     public void applyToProject(int projectID){
         databaseController.executeStatement("SELECT ProjectID FROM X2022_Project_WorkingOn WHERE UserID = '"+user.getId() +"' AND ProjektID = '" + projectID + "';");
-        if(databaseController.getCurrentQueryResult() == null){
+        if(databaseController.getCurrentQueryResult().getRowCount()==0){
             databaseController.executeStatement("INSERT INTO X2022_Project_WorkingOn VALUES (" + user.getId() + "," + projectID + ",'false');");
         }
     }
