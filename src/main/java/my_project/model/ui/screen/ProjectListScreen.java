@@ -6,11 +6,12 @@ import my_project.model.ui.interactable.Button;
 import my_project.model.ui.interactable.Inputfield;
 import my_project.model.ui.interactable.Interactable;
 
+import javax.swing.*;
+
 public class ProjectListScreen extends Screen{
 
     public ProjectListScreen(ProgramController pc){
         super(pc);
-        searchProject();
     }
 
     @Override
@@ -18,14 +19,13 @@ public class ProjectListScreen extends Screen{
         x = y = 200;
         interactables.add(new Inputfield(50,50,200,20,"name",pc));
         interactables.add(new Button(250, 50, 50, 20, "Search",pc, this::searchProject));
+        interactables.add(new Button(880,10,100,20,"zurück",pc,()->pc.showScene(3)));
+        searchProject();
     }
 
-
-
-
     public void searchProject() {
-        if (interactables.size() > 2) {
-            interactables.subList(2, interactables.size()).clear();
+        if (interactables.size() > 3) {
+            interactables.subList(3, interactables.size()).clear();
         }
         int i = 0;
         for (Project p:pc.getProjects(getSearchKey())) {
@@ -49,6 +49,7 @@ public class ProjectListScreen extends Screen{
     }
 
     public void applyToProject(int projectID){
+        JOptionPane.showMessageDialog(null,"Beitrits anfrage wurde gesendet");
         pc.applyToProject(projectID);
     }
 }
