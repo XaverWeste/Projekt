@@ -31,7 +31,7 @@ public class ProgramController {
         databaseController = new DatabaseController();
         databaseController.connect();
         setUpThemes();
-        //testsql("SELECT * FROM X2022_Project_User WHERE Username = 'asd'");
+        //testsql("SELECT ProjectID FROM X2022_Project_WorkingOn WHERE UserID = '1' AND ProjectID = 1");
         setUpScreens();
     }
 
@@ -39,7 +39,7 @@ public class ProgramController {
         themes.put("Dark",new Theme(Color.DARK_GRAY,Color.BLACK,Color.GRAY,Color.BLACK,Color.DARK_GRAY,Color.RED));
         themes.put("Light",new Theme(Color.WHITE,Color.BLACK,Color.LIGHT_GRAY,Color.BLACK,Color.GRAY,Color.ORANGE));
         themes.put("Colors",new Theme(Color.PINK,Color.RED,Color.YELLOW,Color.BLUE,Color.GREEN,Color.MAGENTA));
-        themes.put("Random",new Theme(null,null,null,null,null,null));
+        themes.put("Random",null);
         setTheme("Dark");
     }
 
@@ -147,7 +147,7 @@ public class ProgramController {
     }
 
     public void applyToProject(int projectID){
-        databaseController.executeStatement("SELECT ProjectID FROM X2022_Project_WorkingOn WHERE UserID = '"+user.getId() +"' AND ProjektID = '" + projectID + "';");
+        databaseController.executeStatement("SELECT ProjectID FROM X2022_Project_WorkingOn WHERE UserID = '"+user.getId() +"' AND ProjectID =" + projectID);
         if(databaseController.getCurrentQueryResult().getRowCount()==0){
             databaseController.executeStatement("INSERT INTO X2022_Project_WorkingOn VALUES (" + user.getId() + "," + projectID + ",'false');");
         }
