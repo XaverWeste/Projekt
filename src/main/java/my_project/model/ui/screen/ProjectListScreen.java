@@ -39,9 +39,7 @@ public class ProjectListScreen extends Screen{
         Interactable i=interactables.get(0);
         if(i instanceof Inputfield){
             String s=((Inputfield) i).getContent();
-            if(!s.equals("")){
-                ((Inputfield) i).clear();
-                this.resetUp();
+            if(!s.equals("")) {
                 return s;
             }
         }

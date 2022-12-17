@@ -140,11 +140,11 @@ public class ProgramController {
         if(databaseController.getCurrentQueryResult() != null){
             length = databaseController.getCurrentQueryResult().getRowCount();
         }
-        Project[] projekts = new Project[length];
-        for(int i = 0; i<projekts.length; i++){
-            projekts[i]=new Project(Integer.parseInt(databaseController.getCurrentQueryResult().getData()[i][0]),databaseController.getCurrentQueryResult().getData()[i][1]);
+        Project[] projects = new Project[length];
+        for(int i = 0; i<projects.length; i++){
+            projects[i]=new Project(Integer.parseInt(databaseController.getCurrentQueryResult().getData()[i][0]),databaseController.getCurrentQueryResult().getData()[i][1]);
         }
-        return projekts;
+        return projects;
     }
 
     public void applyToProject(int projectID){

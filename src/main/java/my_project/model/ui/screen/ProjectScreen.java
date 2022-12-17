@@ -35,7 +35,7 @@ public class ProjectScreen extends Screen{
         taskPane.add(new Inputfield(300,160,400,20,"deadline",pc));
         taskPane.add(new Combobox(300, 190, 400, 20, "status", this::setStatus,pc,"notStartedYet","workingOn","finished","canceled","unknown"));
         taskPane.add(new Combobox(300, 220, 400, 20, "processed from", this::setStatus,pc,pc.getCollaborators()));
-        taskPane.add(new Inputfield(300,250,400,200,"notes",400,200,pc));
+        taskPane.add(new Inputfield(300,250,400,"notes",400,200,pc));
         t.setTasks(pc.getTasks("Name"));
     }
 

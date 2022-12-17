@@ -23,7 +23,7 @@ public class Inputfield extends Interactable {
 
             affinetransform = new AffineTransform();
             frc = new FontRenderContext(affinetransform,true,true);
-            font = new Font("Serif", Font.PLAIN, 13);
+            font = new Font("Serif", Font.PLAIN, 15);
         }
 
         public void addChar(char c){
@@ -48,11 +48,11 @@ public class Inputfield extends Interactable {
     private double maxWidth, maxHeight, minWidth, currentHeight, currentWidth;
     private boolean maxWidthReached = false, maxHeightReached = false, adjust = false, passField=false;
 
-    public Inputfield(double x, double y, double minWidth, double h, String text, double maxWidth, double maxHeight, ProgramController pc){
+    public Inputfield(double x, double y, double h, String text, double maxWidth, double maxHeight, ProgramController pc){
         super(pc);
         this.x=x;
         this.y=y;
-        width = this.minWidth = minWidth;
+        width = 20;
         height=h;
         t=text;
         if(t.equals("password")) passField=true;
