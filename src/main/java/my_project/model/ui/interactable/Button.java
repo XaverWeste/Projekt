@@ -26,11 +26,16 @@ public class Button extends Interactable {
 
     public void draw(DrawTool d){
         d.setCurrentColor(pc.getTheme().getButton());
-        d.drawFilledRectangle(x,y,width,height);
+        d.drawFilledArc(x+width-height,y,height,-90,180,0);
+        d.drawFilledArc(x,y,height,90,180,0);
+        d.drawFilledRectangle(x+height/2,y,width-height,height);
         d.setCurrentColor(pc.getTheme().getLine());
-        d.drawRectangle(x,y,width,height);
+        d.drawArc(x+width-height,y,height,-90,180,0);
+        d.drawArc(x,y,height,90,180,0);
+        d.drawLine(x+height/2,y,x+width-height/2,y);
+        d.drawLine(x+height/2,y+height,x+width-height/2,y+height);
         d.setCurrentColor(pc.getTheme().getText());
-        d.drawText(x+5,y+height-5,s);
+        d.drawText(x+10,y+height-5,s);
     }
 
     public boolean clickOn(double x,double y){
