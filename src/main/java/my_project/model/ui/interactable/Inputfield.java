@@ -48,12 +48,12 @@ public class Inputfield extends Interactable {
     private double maxWidth, maxHeight, minWidth, currentHeight, currentWidth;
     private boolean maxWidthReached = false, maxHeightReached = false, adjust = false, passField=false;
 
-    public Inputfield(double x, double y, double h, String text, double maxWidth, double maxHeight, ProgramController pc){
+    public Inputfield(double x, double y, double minWidth, String text, double maxWidth, double maxHeight, ProgramController pc){
         super(pc);
         this.x=x;
         this.y=y;
-        width = 20;
-        height=h;
+        width = this.minWidth = minWidth;
+        height=20;
         t=text;
         if(t.equals("password")) passField=true;
         this.maxWidth =maxWidth;
