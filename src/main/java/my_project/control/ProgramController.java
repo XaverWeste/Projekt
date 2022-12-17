@@ -154,16 +154,26 @@ public class ProgramController {
         }
     }
 
-    public User[] getApplications(int projectID){
-        databaseController.executeStatement("SELECT X2022_Project_User.UserID,Username FROM " +
+    public String[] getApplications(int projectID){
+        databaseController.executeStatement("SELECT Username FROM " +
                 "X2022_Project_User INNER JOIN X2022_Project_WorkingOn ON X2022_Project_User.UserID = X2022_Project_WorkingOn.UserID " +
                 "WHERE Joined = 'false' AND ProjectID = '" + projectID + "';");
         String[][] data=databaseController.getCurrentQueryResult().getData();
-        User[] user = new User[data.length];
+        String[] username = new String[data.length];
         for(int i = 0; i<data.length; i++){
-            user[i]=new User(Integer.parseInt(databaseController.getCurrentQueryResult().getData()[i][0]),databaseController.getCurrentQueryResult().getData()[i][1]);
+            username[i]= databaseController.getCurrentQueryResult().getData()[i][1];
         }
-        return user;
+        return username;
+    }
+
+    public void processApplications(String user,int projectID,String status){
+        if(status.equals("declined")){
+            databaseController.executeStatement("DELETE FROM X2022_Project_WorkingOn " +
+                    "WHERE UserID = " + getUserId(user) + " AND ProjectID = " + projectID + " AND joined = 'false'");
+        }else if(status.equals("accepted")){
+            databaseController.executeStatement("UPDATE X2022_Project_WorkingOn SET joined = 'true' " +
+                    "WHERE UserID = " + getUserId(user) + " AND ProjectID = " + projectID);
+        }
     }
 
     public Task[] getTasks(String orderBy){
