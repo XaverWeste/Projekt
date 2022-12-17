@@ -46,7 +46,7 @@ public class Inputfield extends Interactable {
     private List<StringRow> stringList = new List();
     private String t;
     private double maxWidth, maxHeight, minWidth, currentHeight, currentWidth;
-    private boolean maxWidthReached = false, maxHeightReached = false, adjust = false;
+    private boolean maxWidthReached = false, maxHeightReached = false, adjust = false, passField=false;
 
     public Inputfield(double x, double y, double minWidth, double h, String text, double maxWidth, double maxHeight, ProgramController pc){
         super(pc);
@@ -55,6 +55,7 @@ public class Inputfield extends Interactable {
         width = this.minWidth = minWidth;
         height=h;
         t=text;
+        if(t.equals("password")) passField=true;
         this.maxWidth =maxWidth;
         this.maxHeight = maxHeight;
         if(maxHeight < 5) maxHeightReached = true;
@@ -68,6 +69,7 @@ public class Inputfield extends Interactable {
         width=w;
         height=h;
         t=text;
+        if(t.equals("password")) passField=true;
         maxHeight = 0;
         maxHeightReached = true;
         maxWidth = width;
@@ -99,7 +101,8 @@ public class Inputfield extends Interactable {
             d.setCurrentColor(pc.getTheme().getText());
             stringList.toFirst();
             for(int i=0; stringList.hasAccess();i++){
-                d.drawText(x+5,y+height-5+i*15,stringList.getContent().getString());
+                if(passField) d.drawText(x+5,y+height-5+i*15,getSecured(stringList.getContent()));
+                else d.drawText(x+5,y+height-5+i*15,stringList.getContent().getString());
                 stringList.next();
             }
 
@@ -167,7 +170,6 @@ public class Inputfield extends Interactable {
         return x > this.x && y > this.y && x < this.x + width && y < this.y + height;
     }
 
-
     public String getContent(){
         StringBuilder s = new StringBuilder();
         stringList.toFirst();
@@ -176,5 +178,12 @@ public class Inputfield extends Interactable {
             stringList.next();
         }
         return s.toString();
+    }
+
+    public String getSecured(StringRow s){
+        StringBuilder sb=new StringBuilder();
+        char[] c=s.getString().toCharArray();
+        for(int j=0;j<c.length;j++) sb.append("*");
+        return sb.toString();
     }
 }

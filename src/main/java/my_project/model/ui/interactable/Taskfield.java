@@ -20,7 +20,7 @@ public class Taskfield extends Interactable{
         t.add(new Task(-1,"new Task","",Task.TaskStatus.unknown,pc.getUser().getId()));
         t.addAll(Arrays.asList(task));
         x=10;
-        y=150;
+        y=130;
         height=20;
         width=200;
     }

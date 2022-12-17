@@ -21,11 +21,11 @@ public class ProjektScreen extends Screen{
         t=new Taskfield(this,pc);
         interactables.add(t);
         interactables.add(new Combobox(10, 100, 200, 20, "sort by", this::sortBy,pc,"deadline","status","name"));
-        interactables.add(new Button(800, 100, 100, 20, "save",pc,this::save));
-        interactables.add(new Inputfield(300,130,450,20,"name",pc));
-        interactables.add(new Inputfield(300,160,450,20,"deadline",pc));
-        interactables.add(new Combobox(300, 190, 450, 20, "status", this::setStatus,pc,"notStartedYet","workingOn","finished","canceled","unknown"));
-        interactables.add(new Combobox(300, 220, 450, 20, "processed from", this::setStatus,pc,pc.getCollaborators()));
+        interactables.add(new Button(600, 100, 100, 20, "save",pc,this::save));
+        interactables.add(new Inputfield(300,130,400,20,"name",pc));
+        interactables.add(new Inputfield(300,160,400,20,"deadline",pc));
+        interactables.add(new Combobox(300, 190, 400, 20, "status", this::setStatus,pc,"notStartedYet","workingOn","finished","canceled","unknown"));
+        interactables.add(new Combobox(300, 220, 400, 20, "processed from", this::setStatus,pc,pc.getCollaborators()));
         t.setTasks(pc.getTasks("Name"));
         interactables.add(new Button(880,10,100,20,"leave Project",pc,this::leaveProjekt));
         interactables.add(new Button(880,40,100,20,"close Project",pc,this::closeProject));
