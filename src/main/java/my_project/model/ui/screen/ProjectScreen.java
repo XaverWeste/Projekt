@@ -129,7 +129,7 @@ public class ProjectScreen extends Screen{
 
     public void getApplication(){
         System.out.println("Application: "+pc.getApplications(projectID).front());
-        if(interactables.size() > 9) interactables.remove(9);
+        if(interactables.size() > 11) interactables.remove(11);
             if(!pc.getApplications(projectID).isEmpty()){
                 interactables.add(new TextField(810, 250, "Application: "+pc.getApplications(projectID).front(),pc));
             }else{
