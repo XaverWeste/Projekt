@@ -197,6 +197,14 @@ public class ProgramController {
         databaseController.executeStatement("INSERT INTO X2022_Project_Event VALUES ("+id+", '"+e.getName()+"', '"+e.getDate()+"', "+Event.getStatus(e.getStatus())+", '"+e.getDescription()+"',"+user.getProjekt().getProjektID()+")");
     }
 
+    public void deleteEvent(int id){
+        databaseController.executeStatement("DELETE FROM X2022_Project_Event WHERE EventId="+id);
+    }
+
+    public void deleteTask(int id){
+        databaseController.executeStatement("DELETE FROM X2022_Project_Task WHERE TaskID="+id);
+    }
+
     public Task[] getTasks(String orderBy){
         databaseController.executeStatement("SELECT * FROM X2022_Project_Task WHERE ProjectID="+user.getProjekt().getProjektID()+" ORDER BY "+orderBy+" ASC");
         String[][] data=databaseController.getCurrentQueryResult().getData();

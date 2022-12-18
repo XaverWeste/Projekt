@@ -50,6 +50,7 @@ public class ProjectScreen extends Screen{
         taskPane.add(new Combobox(300, 190, 400, 20, "status", this::setStatus,pc,"notStartedYet","workingOn","finished","canceled","unknown"));
         taskPane.add(new Combobox(300, 220, 400, 20, "processed from", this::setStatus,pc,pc.getCollaborators()));
         taskPane.add(new Inputfield(300,250,400,"notes",400,200,pc));
+        taskPane.add(new Button(450, 100, 100, 20, "delete",pc,this::delete));
         t.setTasks(pc.getTasks("Name"));
         taskPane.setActive(false);
     }
@@ -65,6 +66,7 @@ public class ProjectScreen extends Screen{
         eventPane.add(new Combobox(620,160,80,20,"Minute",this::setStatus,pc,getNumbers(0,12,5)));
         eventPane.add(new Combobox(300,190,400,20,"status",this::setStatus,pc,"canceled"));
         eventPane.add(new Inputfield(300,220,400,"description",400,200,pc));
+        eventPane.add(new Button(450, 100, 100, 20, "delete",pc,this::delete));
         e.setEvents(pc.getEvents("Name"));
         eventPane.setActive(false);
     }
@@ -211,6 +213,12 @@ public class ProjectScreen extends Screen{
         if(i instanceof Inputfield) t.setNote(((Inputfield) i).getContent());
         if((t.getId()>-1)) pc.updateTask(t);
         else pc.createTask(t);
+        sortBy();
+    }
+
+    private void delete(){
+        if(eventPane.isActive()) pc.deleteEvent(id);
+        else pc.deleteTask(id);
         sortBy();
     }
 
