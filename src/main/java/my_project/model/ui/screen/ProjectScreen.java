@@ -1,5 +1,6 @@
 package my_project.model.ui.screen;
 
+import KAGO_framework.model.abitur.datenstrukturen.Queue;
 import my_project.control.ProgramController;
 import my_project.model.Event;
 import my_project.model.Project;
@@ -10,15 +11,17 @@ public class ProjectScreen extends Screen{
 
     private Taskfield t;
     private Eventfield e;
-    private int id;
+    private int id,projectID;
     private final Pane taskPane,eventPane;
 
     public ProjectScreen(ProgramController pc) {
         super(pc);
         taskPane=new Pane(pc, this);
         eventPane=new Pane(pc,this);
+        projectID = pc.getUser().getProjekt().getProjektID();
         setUpTaskPane();
         setUpEventPane();
+        getApplication();
     }
 
     @Override
@@ -31,6 +34,8 @@ public class ProjectScreen extends Screen{
         interactables.add(e);
         interactables.add(new Button(880,10,100,20,"leave Project",pc,this::leaveProjekt));
         interactables.add(new Button(880,40,100,20,"close Project",pc,this::closeProject));
+        interactables.add(new Button(800,275,80,20,"Decline",pc,()->processApplication("declined")));
+        interactables.add(new Button(880,275,80,20,"Accept",pc,()->processApplication("accepted")));
     }
 
     private void setUpTaskPane(){
@@ -113,6 +118,23 @@ public class ProjectScreen extends Screen{
         if((t.getId()>-1)) pc.updateTask(t);
         else pc.createTask(t);
         sortBy();
+    }
+
+    public void getApplication(){
+        System.out.println("Application: "+pc.getApplications(projectID).front());
+        if(interactables.size() > 9) interactables.remove(9);
+            if(!pc.getApplications(projectID).isEmpty()){
+                interactables.add(new TextField(810, 250, "Application: "+pc.getApplications(projectID).front(),pc));
+            }else{
+                interactables.add(new TextField(810,250,"Currently no applications!",pc));
+            }
+    }
+
+    public void processApplication(String status){
+        if(!pc.getApplications(projectID).isEmpty()) {
+            pc.processApplications(pc.getApplications(projectID).front(), projectID, status);
+        }
+        getApplication();
     }
 
     private void leaveProjekt(){

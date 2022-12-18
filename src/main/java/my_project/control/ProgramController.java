@@ -2,6 +2,7 @@ package my_project.control;
 
 import KAGO_framework.control.DatabaseController;
 import KAGO_framework.control.ViewController;
+import KAGO_framework.model.abitur.datenstrukturen.Queue;
 import my_project.model.Project;
 import my_project.model.Task;
 import my_project.model.User;
@@ -154,16 +155,16 @@ public class ProgramController {
         }
     }
 
-    public String[] getApplications(int projectID){
+    public Queue<String> getApplications(int projectID){
         databaseController.executeStatement("SELECT Username FROM " +
                 "X2022_Project_User INNER JOIN X2022_Project_WorkingOn ON X2022_Project_User.UserID = X2022_Project_WorkingOn.UserID " +
-                "WHERE Joined = 'false' AND ProjectID = '" + projectID + "';");
+                "WHERE Joined = 'false' AND ProjectID = " + projectID + ";");
         String[][] data=databaseController.getCurrentQueryResult().getData();
-        String[] username = new String[data.length];
+        Queue<String> applications = new Queue<>();
         for(int i = 0; i<data.length; i++){
-            username[i]= databaseController.getCurrentQueryResult().getData()[i][1];
+            applications.enqueue(data[i][0]);
         }
-        return username;
+        return applications;
     }
 
     public void processApplications(String user,int projectID,String status){
