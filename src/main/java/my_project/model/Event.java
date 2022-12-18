@@ -98,6 +98,7 @@ public class Event extends Viewable{
     }
 
     public String getDate() {
+        corecctStatus();
         return date;
     }
 
