@@ -17,7 +17,7 @@ public class Eventfield extends Interactable{
     public Eventfield(ProjectScreen s, ProgramController pc, double x,Event...event) {
         super(pc);
         screen=s;
-        this.e.add(new Event(-1,"new Event","",Event.EventStatus.unknown,"",new int[]{pc.getUser().getId()}));
+        this.e.add(new Event(-1,"new Event","",Event.EventStatus.asPlanned,"",new int[]{pc.getUser().getId()}));
         this.e.addAll(Arrays.asList(event));
         this.x=x;
         y=130;
@@ -50,7 +50,7 @@ public class Eventfield extends Interactable{
     public boolean clickOn(double x,double y){
         if(x>this.x&&y>this.y&&x<this.x+width){
             int i=(int) ((y-this.y)/30);
-            if(i<= e.size()) screen.setUpEvent(e.get(i));
+            if(i<=e.size()) screen.setUpEvent(e.get(i));
             return true;
         }
         return false;
@@ -58,7 +58,7 @@ public class Eventfield extends Interactable{
 
     public void setEvents(Event...event){
         e =new ArrayList<>();
-        e.add(new Event(-1,"new Event","",Event.EventStatus.unknown,"",new int[]{pc.getUser().getId()}));
+        e.add(new Event(-1,"new Event","",Event.EventStatus.asPlanned,"",new int[]{pc.getUser().getId()}));
         e.addAll(Arrays.asList(event));
         if(e.size()>0) screen.setUpEvent(e.get(0));
     }

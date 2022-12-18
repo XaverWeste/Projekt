@@ -73,7 +73,10 @@ public class Event extends Viewable{
     }
 
     public void setDate(String date) {
-        this.date = date;
+        if(!date.equals(this.date)){
+            this.date = date;
+            status=EventStatus.moved;
+        }
     }
 
     public String getName() {

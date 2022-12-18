@@ -13,10 +13,11 @@ public class ProjectScreen extends Screen{
     private Eventfield e;
     private int id,projectID;
     private final Pane taskPane,eventPane;
+    private Pane applicationPane;
 
     public ProjectScreen(ProgramController pc) {
         super(pc);
-        taskPane=new Pane(pc, this);
+        taskPane=new Pane(pc,this);
         eventPane=new Pane(pc,this);
         projectID = pc.getUser().getProjekt().getProjektID();
         setUpTaskPane();
@@ -28,16 +29,14 @@ public class ProjectScreen extends Screen{
     void setUp() {
         Project p=pc.getUser().getProjekt();
         interactables.add(new Combobox(10, 100, 200, 20, "sort by", this::sortBy,pc,"deadline","status","name"));
-        interactables.add(new Combobox(790, 100, 200, 20, "sort by", this::sortBy,pc,"date","status","name"));
+        interactables.add(new Combobox(780, 100, 200, 20, "sort by", this::sortBy,pc,"date","status","name"));
         interactables.add(new TextField(10,20,"Projektname: "+p.getName()+" ,ProjektID: "+p.getProjektID(),pc));
         t=new Taskfield(this,pc,10);
-        e=new Eventfield(this,pc,790);
+        e=new Eventfield(this,pc,780);
         interactables.add(t);
         interactables.add(e);
         interactables.add(new Button(880,10,100,20,"leave Project",pc,this::leaveProjekt));
         interactables.add(new Button(880,40,100,20,"close Project",pc,this::closeProject));
-        interactables.add(new Button(800,275,80,20,"Decline",pc,()->processApplication("declined")));
-        interactables.add(new Button(880,275,80,20,"Accept",pc,()->processApplication("accepted")));
     }
 
     private void setUpTaskPane(){
@@ -53,10 +52,11 @@ public class ProjectScreen extends Screen{
 
     private void setUpEventPane(){
         interactables.add(eventPane);
-        taskPane.add(new Button(600, 100, 100, 20, "save",pc,this::saveEvent));
-        taskPane.add(new Inputfield(300,130,400,20,"name",pc));
-        taskPane.add(new Inputfield(300,160,400,20,"date",pc));
-        taskPane.add(new Inputfield(300,190,400,"notes",400,200,pc));
+        eventPane.add(new Button(600, 100, 100, 20, "save",pc,this::saveEvent));
+        eventPane.add(new Inputfield(300,130,400,20,"name",pc));
+        eventPane.add(new Inputfield(300,160,400,20,"date",pc));
+        eventPane.add(new Combobox(300,190,400,20,"status",this::setStatus,pc,"canceled"));
+        eventPane.add(new Inputfield(300,220,400,"description",400,200,pc));
         e.setEvents(pc.getEvents("Name"));
     }
 
@@ -74,9 +74,9 @@ public class ProjectScreen extends Screen{
             Interactable i = interactables.get(1);
             if (i instanceof Combobox) {
                 switch (((Combobox) i).getSelected()) {
-                    case "status" -> t.setTasks(pc.getTasks("Status"));
-                    case "date" -> t.setTasks(pc.getTasks("Date"));
-                    default -> t.setTasks(pc.getTasks("Name"));
+                    case "status" -> e.setEvents(pc.getEvents("Status"));
+                    case "date" -> e.setEvents(pc.getEvents("Date"));
+                    default -> e.setEvents(pc.getEvents("Name"));
                 }
             }
         }
@@ -84,13 +84,34 @@ public class ProjectScreen extends Screen{
 
     public void setUpEvent(Event e){
         id=e.getId();
+        Interactable i=eventPane.get(1);
+        if(i instanceof Inputfield) ((Inputfield) i).setStringList(e.getName());
+        i=eventPane.get(2);
+        if(i instanceof Inputfield) ((Inputfield) i).setStringList(e.getDate());
+        i=eventPane.get(4);
+        if(i instanceof Inputfield) ((Inputfield) i).setStringList(e.getDescription());
+        i=eventPane.get(3);
+        if(i instanceof Combobox){
+            String s=e.getStatus().toString();
+            if(s.equals("canceled")) ((Combobox) i).updateOptions("canceled");
+            else ((Combobox) i).updateOptions("canceled",s);
+        }
         taskPane.setActive(false);
         eventPane.setActive(true);
     }
 
     private void saveEvent(){
-        new Event(-1,"new Event","",Event.EventStatus.unknown,"",new int[]{pc.getUser().getId()});
-
+        Event e=new Event(id,"new Event","",Event.EventStatus.asPlanned,"",new int[]{pc.getUser().getId()});
+        Interactable i=eventPane.get(1);
+        if(i instanceof Inputfield) e.setName(((Inputfield) i).getContent());
+        i=eventPane.get(2);
+        if(i instanceof Inputfield) e.setDate(((Inputfield) i).getContent());
+        i=eventPane.get(4);
+        if(i instanceof Inputfield) e.setDescription(((Inputfield) i).getContent());
+        i=eventPane.get(3);
+        if(i instanceof Combobox) e.setStatus(Event.getStatus(((Combobox) i).getSelected()));
+        if((e.getId()>-1)) pc.updateEvent(e);
+        else pc.createEvent(e);
         sortBy();
     }
 
@@ -128,19 +149,23 @@ public class ProjectScreen extends Screen{
     }
 
     public void getApplication(){
-        System.out.println("Application: "+pc.getApplications(projectID).front());
-        if(interactables.size() > 11) interactables.remove(11);
-            if(!pc.getApplications(projectID).isEmpty()){
-                interactables.add(new TextField(810, 250, "Application: "+pc.getApplications(projectID).front(),pc));
-            }else{
-                interactables.add(new TextField(810,250,"Currently no applications!",pc));
-            }
+        applicationPane=new Pane(pc,this);
+        if(!pc.getApplications(projectID).isEmpty()){
+            applicationPane.add(new TextField(10, 50, "Application: "+pc.getApplications(projectID).front(),pc));
+            applicationPane.add(new Button(280,40,80,20,"Decline",pc,()->processApplication("declined")));
+            applicationPane.add(new Button(370,40,80,20,"Accept",pc,()->processApplication("accepted")));
+        }else{
+            applicationPane.add(new TextField(10,50,"Currently no applications!",pc));
+        }
+        applicationPane.setActive(true);
+        interactables.add(applicationPane);
     }
 
     public void processApplication(String status){
         if(!pc.getApplications(projectID).isEmpty()) {
             pc.processApplications(pc.getApplications(projectID).front(), projectID, status);
         }
+        interactables.remove(applicationPane);
         getApplication();
     }
 
