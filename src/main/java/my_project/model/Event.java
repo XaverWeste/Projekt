@@ -1,8 +1,11 @@
 package my_project.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class Event extends Viewable{
 
-    public enum EventStatus{asPlanned, moved,canceled,unknown}
+    public enum EventStatus{asPlanned, moved,over,canceled,unknown}
 
     private int id;
     private String date,name;
@@ -28,6 +31,9 @@ public class Event extends Viewable{
                 return EventStatus.moved;
             }
             case 3 -> {
+                return EventStatus.over;
+            }
+            case 4 -> {
                 return EventStatus.canceled;
             }
             default -> {
@@ -44,6 +50,9 @@ public class Event extends Viewable{
             case "moved" -> {
                 return EventStatus.moved;
             }
+            case "over" -> {
+                return EventStatus.over;
+            }
             case "canceled" -> {
                 return Event.EventStatus.canceled;
             }
@@ -56,8 +65,28 @@ public class Event extends Viewable{
     public static int getStatus(Event.EventStatus t){
         if(t.equals(EventStatus.unknown)) return 1;
         if(t.equals(EventStatus.moved)) return 2;
-        if(t.equals(Event.EventStatus.canceled)) return 3;
+        if(t.equals(EventStatus.over)) return 3;
+        if(t.equals(Event.EventStatus.canceled)) return 4;
         else return 5;
+    }
+
+    private void corecctStatus(){
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy:MM:dd:hh:mm");
+        try{
+            boolean b=false;
+            String[] sd=date.split(":");
+            String[] sc=sdf.format(c.getTime()).split(":");
+            for(int i=0;i<sc.length;i++){
+                if(Integer.parseInt(sc[i])<Integer.parseInt(sd[i])){
+                    b=true;
+                    break;
+                }
+            }
+            if(b) status=EventStatus.over;
+        }catch(NumberFormatException ignored){
+            status=EventStatus.unknown;
+        }
     }
 
     public int getId() {
@@ -88,6 +117,7 @@ public class Event extends Viewable{
     }
 
     public EventStatus getStatus() {
+        corecctStatus();
         return status;
     }
 
