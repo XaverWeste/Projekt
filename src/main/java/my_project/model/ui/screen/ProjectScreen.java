@@ -60,6 +60,8 @@ public class ProjectScreen extends Screen{
         if(i instanceof Combobox) ((Combobox) i).setCurrent(t.getStatus().toString());
         i= taskPane.get(5);
         if(i instanceof Combobox) ((Combobox) i).setCurrent(pc.getUsername(t.getPF()));
+        i= taskPane.get(6);
+        if(i instanceof Inputfield) ((Inputfield) i).setStringList(t.getNote());
         taskPane.setActive(true);
     }
 
@@ -73,6 +75,8 @@ public class ProjectScreen extends Screen{
         if(i instanceof Combobox) t.setStatus(pc.getStatus(((Combobox) i).getSelected()));
         i= taskPane.get(5);
         if(i instanceof Combobox) t.setPF(pc.getUserId(((Combobox) i).getSelected()));
+        i= taskPane.get(6);
+        if(i instanceof Inputfield) t.setNote(((Inputfield) i).getContent());
         if((t.getId()>-1)) pc.updateTask(t);
         else pc.createTask(t);
         sortBy();
