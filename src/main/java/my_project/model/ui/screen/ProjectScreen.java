@@ -27,6 +27,8 @@ public class ProjectScreen extends Screen{
     @Override
     void setUp() {
         Project p=pc.getUser().getProjekt();
+        interactables.add(new Combobox(10, 100, 200, 20, "sort by", this::sortBy,pc,"deadline","status","name"));
+        interactables.add(new Combobox(790, 100, 200, 20, "sort by", this::sortBy,pc,"date","status","name"));
         interactables.add(new TextField(10,20,"Projektname: "+p.getName()+" ,ProjektID: "+p.getProjektID(),pc));
         t=new Taskfield(this,pc,10);
         e=new Eventfield(this,pc,790);
@@ -40,7 +42,6 @@ public class ProjectScreen extends Screen{
 
     private void setUpTaskPane(){
         interactables.add(taskPane);
-        taskPane.add(new Combobox(10, 100, 200, 20, "sort by", this::sortBy,pc,"deadline","status","name"));
         taskPane.add(new Button(600, 100, 100, 20, "save",pc,this::savetask));
         taskPane.add(new Inputfield(300,130,400,20,"name",pc));
         taskPane.add(new Inputfield(300,160,400,20,"deadline",pc));
@@ -52,7 +53,6 @@ public class ProjectScreen extends Screen{
 
     private void setUpEventPane(){
         interactables.add(eventPane);
-        taskPane.add(new Combobox(790, 100, 200, 20, "sort by", this::sortBy,pc,"date","status","name"));
         taskPane.add(new Button(600, 100, 100, 20, "save",pc,this::saveEvent));
         taskPane.add(new Inputfield(300,130,400,20,"name",pc));
         taskPane.add(new Inputfield(300,160,400,20,"date",pc));
@@ -62,7 +62,7 @@ public class ProjectScreen extends Screen{
 
     private void sortBy(){
         if(taskPane.isActive()) {
-            Interactable i = taskPane.get(0);
+            Interactable i = interactables.get(0);
             if (i instanceof Combobox) {
                 switch (((Combobox) i).getSelected()) {
                     case "status" -> t.setTasks(pc.getTasks("Status"));
@@ -71,7 +71,14 @@ public class ProjectScreen extends Screen{
                 }
             }
         }else if(eventPane.isActive()){
-
+            Interactable i = interactables.get(1);
+            if (i instanceof Combobox) {
+                switch (((Combobox) i).getSelected()) {
+                    case "status" -> t.setTasks(pc.getTasks("Status"));
+                    case "date" -> t.setTasks(pc.getTasks("Date"));
+                    default -> t.setTasks(pc.getTasks("Name"));
+                }
+            }
         }
     }
 
@@ -89,15 +96,15 @@ public class ProjectScreen extends Screen{
 
     public void setUpTask(Task t){
         id=t.getId();
-        Interactable i=taskPane.get(2);
+        Interactable i=taskPane.get(1);
         if(i instanceof Inputfield) ((Inputfield) i).setStringList(t.getName());
-        i= taskPane.get(3);
+        i= taskPane.get(2);
         if(i instanceof Inputfield) ((Inputfield) i).setStringList(t.getDeadline());
-        i= taskPane.get(4);
+        i= taskPane.get(3);
         if(i instanceof Combobox) ((Combobox) i).setCurrent(t.getStatus().toString());
-        i= taskPane.get(5);
+        i= taskPane.get(4);
         if(i instanceof Combobox) ((Combobox) i).setCurrent(pc.getUsername(t.getPF()));
-        i= taskPane.get(6);
+        i= taskPane.get(5);
         if(i instanceof Inputfield) ((Inputfield) i).setStringList(t.getNote());
         eventPane.setActive(false);
         taskPane.setActive(true);
@@ -105,15 +112,15 @@ public class ProjectScreen extends Screen{
 
     private void savetask(){
         Task t=new Task(id,"","", Task.TaskStatus.unknown,-1,"");
-        Interactable i= taskPane.get(2);
+        Interactable i= taskPane.get(1);
         if(i instanceof Inputfield) t.setName(((Inputfield) i).getContent());
-        i= taskPane.get(3);
+        i= taskPane.get(2);
         if(i instanceof Inputfield) t.setDeadline(((Inputfield) i).getContent());
-        i= taskPane.get(4);
+        i= taskPane.get(3);
         if(i instanceof Combobox) t.setStatus(Task.getStatus(((Combobox) i).getSelected()));
-        i= taskPane.get(5);
+        i= taskPane.get(4);
         if(i instanceof Combobox) t.setPF(pc.getUserId(((Combobox) i).getSelected()));
-        i= taskPane.get(6);
+        i= taskPane.get(5);
         if(i instanceof Inputfield) t.setNote(((Inputfield) i).getContent());
         if((t.getId()>-1)) pc.updateTask(t);
         else pc.createTask(t);
