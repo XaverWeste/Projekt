@@ -65,7 +65,8 @@ public class ProjectScreen extends Screen{
         eventPane.add(new Combobox(520,160,80,20,"Stunde",this::setStatus,pc,getNumbers(0,24,1)));
         eventPane.add(new Combobox(620,160,80,20,"Minute",this::setStatus,pc,getNumbers(0,12,5)));
         eventPane.add(new Combobox(300,190,400,20,"status",this::setStatus,pc,"canceled"));
-        eventPane.add(new Inputfield(300,220,400,"description",400,200,pc));
+        eventPane.add(new Inputfield(300,220,400,"place",400,200,pc));
+        eventPane.add(new Inputfield(300,250,400,"description",400,200,pc));
         eventPane.add(new Button(450, 100, 100, 20, "delete",pc,this::delete));
         e.setEvents(pc.getEvents("Name"));
         eventPane.setActive(false);
@@ -121,8 +122,10 @@ public class ProjectScreen extends Screen{
             i = eventPane.get(6);
             if (i instanceof Combobox) ((Combobox) i).setCurrent("");
         }
-        i=eventPane.get(8);
+        i=eventPane.get(9);
         if(i instanceof Inputfield) ((Inputfield) i).setStringList(e.getDescription());
+        i=eventPane.get(8);
+        if(i instanceof Inputfield) ((Inputfield) i).setStringList(e.getPlace());
         i=eventPane.get(7);
         if(i instanceof Combobox){
             String st=e.getStatus().toString();
@@ -137,7 +140,7 @@ public class ProjectScreen extends Screen{
     }
 
     private void saveEvent(){
-        Event e=new Event(id,"new Event","",Event.EventStatus.asPlanned,"",new int[]{pc.getUser().getId()});
+        Event e=new Event(id,"new Event","",Event.EventStatus.asPlanned,"","");
         Interactable i=eventPane.get(1);
         if(i instanceof Inputfield) e.setName(((Inputfield) i).getContent());
         i=eventPane.get(1);
@@ -155,6 +158,8 @@ public class ProjectScreen extends Screen{
         if(i instanceof Combobox) sb.append(((Combobox) i).getSelected());
         e.setDate(sb.toString());
         i=eventPane.get(8);
+        if(i instanceof Inputfield) e.setPlace(((Inputfield) i).getContent());
+        i=eventPane.get(9);
         if(i instanceof Inputfield) e.setDescription(((Inputfield) i).getContent());
         i=eventPane.get(7);
         if(i instanceof Combobox) e.setStatus(Event.getStatus(((Combobox) i).getSelected()));

@@ -8,18 +8,16 @@ public class Event extends Viewable{
     public enum EventStatus{asPlanned, moved,over,canceled,unknown}
 
     private int id;
-    private String date,name;
+    private String date,name,description,place;
     private Event.EventStatus status;
-    private String description;
     private int[] participants;
 
-    public Event(int id, String name, String date, Event.EventStatus status, String description, int[] participants){
+    public Event(int id, String name, String date, Event.EventStatus status, String description, String place){
         this.id=id;
         this.name=name;
         this.date=date;
         this.status=status;
         this.description=description;
-        this.participants=participants;
     }
 
     public static Event.EventStatus getStatus(int i){
@@ -84,7 +82,8 @@ public class Event extends Viewable{
                 }
             }
             if(b) status=EventStatus.over;
-        }catch(NumberFormatException ignored){
+            else if(status==EventStatus.unknown) status=EventStatus.asPlanned;
+        }catch(NumberFormatException | ArrayIndexOutOfBoundsException ignored){
             status=EventStatus.unknown;
         }
     }
@@ -132,6 +131,14 @@ public class Event extends Viewable{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
     }
 
     public int[] getParticipants() {

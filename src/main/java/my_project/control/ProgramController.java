@@ -182,19 +182,19 @@ public class ProgramController {
         String[][] data=databaseController.getCurrentQueryResult().getData();
         Event[] events=new Event[databaseController.getCurrentQueryResult().getRowCount()];
         for(int i = 0; events.length > i; i++){
-            events[i]=new Event(Integer.parseInt(data[i][0]),data[i][1],data[i][2],Event.getStatus(Integer.parseInt(data[i][3])),data[i][4],new int[]{});
+            events[i]=new Event(Integer.parseInt(data[i][0]),data[i][1],data[i][2],Event.getStatus(Integer.parseInt(data[i][3])),data[i][4],data[i][5]);
         }
         return events;
     }
 
     public void updateEvent(Event e){
-        databaseController.executeStatement("UPDATE X2022_Project_Event SET Status="+Event.getStatus(e.getStatus())+",Date='"+e.getDate()+"',NAME='"+e.getName()+"', description='"+e.getDescription()+"' WHERE EventId="+e.getId());
+        databaseController.executeStatement("UPDATE X2022_Project_Event SET Status="+Event.getStatus(e.getStatus())+",Date='"+e.getDate()+"',NAME='"+e.getName()+"', description='"+e.getDescription()+"',Place='"+e.getPlace()+"' WHERE EventId="+e.getId());
     }
 
     public void createEvent(Event e){
-        databaseController.executeStatement("SELECT MAX(EventID) FROM X2022_Project_Event");
+        databaseController.executeStatement("SELECT MAX(EventId) FROM X2022_Project_Event");
         int id=Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0])+1;
-        databaseController.executeStatement("INSERT INTO X2022_Project_Event VALUES ("+id+", '"+e.getName()+"', '"+e.getDate()+"', "+Event.getStatus(e.getStatus())+", '"+e.getDescription()+"',"+user.getProjekt().getProjektID()+")");
+        databaseController.executeStatement("INSERT INTO X2022_Project_Event VALUES ("+id+", '"+e.getName()+"', '"+e.getDate()+"', "+Event.getStatus(e.getStatus())+", '"+e.getDescription()+"',"+user.getProjekt().getProjektID()+",'"+e.getPlace()+"')");
     }
 
     public void deleteEvent(int id){
@@ -228,14 +228,14 @@ public class ProgramController {
     public void createProject(String name){
         databaseController.executeStatement("SELECT MAX(ProjectID) FROM X2022_Project_Project");
         int id=Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0])+1;
-        databaseController.executeStatement("INSERT INTO X2022_Project_Project VALUES ("+id+", '"+name+"', '-')");
-        databaseController.executeStatement("INSERT INTO X2022_Project_WorkingOn VALUES ("+user.getId()+", '"+id+"')");
+        databaseController.executeStatement("INSERT INTO X2022_Project_Project VALUES ("+id+", '"+name+"', '-','false')");
+        databaseController.executeStatement("INSERT INTO X2022_Project_WorkingOn VALUES ("+user.getId()+", '"+id+"','true')");
         user.setProjekt(new Project(id,name));
     }
 
     public void joinProject(int id){
         databaseController.executeStatement("SELECT * FROM X2022_Project_WorkingOn WHERE UserID="+user.getId()+" AND ProjectID="+id);
-        if(databaseController.getCurrentQueryResult().getRowCount()==0) databaseController.executeStatement("INSERT INTO X2022_Project_WorkingOn VALUES ("+user.getId()+", '"+id+"')");
+        if(databaseController.getCurrentQueryResult().getRowCount()==0) databaseController.executeStatement("INSERT INTO X2022_Project_WorkingOn VALUES ("+user.getId()+", '"+id+"','true')");
     }
 
     public int checkLogIn(String username,String password){
