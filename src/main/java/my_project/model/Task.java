@@ -1,6 +1,6 @@
 package my_project.model;
 
-public class Task {
+public class Task extends Viewable{
 
     public enum TaskStatus{notStartedYet,workingOn,finished,canceled,unknown}
 
@@ -16,6 +16,54 @@ public class Task {
         this.status=status;
         this.processedFrom=processedFrom;
         notes=note;
+    }
+
+    public static Task.TaskStatus getStatus(int i){
+        switch(i){
+            case 1 -> {
+                return Task.TaskStatus.notStartedYet;
+            }
+            case 2 -> {
+                return Task.TaskStatus.workingOn;
+            }
+            case 3 -> {
+                return Task.TaskStatus.finished;
+            }
+            case 4 -> {
+                return Task.TaskStatus.canceled;
+            }
+            default -> {
+                return Task.TaskStatus.unknown;
+            }
+        }
+    }
+
+    public static Task.TaskStatus getStatus(String s){
+        switch(s){
+            case "notStartedYet" -> {
+                return Task.TaskStatus.notStartedYet;
+            }
+            case "workingOn" -> {
+                return Task.TaskStatus.workingOn;
+            }
+            case "finished" -> {
+                return Task.TaskStatus.finished;
+            }
+            case "canceled" -> {
+                return Task.TaskStatus.canceled;
+            }
+            default -> {
+                return Task.TaskStatus.unknown;
+            }
+        }
+    }
+
+    public static int getStatus(Task.TaskStatus t){
+        if(t.equals(Task.TaskStatus.notStartedYet)) return 1;
+        if(t.equals(Task.TaskStatus.workingOn)) return 2;
+        if(t.equals(Task.TaskStatus.finished)) return 3;
+        if(t.equals(Task.TaskStatus.canceled)) return 4;
+        else return 5;
     }
 
     public int getId() {

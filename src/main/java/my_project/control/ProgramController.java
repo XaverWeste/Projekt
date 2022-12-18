@@ -5,8 +5,8 @@ import KAGO_framework.control.ViewController;
 import my_project.model.Project;
 import my_project.model.Task;
 import my_project.model.User;
+import my_project.model.Event;
 import my_project.model.ui.Theme;
-import my_project.model.ui.interactable.Button;
 import my_project.model.ui.screen.*;
 import my_project.view.InputManager;
 
@@ -32,7 +32,7 @@ public class ProgramController {
         databaseController = new DatabaseController();
         databaseController.connect();
         setUpThemes();
-        //testsql("SELECT ProjectID FROM X2022_Project_WorkingOn WHERE UserID = '1' AND ProjectID = 1");
+        //testsql("CREATE TABLE X2022_Project_Participant (EventId int,UserId int)");
         setUpScreens();
     }
 
@@ -176,24 +176,53 @@ public class ProgramController {
         }
     }
 
+    /**
+     * ********************************************************************************************************************************
+     */
+
+    public Event[] getEvents(String orderBy){
+        databaseController.executeStatement("SELECT * FROM X2022_Project_Event WHERE ProjectID="+user.getProjekt().getProjektID()+" ORDER BY "+orderBy+" ASC");
+        String[][] data=databaseController.getCurrentQueryResult().getData();
+        Event[] events=new Event[databaseController.getCurrentQueryResult().getRowCount()];
+        for(int i = 0; events.length > i; i++){
+            events[i]=new Event(Integer.parseInt(data[i][0]),data[i][1],data[i][2],Event.getStatus(Integer.parseInt(data[i][3])),data[i][4],new int[]{});
+        }
+        return events;
+    }
+
+    public void updateEvent(Event e){
+        databaseController.executeStatement("UPDATE X2022_Project_Event SET Status="+Event.getStatus(e.getStatus())+",Date='"+e.getDate()+"',NAME='"+e.getName()+"', description='"+e.getDescription()+"' WHERE EventId="+e.getId());
+    }
+
+    public void createEvent(Event e){
+        databaseController.executeStatement("SELECT MAX(EventID) FROM X2022_Project_Event");
+        int id=Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0])+1;
+        databaseController.executeStatement("INSERT INTO X2022_Project_Event VALUES ("+id+", '"+e.getName()+"', '"+e.getDate()+"', "+Event.getStatus(e.getStatus())+", '"+e.getDescription()+"',"+user.getProjekt().getProjektID()+")");
+    }
+
+    /**
+     * ********************************************************************************************************************************
+     */
+
+
     public Task[] getTasks(String orderBy){
         databaseController.executeStatement("SELECT * FROM X2022_Project_Task WHERE ProjectID="+user.getProjekt().getProjektID()+" ORDER BY "+orderBy+" ASC");
         String[][] data=databaseController.getCurrentQueryResult().getData();
         Task[] tasks=new Task[databaseController.getCurrentQueryResult().getRowCount()];
         for(int i = 0; tasks.length > i; i++){
-            tasks[i]=new Task(Integer.parseInt(data[i][0]),data[i][3],data[i][4],getStatus(Integer.parseInt(data[i][1])),Integer.parseInt(data[i][5]),data[i][6]);
+            tasks[i]=new Task(Integer.parseInt(data[i][0]),data[i][3],data[i][4],Task.getStatus(Integer.parseInt(data[i][1])),Integer.parseInt(data[i][5]),data[i][6]);
         }
         return tasks;
     }
 
     public void updateTask(Task t){
-        databaseController.executeStatement("UPDATE X2022_Project_Task SET Status="+getStatus(t.getStatus())+",Deadline='"+t.getDeadline()+"',ProcessedFrom='"+t.getPF()+"',NAME='"+t.getName()+"', Note='"+t.getNote()+"' WHERE TaskID="+t.getId());
+        databaseController.executeStatement("UPDATE X2022_Project_Task SET Status="+Task.getStatus(t.getStatus())+",Deadline='"+t.getDeadline()+"',ProcessedFrom='"+t.getPF()+"',NAME='"+t.getName()+"', Note='"+t.getNote()+"' WHERE TaskID="+t.getId());
     }
 
     public void createTask(Task t){
         databaseController.executeStatement("SELECT MAX(TaskID) FROM X2022_Project_Task");
         int id=Integer.parseInt(databaseController.getCurrentQueryResult().getData()[0][0])+1;
-        databaseController.executeStatement("INSERT INTO X2022_Project_Task VALUES ("+id+", "+getStatus(t.getStatus())+","+user.getProjekt().getProjektID()+",'"+t.getName()+"','"+t.getDeadline()+"',"+t.getPF()+",'"+t.getNote()+"')");
+        databaseController.executeStatement("INSERT INTO X2022_Project_Task VALUES ("+id+", "+Task.getStatus(t.getStatus())+","+user.getProjekt().getProjektID()+",'"+t.getName()+"','"+t.getDeadline()+"',"+t.getPF()+",'"+t.getNote()+"')");
     }
 
     public void createProject(String name){
@@ -264,54 +293,6 @@ public class ProgramController {
         byte[] bytes = new byte[len/2];
         for (int i = 0; i < len; i += 2) bytes[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4) + Character.digit(hex.charAt(i+1), 16));
         return bytes;
-    }
-
-    public Task.TaskStatus getStatus(int i){
-        switch(i){
-            case 1 -> {
-                return Task.TaskStatus.notStartedYet;
-            }
-            case 2 -> {
-                return Task.TaskStatus.workingOn;
-            }
-            case 3 -> {
-                return Task.TaskStatus.finished;
-            }
-            case 4 -> {
-                return Task.TaskStatus.canceled;
-            }
-            default -> {
-                return Task.TaskStatus.unknown;
-            }
-        }
-    }
-
-    public Task.TaskStatus getStatus(String s){
-        switch(s){
-            case "notStartedYet" -> {
-                return Task.TaskStatus.notStartedYet;
-            }
-            case "workingOn" -> {
-                return Task.TaskStatus.workingOn;
-            }
-            case "finished" -> {
-                return Task.TaskStatus.finished;
-            }
-            case "canceled" -> {
-                return Task.TaskStatus.canceled;
-            }
-            default -> {
-                return Task.TaskStatus.unknown;
-            }
-        }
-    }
-
-    private int getStatus(Task.TaskStatus t){
-        if(t.equals(Task.TaskStatus.notStartedYet)) return 1;
-        if(t.equals(Task.TaskStatus.workingOn)) return 2;
-        if(t.equals(Task.TaskStatus.finished)) return 3;
-        if(t.equals(Task.TaskStatus.canceled)) return 4;
-        else return 5;
     }
 
     public void setUser(User u){

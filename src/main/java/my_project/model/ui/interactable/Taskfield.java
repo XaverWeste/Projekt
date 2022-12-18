@@ -14,12 +14,12 @@ public class Taskfield extends Interactable{
     private ArrayList<Task> t=new ArrayList<>();
     private final ProjectScreen screen;
 
-    public Taskfield(ProjectScreen s, ProgramController pc, Task...task) {
+    public Taskfield(ProjectScreen s, ProgramController pc, double x, Task...task) {
         super(pc);
         screen=s;
         t.add(new Task(-1,"new Task","",Task.TaskStatus.unknown,pc.getUser().getId(),""));
         t.addAll(Arrays.asList(task));
-        x=10;
+        this.x=x;
         y=130;
         height=20;
         width=200;

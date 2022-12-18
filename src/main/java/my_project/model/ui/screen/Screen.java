@@ -5,10 +5,8 @@ import KAGO_framework.view.DrawTool;
 import my_project.Config;
 import my_project.control.ProgramController;
 import my_project.model.ui.interactable.*;
-import my_project.model.ui.interactable.Button;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;

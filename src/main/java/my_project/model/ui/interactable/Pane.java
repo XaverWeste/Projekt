@@ -30,7 +30,10 @@ public class Pane extends Interactable{
         if(active) {
             for (Interactable i : list) {
                 if (!(i instanceof Inputfield)) {
-                    if (i.clickOn(x, y)) return true;
+                    if (i.clickOn(x, y)){
+                        p.setActifeField(null);
+                        return true;
+                    }
                 } else {
                     if (i.clickOn(x, y)) {
                         p.setActifeField((Inputfield) i);
@@ -44,6 +47,10 @@ public class Pane extends Interactable{
 
     public void setActive(boolean b){
         active=b;
+    }
+
+    public boolean isActive(){
+        return active;
     }
 
     public void add(Interactable i){
