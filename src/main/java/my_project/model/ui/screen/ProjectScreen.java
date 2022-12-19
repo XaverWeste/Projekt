@@ -101,11 +101,11 @@ public class ProjectScreen extends Screen{
         String[] s=e.getDate().split(":");
         if(s.length>4) {
             i = eventPane.get(2);
-            if (i instanceof Combobox) ((Combobox) i).setCurrent(s[0]);
+            if (i instanceof Combobox) ((Combobox) i).setCurrent(s[2]);
             i = eventPane.get(3);
             if (i instanceof Combobox) ((Combobox) i).setCurrent(s[1]);
             i = eventPane.get(4);
-            if (i instanceof Combobox) ((Combobox) i).setCurrent(s[2]);
+            if (i instanceof Combobox) ((Combobox) i).setCurrent(s[0]);
             i = eventPane.get(5);
             if (i instanceof Combobox) ((Combobox) i).setCurrent(s[3]);
             i = eventPane.get(6);
@@ -135,6 +135,7 @@ public class ProjectScreen extends Screen{
                 else ((Combobox) i).updateOptions("canceled", st);
             }
         }
+        e.corecctStatus();
         taskPane.setActive(false);
         eventPane.setActive(true);
     }
@@ -146,11 +147,11 @@ public class ProjectScreen extends Screen{
         i=eventPane.get(1);
         if(i instanceof Inputfield) e.setDate(((Inputfield) i).getContent());
         StringBuilder sb=new StringBuilder();
-        i= eventPane.get(2);
+        i= eventPane.get(4);
         if(i instanceof Combobox) sb.append(((Combobox) i).getSelected()).append(":");
         i=eventPane.get(3);
         if(i instanceof Combobox) sb.append(((Combobox) i).getSelected()).append(":");
-        i= eventPane.get(4);
+        i= eventPane.get(2);
         if(i instanceof Combobox) sb.append(((Combobox) i).getSelected()).append(":");
         i=eventPane.get(5);
         if(i instanceof Combobox) sb.append(((Combobox) i).getSelected()).append(":");
@@ -165,6 +166,7 @@ public class ProjectScreen extends Screen{
         if(i instanceof Combobox) e.setStatus(Event.getStatus(((Combobox) i).getSelected()));
         if((e.getId()>-1)) pc.updateEvent(e);
         else pc.createEvent(e);
+        e.corecctStatus();
         sortBy();
     }
 

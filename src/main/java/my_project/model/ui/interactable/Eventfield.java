@@ -17,7 +17,7 @@ public class Eventfield extends Interactable{
     public Eventfield(ProjectScreen s, ProgramController pc, double x,Event...event) {
         super(pc);
         screen=s;
-        this.e.add(new Event(-1,"new Event","",Event.EventStatus.asPlanned,"",""));
+        this.e.add(new Event(-1,"new Event","",Event.EventStatus.unknown,"",""));
         this.e.addAll(Arrays.asList(event));
         this.x=x;
         y=130;
@@ -60,7 +60,7 @@ public class Eventfield extends Interactable{
 
     public void setEvents(Event...event){
         e =new ArrayList<>();
-        e.add(new Event(-1,"new Event","",Event.EventStatus.asPlanned,"",""));
+        e.add(new Event(-1,"new Event","",Event.EventStatus.unknown,"",""));
         e.addAll(Arrays.asList(event));
         if(e.size()>0) screen.setUpEvent(e.get(0));
     }

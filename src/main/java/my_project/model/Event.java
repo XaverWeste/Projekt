@@ -68,21 +68,30 @@ public class Event extends Viewable{
         else return 5;
     }
 
-    private void corecctStatus(){
+    public void corecctStatus(){
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy:MM:dd:hh:mm");
+        String ct=sdf.format(c.getTime());
+        //TODO fix
         try{
             boolean b=false;
             String[] sd=date.split(":");
-            String[] sc=sdf.format(c.getTime()).split(":");
-            for(int i=0;i<sc.length;i++){
-                if(Integer.parseInt(sc[i])<Integer.parseInt(sd[i])){
-                    b=true;
-                    break;
+            String[] sc=ct.split(":");
+            if(sd.length==sc.length){
+                if(Integer.parseInt(sd[0])>=Integer.parseInt(sc[0])){
+                    if(Integer.parseInt(sd[1])>=Integer.parseInt(sc[1])){
+                        if(Integer.parseInt(sd[1])==Integer.parseInt(sc[1])&&Integer.parseInt(sd[2])>=Integer.parseInt(sc[2])){
+                            if(Integer.parseInt(sd[2])==Integer.parseInt(sc[2])){
+                                b=Double.parseDouble(sd[3]+"."+sd[4])>Double.parseDouble(sc[3]+"."+sc[4]);
+                            }
+                        }else b=true;
+                    }else b=true;
+                }else b=true;
+                if (status != EventStatus.canceled) {
+                    if (b) status = EventStatus.over;
+                    else if (status != EventStatus.moved) status = EventStatus.asPlanned;
                 }
-            }
-            if(b) status=EventStatus.over;
-            else if(status==EventStatus.unknown) status=EventStatus.asPlanned;
+            }else status=EventStatus.unknown;
         }catch(NumberFormatException | ArrayIndexOutOfBoundsException ignored){
             status=EventStatus.unknown;
         }
@@ -97,7 +106,6 @@ public class Event extends Viewable{
     }
 
     public String getDate() {
-        corecctStatus();
         return date;
     }
 
@@ -117,7 +125,6 @@ public class Event extends Viewable{
     }
 
     public EventStatus getStatus() {
-        corecctStatus();
         return status;
     }
 
