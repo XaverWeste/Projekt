@@ -33,7 +33,7 @@ public class SignInScreen extends Screen{
         if(o.equals(SignInScreenOption.login)) {
             interactables.add(new Button(500, Config.WINDOW_HEIGHT / 2 + 30, 200, 20, "Log in", pc, this::checkLogIn));
         }else{
-            interactables.add(new Button(500, Config.WINDOW_HEIGHT / 2 + 30, 200, 20, "Sig up", pc, this::checkSignUp));
+            interactables.add(new Button(500, Config.WINDOW_HEIGHT / 2 + 30, 200, 20, "Sign up", pc, this::checkSignUp));
         }
     }
 
