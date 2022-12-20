@@ -135,7 +135,7 @@ public class ProjectScreen extends Screen{
                 else ((Combobox) i).updateOptions("canceled", st);
             }
         }
-        e.corecctStatus();
+        e.correctStatus();
         taskPane.setActive(false);
         eventPane.setActive(true);
     }
@@ -166,7 +166,7 @@ public class ProjectScreen extends Screen{
         if(i instanceof Combobox) e.setStatus(Event.getStatus(((Combobox) i).getSelected()));
         if((e.getId()>-1)) pc.updateEvent(e);
         else pc.createEvent(e);
-        e.corecctStatus();
+        e.correctStatus();
         sortBy();
     }
 

@@ -7,7 +7,7 @@ public class Event extends Viewable{
 
     public enum EventStatus{asPlanned, moved,over,canceled,unknown}
 
-    private int id;
+    private final int id;
     private String date,name,description,place;
     private Event.EventStatus status;
     private int[] participants;
@@ -18,6 +18,7 @@ public class Event extends Viewable{
         this.date=date;
         this.status=status;
         this.description=description;
+        //TODO place,participants
     }
 
     public static Event.EventStatus getStatus(int i){
@@ -68,32 +69,29 @@ public class Event extends Viewable{
         else return 5;
     }
 
-    public void corecctStatus(){
+    public void correctStatus(){
         try{
             if(status!=EventStatus.canceled) {
-                System.out.println(status);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd:hh:mm");
-                String[] s = date.split(":");
-                if (Integer.parseInt(s[2]) > 10) {
-                    s[2] = String.valueOf(Integer.parseInt(s[2]) - 12);
-                    StringBuilder sb = new StringBuilder();
-                    for (String str : s) sb.append(str).append(":");
-                    date = sb.deleteCharAt(sb.toString().length() - 1).toString();
-                }
-                int i = sdf.format(new Date()).compareTo(date);
-                if (i < 0) status = EventStatus.over;
+                if (isOver()) status = EventStatus.over;
                 else if(status!=EventStatus.moved) status=EventStatus.asPlanned;
-                System.out.println(status);
             }
         }catch(NumberFormatException | ArrayIndexOutOfBoundsException ignored){status=EventStatus.unknown;}
     }
 
-    public int getId() {
-        return id;
+    private boolean isOver(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd:hh:mm");
+        String[] s = date.split(":");
+        if (Integer.parseInt(s[2]) > 10) {
+            s[2] = String.valueOf(Integer.parseInt(s[2]) - 12);
+            StringBuilder sb = new StringBuilder();
+            for (String str : s) sb.append(str).append(":");
+            date = sb.deleteCharAt(sb.toString().length() - 1).toString();
+        }
+        return sdf.format(new Date()).compareTo(date)<0;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getId() {
+        return id;
     }
 
     public String getDate() {
