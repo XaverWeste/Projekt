@@ -1,5 +1,9 @@
 package my_project.model;
 
+import java.awt.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Task extends Viewable{
 
     public enum TaskStatus{notStartedYet,workingOn,finished,canceled,unknown}
@@ -8,6 +12,7 @@ public class Task extends Viewable{
     private String deadline,name;
     private TaskStatus status;
     private String notes;
+    private boolean over=false;
 
     public Task(int id,String name, String deadline, TaskStatus status,int processedFrom,String note){
         this.id = id;
@@ -16,6 +21,7 @@ public class Task extends Viewable{
         this.status=status;
         this.processedFrom=processedFrom;
         notes=note;
+        isOver();
     }
 
     public static Task.TaskStatus getStatus(int i){
@@ -66,6 +72,28 @@ public class Task extends Viewable{
         else return 5;
     }
 
+    private void isOver(){
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd");
+            String[] sd = deadline.split(":");
+            String[] sc = sdf.format(new Date()).split(":");
+            StringBuilder sb = new StringBuilder();
+            for (int i = 2; i >= 0; i--) {
+                if(sd[i].toCharArray().length==1) sb.append("0").append(sd[i]);
+                else sb.append(sd[i]);
+            }
+            int d=Integer.parseInt(sb.toString());
+            sb=new StringBuilder();
+            for (int i = 0; i <= 2; i++){
+                if(sc[i].toCharArray().length==1) sb.append("0").append(sc[i]);
+                else sb.append(sc[i]);
+            }
+            int c=Integer.parseInt(sb.toString());
+            over=d>c;
+            if(status==TaskStatus.canceled||status==TaskStatus.finished) over=false;
+        }catch (ArrayIndexOutOfBoundsException | NumberFormatException ignored){}
+    }
+
     public int getId() {
         return id;
     }
@@ -88,6 +116,7 @@ public class Task extends Viewable{
 
     public void setDeadline(String deadline) {
         this.deadline = deadline;
+        isOver();
     }
 
     public TaskStatus getStatus() {
@@ -96,6 +125,7 @@ public class Task extends Viewable{
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+        isOver();
     }
 
     public int getPF() {
@@ -112,5 +142,9 @@ public class Task extends Viewable{
 
     public void setNote(String note) {
         notes=note;
+    }
+
+    public boolean over(){
+        return over;
     }
 }

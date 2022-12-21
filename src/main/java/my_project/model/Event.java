@@ -18,7 +18,8 @@ public class Event extends Viewable{
         this.date=date;
         this.status=status;
         this.description=description;
-        //TODO place,participants
+        this.place=place;
+        correctStatus();
     }
 
     public static Event.EventStatus getStatus(int i){
@@ -70,24 +71,32 @@ public class Event extends Viewable{
     }
 
     public void correctStatus(){
-        try{
-            if(status!=EventStatus.canceled) {
-                if (isOver()) status = EventStatus.over;
-                else if(status!=EventStatus.moved) status=EventStatus.asPlanned;
-            }
-        }catch(NumberFormatException | ArrayIndexOutOfBoundsException ignored){status=EventStatus.unknown;}
+        if(status!=EventStatus.canceled) {
+            if (isOver()) status = EventStatus.over;
+            else if(status!=EventStatus.moved) status=EventStatus.asPlanned;
+        }
     }
 
     private boolean isOver(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd:hh:mm");
-        String[] s = date.split(":");
-        if (Integer.parseInt(s[2]) > 10) {
-            s[2] = String.valueOf(Integer.parseInt(s[2]) - 12);
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd:hh:mm");
+            String[] sd = date.split(":");
+            String[] sc = sdf.format(new Date()).split(":");
             StringBuilder sb = new StringBuilder();
-            for (String str : s) sb.append(str).append(":");
-            date = sb.deleteCharAt(sb.toString().length() - 1).toString();
-        }
-        return sdf.format(new Date()).compareTo(date)<0;
+            for (int i = 0; i <= 4; i++) {
+                if(sd[i].toCharArray().length==1) sb.append("0").append(sd[i]);
+                else sb.append(sd[i]);
+            }
+            long d=Long.parseLong(sb.toString());
+            sb=new StringBuilder();
+            for (int i = 0; i <= 4; i++){
+                if(sc[i].toCharArray().length==1) sb.append("0").append(sc[i]);
+                else sb.append(sc[i]);
+            }
+            long c=Long.parseLong(sb.toString());
+            return d>c;
+        }catch (ArrayIndexOutOfBoundsException | NumberFormatException ignored){}
+        return false;
     }
 
     public int getId() {
@@ -145,5 +154,4 @@ public class Event extends Viewable{
     public void setParticipants(int[] participants) {
         this.participants = participants;
     }
-
 }

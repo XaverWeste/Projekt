@@ -26,7 +26,7 @@ public class ProgramController {
     private User user;
     private final HashMap<String,Theme> themes=new HashMap<>();
     private Theme activeT=null;
-    private Screen po,p,pl;
+    private Screen po,p;
 
     public ProgramController(ViewController viewController){
         v = viewController;
@@ -72,8 +72,7 @@ public class ProgramController {
     }
 
     public void setUpListScreen(){
-        this.pl=new ProjectListScreen(this);
-        setUpScreen(this.pl,5);
+        setUpScreen(new ProjectListScreen(this),5);
         v.showScene(5);
     }
 
@@ -182,7 +181,7 @@ public class ProgramController {
         String[][] data=databaseController.getCurrentQueryResult().getData();
         Event[] events=new Event[databaseController.getCurrentQueryResult().getRowCount()];
         for(int i = 0; events.length > i; i++){
-            events[i]=new Event(Integer.parseInt(data[i][0]),data[i][1],data[i][2],Event.getStatus(Integer.parseInt(data[i][3])),data[i][4],data[i][5]);
+            events[i]=new Event(Integer.parseInt(data[i][0]),data[i][1],data[i][2],Event.getStatus(Integer.parseInt(data[i][3])),data[i][4],data[i][6]);
         }
         return events;
     }
