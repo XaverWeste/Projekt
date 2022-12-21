@@ -3,6 +3,7 @@ package my_project.model.ui.UiElement;
 import KAGO_framework.view.DrawTool;
 import my_project.control.ProgramController;
 import my_project.model.Event;
+import my_project.model.Task;
 import my_project.model.ui.screen.ProjectScreen;
 
 import java.awt.*;
@@ -36,16 +37,14 @@ public class Eventfield extends UiElement {
                 d.drawRectangle(x, y + 30 * i, width, height);
                 d.drawText(x + 5, y + height + 30 * i - 5, e.get(i).getName());
             }
-            d.setCurrentColor(Color.green);
-            for (int i = 0; i < e.size(); i++) if(e.get(i).getStatus()==Event.EventStatus.asPlanned) d.drawFilledCircle(x+width-10, y + 30 * i +10, 5);
-            d.setCurrentColor(Color.yellow);
-            for (int i = 0; i < e.size(); i++) if(e.get(i).getStatus()==Event.EventStatus.moved) d.drawFilledCircle(x+width-10, y + 30 * i +10, 5);
-            d.setCurrentColor(Color.red);
-            for (int i = 0; i < e.size(); i++) if(e.get(i).getStatus()==Event.EventStatus.over) d.drawFilledCircle(x+width-10, y + 30 * i +10, 5);
-            d.setCurrentColor(Color.white);
-            for (int i = 0; i < e.size(); i++) if(e.get(i).getStatus()==Event.EventStatus.unknown) d.drawFilledCircle(x+width-10, y + 30 * i +10, 5);
-            d.setCurrentColor(Color.black);
-            for (int i = 0; i < e.size(); i++) if(e.get(i).getStatus()==Event.EventStatus.canceled) d.drawFilledCircle(x+width-10, y + 30 * i +10, 5);
+            for (int i = 0; i < e.size(); i++) {
+                if(e.get(i).getStatus()==Event.EventStatus.asPlanned) d.setCurrentColor(Color.green);
+                else if(e.get(i).getStatus()==Event.EventStatus.over) d.setCurrentColor(Color.red);
+                else if(e.get(i).getStatus()==Event.EventStatus.moved) d.setCurrentColor(Color.yellow);
+                else if(e.get(i).getStatus()==Event.EventStatus.unknown) d.setCurrentColor(Color.white);
+                else if(e.get(i).getStatus()==Event.EventStatus.canceled) d.setCurrentColor(Color.black);
+                d.drawFilledCircle(x+width-10, y + 30 * i +10, 5);
+            }
         }
     }
 
