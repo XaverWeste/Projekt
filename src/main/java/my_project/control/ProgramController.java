@@ -155,8 +155,7 @@ public class ProgramController {
     }
 
     public Queue<Integer> getApplications(int projectID){
-        databaseController.executeStatement("SELECT X2022_Project_User.UserID FROM " +
-                "X2022_Project_User INNER JOIN X2022_Project_WorkingOn ON X2022_Project_User.UserID = X2022_Project_WorkingOn.UserID " +
+        databaseController.executeStatement("SELECT UserID FROM X2022_Project_WorkingOn " +
                 "WHERE Joined = 'false' AND ProjectID = " + projectID + ";");
         String[][] data=databaseController.getCurrentQueryResult().getData();
         Queue<Integer> applications = new Queue<>();
