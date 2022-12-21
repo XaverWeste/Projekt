@@ -258,7 +258,7 @@ public class ProjectScreen extends Screen{
     public void getApplication(){
         applicationPane=new Pane(pc,this);
         if(!pc.getApplications(pc.getUser().getId()).isEmpty()){
-            applicationPane.add(new TextField(10, 50, "Application: "+pc.getApplications(pc.getUser().getId()).front(),pc));
+            applicationPane.add(new TextField(10, 50, "Application: "+pc.getUsername(pc.getApplications(pc.getUser().getId()).front()),pc));
             applicationPane.add(new Button(280,40,80,20,"Decline",pc,()->processApplication("declined")));
             applicationPane.add(new Button(370,40,80,20,"Accept",pc,()->processApplication("accepted")));
         }else{
