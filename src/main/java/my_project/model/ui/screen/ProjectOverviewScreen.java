@@ -28,18 +28,6 @@ public class ProjectOverviewScreen extends Screen{
         }
     }
 
-    private void joinProject(){
-        UiElement i= elements.get(0);
-        if(i instanceof Inputfield){
-            String s=((Inputfield) i).getContent();
-            if(!s.equals("")){
-                pc.joinProject(Integer.parseInt(s));
-                ((Inputfield) i).clear();
-                this.resetUp();
-            }
-        }
-    }
-
     private void createProject(){
         UiElement i= elements.get(2);
         if(i instanceof Inputfield){

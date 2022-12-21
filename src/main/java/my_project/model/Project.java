@@ -18,10 +18,6 @@ public class Project {
         return name;
     }
 
-    public void setProjektID(int projektID) {
-        this.projektID = projektID;
-    }
-
     public void setName(String name) {
         this.name = name;
     }

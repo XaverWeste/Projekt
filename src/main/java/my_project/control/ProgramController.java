@@ -156,7 +156,7 @@ public class ProgramController {
         return applications;
     }
 
-    public void processApplications(int userID,int projectID,String status){
+    public void editApplication(int userID, int projectID, String status){
         if(status.equals("declined")){
             databaseController.executeStatement("DELETE FROM X2022_Project_WorkingOn " +
                     "WHERE UserID = " + userID + " AND ProjectID = " + projectID + " AND joined = 'false'");

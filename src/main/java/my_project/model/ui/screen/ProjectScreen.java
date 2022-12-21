@@ -270,7 +270,7 @@ public class ProjectScreen extends Screen{
 
     public void processApplication(String status){
         if(!pc.getApplications(pc.getUser().getId()).isEmpty()) {
-            pc.processApplications(pc.getApplications(pc.getUser().getId()).front(), pc.getUser().getId(), status);
+            pc.editApplication(pc.getApplications( pc.getUser().getId() ).front(), pc.getUser().getId(), status);
         }
         elements.remove(applicationPane);
         getApplication();
