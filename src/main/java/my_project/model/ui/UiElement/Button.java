@@ -1,11 +1,9 @@
-package my_project.model.ui.interactable;
+package my_project.model.ui.UiElement;
 
 import KAGO_framework.view.DrawTool;
 import my_project.control.ProgramController;
 
-import java.awt.*;
-
-public class Button extends Interactable {
+public class Button extends UiElement {
 
     public interface OnClick {
         void execute();

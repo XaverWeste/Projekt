@@ -1,4 +1,4 @@
-package my_project.model.ui.interactable;
+package my_project.model.ui.UiElement;
 
 import KAGO_framework.view.DrawTool;
 
@@ -9,7 +9,7 @@ import java.awt.geom.AffineTransform;
 import KAGO_framework.model.abitur.datenstrukturen.List;
 import my_project.control.ProgramController;
 
-public class Inputfield extends Interactable {
+public class Inputfield extends UiElement {
 
     public class StringRow {
 

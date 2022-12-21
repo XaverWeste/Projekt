@@ -4,9 +4,9 @@ import my_project.control.ProgramController;
 import my_project.model.Event;
 import my_project.model.Project;
 import my_project.model.Task;
-import my_project.model.ui.interactable.*;
-import my_project.model.ui.interactable.Button;
-import my_project.model.ui.interactable.TextField;
+import my_project.model.ui.UiElement.*;
+import my_project.model.ui.UiElement.Button;
+import my_project.model.ui.UiElement.TextField;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -34,24 +34,24 @@ public class ProjectScreen extends Screen{
     @Override
     void setUp() {
         Project p=pc.getUser().getProjekt();
-        interactables.add(new Combobox(10, 100, 200, 20, "sort by", this::sortBy,pc,"deadline","status","name"));
-        interactables.add(new Combobox(780, 100, 200, 20, "sort by", this::sortBy,pc,"date","status","name"));
-        interactables.add(new TextField(10,20,"Projektname: "+p.getName()+" ,ProjektID: "+p.getProjektID(),pc));
+        elements.add(new Combobox(10, 100, 200, 20, "sort by", this::sortBy,pc,"deadline","status","name"));
+        elements.add(new Combobox(780, 100, 200, 20, "sort by", this::sortBy,pc,"date","status","name"));
+        elements.add(new TextField(10,20,"Project name: "+p.getName()+" ,ProjectID: "+p.getProjektID(),pc));
         t=new Taskfield(this,pc,10);
         e=new Eventfield(this,pc,780);
-        interactables.add(t);
-        interactables.add(e);
-        interactables.add(new Button(880,10,100,20,"leave Project",pc,this::leaveProjekt));
-        interactables.add(new Button(880,40,100,20,"close Project",pc,this::closeProject));
+        elements.add(t);
+        elements.add(e);
+        elements.add(new Button(880,10,100,20,"leave Project",pc,this::leaveProject));
+        elements.add(new Button(880,40,100,20,"close Project",pc,this::closeProject));
     }
 
     private void setUpTaskPane(){
-        interactables.add(taskPane);
-        taskPane.add(new Button(600, 100, 100, 20, "save",pc,this::savetask));
+        elements.add(taskPane);
+        taskPane.add(new Button(600, 100, 100, 20, "save",pc,this::saveTask));
         taskPane.add(new Inputfield(300,130,400,20,"name",pc));
-        taskPane.add(new Combobox(300,160,50,20,"Tag",this::setStatus,pc,getNumbers(1,31,1)));
-        taskPane.add(new Combobox(370,160,50,20,"Monat",this::setStatus,pc,getNumbers(1,12,1)));
-        taskPane.add(new Combobox(440,160,200,20,"Jahr",this::setStatus,pc,getNumbers(getCurrentTime()[0], 5,1)));
+        taskPane.add(new Combobox(300,160,50,20,"Day",this::setStatus,pc,getNumbers(1,31,1)));
+        taskPane.add(new Combobox(370,160,50,20,"Month",this::setStatus,pc,getNumbers(1,12,1)));
+        taskPane.add(new Combobox(440,160,200,20,"Year",this::setStatus,pc,getNumbers(getCurrentTime()[0], 5,1)));
         taskPane.add(new Combobox(300, 190, 400, 20, "status", this::setStatus,pc,"notStartedYet","workingOn","finished","canceled","unknown"));
         taskPane.add(new Combobox(300, 220, 400, 20, "processed from", this::setStatus,pc,pc.getCollaborators()));
         taskPane.add(new Inputfield(300,250,400,"notes",400,200,pc));
@@ -61,13 +61,13 @@ public class ProjectScreen extends Screen{
     }
 
     private void setUpEventPane(){
-        interactables.add(eventPane);
+        elements.add(eventPane);
         eventPane.add(new Button(600, 100, 100, 20, "save",pc,this::saveEvent));
         eventPane.add(new Inputfield(300,130,400,20,"name",pc));
-        eventPane.add(new Combobox(300,160,40,20,"Tag",this::setStatus,pc,getNumbers(1,31,1)));
-        eventPane.add(new Combobox(360,160,40,20,"Monat",this::setStatus,pc,getNumbers(1,12,1)));
-        eventPane.add(new Combobox(420,160,80,20,"Jahr",this::setStatus,pc,getNumbers(getCurrentTime()[0], 5,1)));
-        eventPane.add(new Combobox(520,160,80,20,"Stunde",this::setStatus,pc,getNumbers(0,24,1)));
+        eventPane.add(new Combobox(300,160,40,20,"Day",this::setStatus,pc,getNumbers(1,31,1)));
+        eventPane.add(new Combobox(360,160,40,20,"Month",this::setStatus,pc,getNumbers(1,12,1)));
+        eventPane.add(new Combobox(420,160,80,20,"Year",this::setStatus,pc,getNumbers(getCurrentTime()[0], 5,1)));
+        eventPane.add(new Combobox(520,160,80,20,"Hour",this::setStatus,pc,getNumbers(0,24,1)));
         eventPane.add(new Combobox(620,160,80,20,"Minute",this::setStatus,pc,getNumbers(0,12,5)));
         eventPane.add(new Combobox(300,190,400,20,"status",this::setStatus,pc,"canceled"));
         eventPane.add(new Inputfield(300,220,400,"place",400,200,pc));
@@ -81,7 +81,7 @@ public class ProjectScreen extends Screen{
 
     private void sortBy(){
         if(taskPane.isActive()) {
-            Interactable i = interactables.get(0);
+            UiElement i = elements.get(0);
             if (i instanceof Combobox) {
                 switch (((Combobox) i).getSelected()) {
                     case "status" -> t.setTasks(pc.getTasks("Status"));
@@ -90,7 +90,7 @@ public class ProjectScreen extends Screen{
                 }
             }
         }else if(eventPane.isActive()){
-            Interactable i = interactables.get(1);
+            UiElement i = elements.get(1);
             if (i instanceof Combobox) {
                 switch (((Combobox) i).getSelected()) {
                     case "status" -> e.setEvents(pc.getEvents("Status"));
@@ -103,7 +103,7 @@ public class ProjectScreen extends Screen{
 
     public void setUpEvent(Event e){
         id=e.getId();
-        Interactable i=eventPane.get(1);
+        UiElement i=eventPane.get(1);
         if(i instanceof Inputfield) ((Inputfield) i).setStringList(e.getName());
         String[] s=e.getDate().split(":");
         if(s.length>4) {
@@ -168,7 +168,7 @@ public class ProjectScreen extends Screen{
 
     private void saveEvent(){
         Event e=new Event(id,"new Event","",Event.EventStatus.asPlanned,"","");
-        Interactable i=eventPane.get(1);
+        UiElement i=eventPane.get(1);
         if(i instanceof Inputfield) e.setName(((Inputfield) i).getContent());
         i=eventPane.get(1);
         if(i instanceof Inputfield) e.setDate(((Inputfield) i).getContent());
@@ -198,7 +198,7 @@ public class ProjectScreen extends Screen{
 
     public void setUpTask(Task t){
         id=t.getId();
-        Interactable i=taskPane.get(1);
+        UiElement i=taskPane.get(1);
         if(i instanceof Inputfield) ((Inputfield) i).setStringList(t.getName());
         String[] s=t.getDeadline().split(":");
         if(s.length>2) {
@@ -226,9 +226,9 @@ public class ProjectScreen extends Screen{
         taskPane.setActive(true);
     }
 
-    private void savetask(){
+    private void saveTask(){
         Task t=new Task(id,"","", Task.TaskStatus.unknown,-1,"");
-        Interactable i= taskPane.get(1);
+        UiElement i= taskPane.get(1);
         if(i instanceof Inputfield) t.setName(((Inputfield) i).getContent());
         StringBuilder sb=new StringBuilder();
         i= taskPane.get(2);
@@ -265,18 +265,18 @@ public class ProjectScreen extends Screen{
             applicationPane.add(new TextField(10,50,"Currently no applications!",pc));
         }
         applicationPane.setActive(true);
-        interactables.add(applicationPane);
+        elements.add(applicationPane);
     }
 
     public void processApplication(String status){
         if(!pc.getApplications(pc.getUser().getId()).isEmpty()) {
             pc.processApplications(pc.getApplications(pc.getUser().getId()).front(), pc.getUser().getId(), status);
         }
-        interactables.remove(applicationPane);
+        elements.remove(applicationPane);
         getApplication();
     }
 
-    private void leaveProjekt(){
+    private void leaveProject(){
         pc.leaveProjekt();
         pc.showScene(3);
     }
@@ -316,7 +316,7 @@ public class ProjectScreen extends Screen{
         }
         if(j<p.length-1) sb.append(" and ").append(p.length-j-1).append("more");
         if(sb.toString().toCharArray().length==0) sb.append("currently no participants");
-        Interactable i=eventPane.get(12);
+        UiElement i=eventPane.get(12);
         if(i instanceof TextField) ((TextField) i).setText(sb.toString());
         i=eventPane.get(11);
         if(i instanceof Button){

@@ -1,4 +1,4 @@
-package my_project.model.ui.interactable;
+package my_project.model.ui.UiElement;
 
 import KAGO_framework.view.DrawTool;
 import my_project.control.ProgramController;
@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Eventfield extends Interactable{
+public class Eventfield extends UiElement {
 
     private ArrayList<Event> e =new ArrayList<>();
     private final ProjectScreen screen;

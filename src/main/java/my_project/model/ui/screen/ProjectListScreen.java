@@ -2,9 +2,9 @@ package my_project.model.ui.screen;
 
 import my_project.control.ProgramController;
 import my_project.model.Project;
-import my_project.model.ui.interactable.Button;
-import my_project.model.ui.interactable.Inputfield;
-import my_project.model.ui.interactable.Interactable;
+import my_project.model.ui.UiElement.Button;
+import my_project.model.ui.UiElement.Inputfield;
+import my_project.model.ui.UiElement.UiElement;
 
 import javax.swing.*;
 
@@ -17,26 +17,26 @@ public class ProjectListScreen extends Screen{
     @Override
     void setUp() {
         x = y = 200;
-        interactables.add(new Inputfield(50,50,200,20,"name",pc));
-        interactables.add(new Button(250, 50, 50, 20, "Search",pc, this::searchProject));
-        interactables.add(new Button(880,10,100,20,"zurück",pc,()->pc.showScene(3)));
+        elements.add(new Inputfield(50,50,200,20,"name",pc));
+        elements.add(new Button(250, 50, 50, 20, "Search",pc, this::searchProject));
+        elements.add(new Button(880,10,100,20,"return",pc,()->pc.showScene(3)));
         searchProject();
     }
 
     public void searchProject() {
-        if (interactables.size() > 3) {
-            interactables.subList(3, interactables.size()).clear();
+        if (elements.size() > 3) {
+            elements.subList(3, elements.size()).clear();
         }
         int i = 0;
         for (Project p:pc.getProjects(getSearchKey())) {
             i++;
             double[] c=getC(i);
-            interactables.add(new Button(c[0], c[1], 350, 20, p.getName(),pc, ()->applyToProject(p.getProjektID())));
+            elements.add(new Button(c[0], c[1], 350, 20, p.getName(),pc, ()->applyToProject(p.getProjektID())));
         }
     }
 
     private String getSearchKey(){
-        Interactable i=interactables.get(0);
+        UiElement i= elements.get(0);
         if(i instanceof Inputfield){
             String s=((Inputfield) i).getContent();
             if(!s.equals("")) {

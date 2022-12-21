@@ -4,7 +4,7 @@ import KAGO_framework.model.GraphicalObject;
 import KAGO_framework.view.DrawTool;
 import my_project.Config;
 import my_project.control.ProgramController;
-import my_project.model.ui.interactable.*;
+import my_project.model.ui.UiElement.*;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public abstract class Screen extends GraphicalObject {
 
-    protected ArrayList<Interactable> interactables=new ArrayList<>();
+    protected ArrayList<UiElement> elements =new ArrayList<>();
     protected final ProgramController pc;
     protected Inputfield activeIf=null;
 
@@ -25,7 +25,7 @@ public abstract class Screen extends GraphicalObject {
     abstract void setUp();
     
     public void resetUp(){
-        interactables=new ArrayList<>();
+        elements =new ArrayList<>();
         activeIf=null;
         setUp();
     }
@@ -33,13 +33,13 @@ public abstract class Screen extends GraphicalObject {
     public void draw(DrawTool d){
         d.setCurrentColor(pc.getTheme().getBackground());
         d.drawFilledRectangle(0,0, Config.WINDOW_WIDTH,Config.WINDOW_HEIGHT);
-        for(Interactable i:interactables) i.draw(d);
-        for(Interactable i:interactables) if(i instanceof Combobox) ((Combobox) i).drawOptions(d);
+        for(UiElement i: elements) i.draw(d);
+        for(UiElement i: elements) if(i instanceof Combobox) ((Combobox) i).drawOptions(d);
         if(activeIf!=null) activeIf.highlight(d);
     }
 
     public void mouseReleased(MouseEvent e){
-        for(Interactable i:interactables){
+        for(UiElement i: elements){
             if(!(i instanceof Inputfield)){
                 if(i.clickOn(e.getX(),e.getY())) break;
             }else{
@@ -74,7 +74,7 @@ public abstract class Screen extends GraphicalObject {
                 }else{
                     activeIf.add((char) (key+32));
                 }
-            }else JOptionPane.showMessageDialog(null,"ungültige eingabe");
+            }else JOptionPane.showMessageDialog(null,"invalid character");
         }
     }
 }

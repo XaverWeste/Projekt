@@ -2,9 +2,10 @@ package my_project.model.ui.screen;
 
 import my_project.control.ProgramController;
 import my_project.model.Project;
-import my_project.model.ui.interactable.Button;
-import my_project.model.ui.interactable.Inputfield;
-import my_project.model.ui.interactable.Interactable;
+import my_project.model.ui.UiElement.Button;
+import my_project.model.ui.UiElement.Inputfield;
+import my_project.model.ui.UiElement.UiElement;
+import my_project.model.ui.UiElement.TextField;
 
 public class ProjectOverviewScreen extends Screen{
 
@@ -14,22 +15,21 @@ public class ProjectOverviewScreen extends Screen{
 
     @Override
     void setUp() {
-        interactables.add(new Inputfield(50,50,200,20,"ProjektID",pc));
-        interactables.add(new Button(300, 50, 200, 20, "trete dem Projekt bei",pc, this::joinProject));
-        interactables.add(new Inputfield(50,100,200,20,"Projektname",pc));
-        interactables.add(new Button(300, 100, 200, 20, "erstelle ein neues Projekt",pc, this::createProject));
-        interactables.add(new Button(880,10,100,20,"Log out",pc,this::logout));
-        interactables.add(new Button(550,75,200,20,"Suche Projekte",pc, this::searchProjekt));
+        elements.add(new Inputfield(300,100,200,20,"Project name",pc));
+        elements.add(new Button(510, 100, 200, 20, "create Project",pc, this::createProject));
+        elements.add(new Button(880,10,100,20,"Log out",pc,this::logout));
+        elements.add(new Button(50,100,200,20,"Search Project",pc, this::searchProjekt));
+        elements.add(new TextField(270,115,"or",pc));
         int i=0;
         for(Project p:pc.getYourProjects()){
             i++;
             double[] c=getC(i);
-            interactables.add(new Button(c[0], c[1], 350, 20, p.getName(),pc,()->selectProjekt(p)));
+            elements.add(new Button(c[0], c[1], 350, 20, p.getName(),pc,()->selectProjekt(p)));
         }
     }
 
     private void joinProject(){
-        Interactable i=interactables.get(0);
+        UiElement i= elements.get(0);
         if(i instanceof Inputfield){
             String s=((Inputfield) i).getContent();
             if(!s.equals("")){
@@ -41,7 +41,7 @@ public class ProjectOverviewScreen extends Screen{
     }
 
     private void createProject(){
-        Interactable i=interactables.get(2);
+        UiElement i= elements.get(2);
         if(i instanceof Inputfield){
             String s=((Inputfield) i).getContent();
             if(!s.equals("")){

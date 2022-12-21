@@ -1,9 +1,9 @@
-package my_project.model.ui.interactable;
+package my_project.model.ui.UiElement;
 
 import KAGO_framework.view.DrawTool;
 import my_project.control.ProgramController;
 
-public class Combobox extends Interactable{
+public class Combobox extends UiElement {
 
     public interface OnClick{
         void execute();

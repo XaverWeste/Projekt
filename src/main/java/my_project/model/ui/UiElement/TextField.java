@@ -1,9 +1,9 @@
-package my_project.model.ui.interactable;
+package my_project.model.ui.UiElement;
 
 import KAGO_framework.view.DrawTool;
 import my_project.control.ProgramController;
 
-public class TextField extends Interactable{
+public class TextField extends UiElement {
 
     private String t;
 

@@ -1,13 +1,13 @@
-package my_project.model.ui.interactable;
+package my_project.model.ui.UiElement;
 
 import KAGO_framework.model.GraphicalObject;
 import my_project.control.ProgramController;
 
-public abstract class Interactable extends GraphicalObject {
+public abstract class UiElement extends GraphicalObject {
 
     protected final ProgramController pc;
 
-    public Interactable(ProgramController pc){
+    public UiElement(ProgramController pc){
         this.pc=pc;
     }
 
