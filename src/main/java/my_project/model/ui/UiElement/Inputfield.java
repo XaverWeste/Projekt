@@ -78,6 +78,7 @@ public class Inputfield extends UiElement {
     public void draw(DrawTool d){
         d.setCurrentColor(pc.getTheme().getLine());
         stringList.toFirst();
+        if(stringList.hasAccess()) maxWidthReached = stringList.getContent().getSize() >= maxWidth;
         if(maxWidthReached && stringList.hasAccess()){
             int i = -1;
             while(stringList.hasAccess()){
@@ -128,7 +129,6 @@ public class Inputfield extends UiElement {
                 if(!maxHeightReached){
                     stringList.append(new StringRow(""+c));
                 }
-                maxWidthReached = true;
             }else{
                 stringList.getContent().addChar(c);
                 if(adjust) {

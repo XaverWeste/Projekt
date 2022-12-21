@@ -230,7 +230,9 @@ public class ProgramController {
     }
 
     public void updateTask(Task t){
-        databaseController.executeStatement("UPDATE X2022_Project_Task SET Status="+Task.getStatus(t.getStatus())+",Deadline='"+t.getDeadline()+"',ProcessedFrom='"+t.getPF()+"',NAME='"+t.getName()+"', Note='"+t.getNote()+"' WHERE TaskID="+t.getId());
+        databaseController.executeStatement("UPDATE X2022_Project_Task SET Status="+Task.getStatus(t.getStatus())+
+                ",Deadline='"+t.getDeadline()+"',ProcessedFrom='"+t.getPF()+"',NAME='"+t.getName()+"', Note='"+t.getNote()+
+                "' WHERE TaskID="+t.getId());
     }
 
     public void createTask(Task t){
