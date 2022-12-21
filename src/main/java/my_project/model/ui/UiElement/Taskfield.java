@@ -38,16 +38,14 @@ public class Taskfield extends UiElement {
                 d.setCurrentColor(pc.getTheme().getText());
                 d.drawText(x + 5, y + height + 30 * i - 5, t.get(i).getName());
             }
-            d.setCurrentColor(Color.green);
-            for (int i = 0; i < t.size(); i++) if(t.get(i).getStatus()==Task.TaskStatus.finished) d.drawFilledCircle(x+width-10, y + 30 * i +10, 5);
-            d.setCurrentColor(Color.red);
-            for (int i = 0; i < t.size(); i++) if(t.get(i).getStatus()==Task.TaskStatus.notStartedYet) d.drawFilledCircle(x+width-10, y + 30 * i +10, 5);
-            d.setCurrentColor(Color.yellow);
-            for (int i = 0; i < t.size(); i++) if(t.get(i).getStatus()==Task.TaskStatus.workingOn) d.drawFilledCircle(x+width-10, y + 30 * i +10, 5);
-            d.setCurrentColor(Color.white);
-            for (int i = 0; i < t.size(); i++) if(t.get(i).getStatus()==Task.TaskStatus.unknown) d.drawFilledCircle(x+width-10, y + 30 * i +10, 5);
-            d.setCurrentColor(Color.black);
-            for (int i = 0; i < t.size(); i++) if(t.get(i).getStatus()==Task.TaskStatus.canceled) d.drawFilledCircle(x+width-10, y + 30 * i +10, 5);
+            for (int i = 0; i < t.size(); i++) {
+                if(t.get(i).getStatus()==Task.TaskStatus.finished) d.setCurrentColor(Color.green);
+                else if(t.get(i).getStatus()==Task.TaskStatus.notStartedYet) d.setCurrentColor(Color.red);
+                else if(t.get(i).getStatus()==Task.TaskStatus.workingOn) d.setCurrentColor(Color.yellow);
+                else if(t.get(i).getStatus()==Task.TaskStatus.unknown) d.setCurrentColor(Color.white);
+                else if(t.get(i).getStatus()==Task.TaskStatus.canceled) d.setCurrentColor(Color.black);
+                d.drawFilledCircle(x+width-10, y + 30 * i +10, 5);
+            }
         }
     }
 

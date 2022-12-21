@@ -95,7 +95,7 @@ public class Event extends Viewable{
                 else sb.append(sc[i]);
             }
             long c=Long.parseLong(sb.toString());
-            return d>c;
+            return d<c;
         }catch (ArrayIndexOutOfBoundsException | NumberFormatException ignored){}
         return false;
     }
@@ -109,11 +109,8 @@ public class Event extends Viewable{
     }
 
     public void setDate(String date) {
-        if(!date.equals(this.date)){
-            this.date = date;
-            status=EventStatus.moved;
-            //TODO fix
-        }
+        this.date = date;
+        status=EventStatus.moved;
     }
 
     public String getName() {
