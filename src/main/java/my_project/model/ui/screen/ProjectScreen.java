@@ -5,7 +5,12 @@ import my_project.model.Event;
 import my_project.model.Project;
 import my_project.model.Task;
 import my_project.model.ui.interactable.*;
+import my_project.model.ui.interactable.Button;
+import my_project.model.ui.interactable.TextField;
 
+import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -68,6 +73,8 @@ public class ProjectScreen extends Screen{
         eventPane.add(new Inputfield(300,220,400,"place",400,200,pc));
         eventPane.add(new Inputfield(300,250,400,"description",400,200,pc));
         eventPane.add(new Button(450, 100, 100, 20, "delete",pc,this::delete));
+        eventPane.add(new Button(300,280,400,20,"",pc,this::participate));
+        eventPane.add(new TextField(300,320,"",pc));
         e.setEvents(pc.getEvents("Name"));
         eventPane.setActive(false);
     }
@@ -134,6 +141,25 @@ public class ProjectScreen extends Screen{
                 if (st.equals("canceled")) ((Combobox) i).updateOptions("canceled");
                 else ((Combobox) i).updateOptions("canceled", st);
             }
+        }
+        String[] p=e.getParticipants();
+        StringBuilder sb=new StringBuilder();
+        int j=0;
+        Font font = new Font("Serif", Font.PLAIN, 15);
+        while(font.getStringBounds(sb.toString(),new FontRenderContext(new AffineTransform(),true,true)).getWidth()<350&&j<p.length){
+            sb.append(p[j]).append(", ");
+            j++;
+        }
+        if(j<p.length-1) sb.append(" and ").append(p.length-j-1).append("more");
+        if(sb.toString().toCharArray().length==0) sb.append("currently no participants");
+        i=eventPane.get(12);
+        if(i instanceof TextField) ((TextField) i).setText(sb.toString());
+        i=eventPane.get(11);
+        if(i instanceof Button){
+            boolean b=false;
+            for(String str:p) if(str.equals(pc.getUser().getUsername())) b=true;
+            if(!b) ((Button) i).setText("participant");
+            else ((Button) i).setText("no longer participate");
         }
         e.correctStatus();
         taskPane.setActive(false);
@@ -276,6 +302,29 @@ public class ProjectScreen extends Screen{
         String[] s=new String[numbers];
         for(int i=0;i<numbers;i++) s[i]=String.valueOf(start+i*intervall);
         return s;
+    }
+
+    private void participate(){
+        pc.participant(id);
+        String[] p=pc.getparticipants(id);
+        StringBuilder sb=new StringBuilder();
+        int j=0;
+        Font font = new Font("Serif", Font.PLAIN, 15);
+        while(font.getStringBounds(sb.toString(),new FontRenderContext(new AffineTransform(),true,true)).getWidth()<350&&j<p.length){
+            sb.append(p[j]).append(", ");
+            j++;
+        }
+        if(j<p.length-1) sb.append(" and ").append(p.length-j-1).append("more");
+        if(sb.toString().toCharArray().length==0) sb.append("currently no participants");
+        Interactable i=eventPane.get(12);
+        if(i instanceof TextField) ((TextField) i).setText(sb.toString());
+        i=eventPane.get(11);
+        if(i instanceof Button){
+            boolean b=false;
+            for(String str:p) if(str.equals(pc.getUser().getUsername())) b=true;
+            if(!b) ((Button) i).setText("participant");
+            else ((Button) i).setText("no longer participate");
+        }
     }
 
     private void setStatus(){

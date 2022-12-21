@@ -176,12 +176,29 @@ public class ProgramController {
         }
     }
 
+    public void participant(int eventId){
+        databaseController.executeStatement("SELECT * FROM X2022_Project_Participant WHERE EventId="+eventId+" AND UserId='"+user.getId()+"'");
+        if(databaseController.getCurrentQueryResult().getRowCount()==0) databaseController.executeStatement("INSERT INTO X2022_Project_Participant VALUES("+eventId+",'"+user.getId()+"')");
+        else databaseController.executeStatement("DELETE FROM X2022_Project_Participant WHERE EventId="+eventId+" AND UserId='"+user.getId()+"'");
+    }
+
+    public String[] getparticipants(int eventId){
+        databaseController.executeStatement("SELECT UserID FROM X2022_Project_Participant WHERE EventId="+eventId);
+        String[] s=new String[databaseController.getCurrentQueryResult().getRowCount()];
+        String[][] data=databaseController.getCurrentQueryResult().getData();
+        for(int i=0;i<s.length;i++) {
+            databaseController.executeStatement("SELECT Username FROM X2022_Project_User WHERE UserID="+data[i][0]);
+            s[i]=databaseController.getCurrentQueryResult().getData()[0][0];
+        }
+        return s;
+    }
+
     public Event[] getEvents(String orderBy){
         databaseController.executeStatement("SELECT * FROM X2022_Project_Event WHERE ProjectID="+user.getProjekt().getProjektID()+" ORDER BY "+orderBy+" ASC");
         String[][] data=databaseController.getCurrentQueryResult().getData();
         Event[] events=new Event[databaseController.getCurrentQueryResult().getRowCount()];
         for(int i = 0; events.length > i; i++){
-            events[i]=new Event(Integer.parseInt(data[i][0]),data[i][1],data[i][2],Event.getStatus(Integer.parseInt(data[i][3])),data[i][4],data[i][6]);
+            events[i]=new Event(Integer.parseInt(data[i][0]),data[i][1],data[i][2],Event.getStatus(Integer.parseInt(data[i][3])),data[i][4],data[i][6],getparticipants(Integer.parseInt(data[i][0])));
         }
         return events;
     }

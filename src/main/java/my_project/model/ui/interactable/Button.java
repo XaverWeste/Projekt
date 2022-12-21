@@ -11,7 +11,7 @@ public class Button extends Interactable {
         void execute();
     }
 
-    private final String s;
+    private String s;
     private final OnClick oc;
 
     public Button(double x, double y, double w, double h, String t, ProgramController pc, OnClick oc){
@@ -42,5 +42,9 @@ public class Button extends Interactable {
         boolean b=x>this.x&&y>this.y&&x<this.x+width&&y<this.y+height;
         if(b) oc.execute();
         return b;
+    }
+
+    public void setText(String s){
+        this.s=s;
     }
 }

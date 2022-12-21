@@ -10,15 +10,16 @@ public class Event extends Viewable{
     private final int id;
     private String date,name,description,place;
     private Event.EventStatus status;
-    private int[] participants;
+    private String[] participants;
 
-    public Event(int id, String name, String date, Event.EventStatus status, String description, String place){
+    public Event(int id, String name, String date, Event.EventStatus status, String description, String place,String...participants){
         this.id=id;
         this.name=name;
         this.date=date;
         this.status=status;
         this.description=description;
         this.place=place;
+        this.participants=participants;
         correctStatus();
     }
 
@@ -147,11 +148,7 @@ public class Event extends Viewable{
         this.place = place;
     }
 
-    public int[] getParticipants() {
+    public String[] getParticipants() {
         return participants;
-    }
-
-    public void setParticipants(int[] participants) {
-        this.participants = participants;
     }
 }

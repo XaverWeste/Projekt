@@ -14,8 +14,8 @@ public class StartScreen extends Screen{
 
     @Override
     void setUp() {
-        interactables.add(new Button(Config.WINDOW_WIDTH / 2 - 100, Config.WINDOW_HEIGHT / 2 - 30, 200, 20, "log in",pc, () -> pc.showScene(1)));
-        interactables.add(new Button(Config.WINDOW_WIDTH / 2 - 100, Config.WINDOW_HEIGHT / 2 + 50, 200, 20, "sign up",pc, () -> pc.showScene(2)));
+        interactables.add(new Button(400, Config.WINDOW_HEIGHT / 2 - 30, 200, 20, "log in",pc, () -> pc.showScene(1)));
+        interactables.add(new Button(400, Config.WINDOW_HEIGHT / 2 + 50, 200, 20, "sign up",pc, () -> pc.showScene(2)));
         interactables.add(new Button(10,10,60,20,"exit",pc,()->System.exit(0)));
         interactables.add(new Combobox(10,40,60,20,"Theme",this::setTheme,pc,pc.getThemes()));
     }
