@@ -47,7 +47,7 @@ public class ProjectListScreen extends Screen{
     }
 
     public void applyToProject(int projectID){
-        JOptionPane.showMessageDialog(null,"Beitrits anfrage wurde gesendet");
+        JOptionPane.showMessageDialog(null,"Request sent successfully");
         pc.applyToProject(projectID);
     }
 }
