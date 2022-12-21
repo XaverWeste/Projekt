@@ -154,25 +154,25 @@ public class ProgramController {
         }
     }
 
-    public Queue<String> getApplications(int projectID){
-        databaseController.executeStatement("SELECT Username FROM " +
+    public Queue<Integer> getApplications(int projectID){
+        databaseController.executeStatement("SELECT X2022_Project_User.UserID FROM " +
                 "X2022_Project_User INNER JOIN X2022_Project_WorkingOn ON X2022_Project_User.UserID = X2022_Project_WorkingOn.UserID " +
                 "WHERE Joined = 'false' AND ProjectID = " + projectID + ";");
         String[][] data=databaseController.getCurrentQueryResult().getData();
-        Queue<String> applications = new Queue<>();
+        Queue<Integer> applications = new Queue<>();
         for(int i = 0; i<data.length; i++){
-            applications.enqueue(data[i][0]);
+            applications.enqueue(Integer.parseInt(data[i][0]));
         }
         return applications;
     }
 
-    public void processApplications(String user,int projectID,String status){
+    public void processApplications(int userID,int projectID,String status){
         if(status.equals("declined")){
             databaseController.executeStatement("DELETE FROM X2022_Project_WorkingOn " +
-                    "WHERE UserID = " + getUserId(user) + " AND ProjectID = " + projectID + " AND joined = 'false'");
+                    "WHERE UserID = " + userID + " AND ProjectID = " + projectID + " AND joined = 'false'");
         }else if(status.equals("accepted")){
             databaseController.executeStatement("UPDATE X2022_Project_WorkingOn SET joined = 'true' " +
-                    "WHERE UserID = " + getUserId(user) + " AND ProjectID = " + projectID);
+                    "WHERE UserID = " + userID + " AND ProjectID = " + projectID);
         }
     }
 
