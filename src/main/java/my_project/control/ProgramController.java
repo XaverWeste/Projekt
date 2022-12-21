@@ -91,16 +91,7 @@ public class ProgramController {
     public void startProgram() {
     }
 
-    public String[] getCollaborators(){
-        databaseController.executeStatement("SELECT UserID FROM X2022_Project_WorkingOn WHERE ProjectID="+user.getProjekt().getProjektID()+" AND Joined = 'true'");
-        String[] s=new String[databaseController.getCurrentQueryResult().getRowCount()];
-        String[][] data=databaseController.getCurrentQueryResult().getData();
-        for(int i=0;i<s.length;i++) {
-            databaseController.executeStatement("SELECT Username FROM X2022_Project_User WHERE UserID="+data[i][0]);
-            s[i]=databaseController.getCurrentQueryResult().getData()[0][0];
-        }
-        return s;
-    }
+
 
     public int getUserId(String name){
         databaseController.executeStatement("SELECT UserID FROM X2022_Project_User WHERE Username='"+name+"'");
@@ -181,8 +172,16 @@ public class ProgramController {
         else databaseController.executeStatement("DELETE FROM X2022_Project_Participant WHERE EventId="+eventId+" AND UserId='"+user.getId()+"'");
     }
 
+    public String[] getCollaborators(){
+        databaseController.executeStatement("SELECT UserID FROM X2022_Project_WorkingOn WHERE ProjectID="+user.getProjekt().getProjektID()+" AND Joined = 'true'");
+        return getUserArray();
+    }
     public String[] getparticipants(int eventId){
         databaseController.executeStatement("SELECT UserID FROM X2022_Project_Participant WHERE EventId="+eventId);
+        return getUserArray();
+    }
+
+    private String[] getUserArray() {
         String[] s=new String[databaseController.getCurrentQueryResult().getRowCount()];
         String[][] data=databaseController.getCurrentQueryResult().getData();
         for(int i=0;i<s.length;i++) {
